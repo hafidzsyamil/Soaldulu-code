@@ -2,6 +2,27 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Izin 1 — Akses Penggunaan.
+         Tidak bisa diminta lewat dialog biasa. Didaftarkan di sini, lalu
+         pengguna mengaktifkannya sendiri lewat Settings. -->
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+
+    <!-- Izin 2 — Tampil di atas aplikasi lain. -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <!-- Izin 3 — Notifikasi. Wajib runtime sejak Android 13. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Izin 4 — Abaikan optimasi baterai. -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+    <!-- Foreground service. Sejak Android 14 (targetSdk 34) tipe service wajib
+         dideklarasikan beserta permission yang cocok. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -22,6 +43,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- specialUse, bukan dataSync: kita tidak menyinkronkan apa pun, dan
+             dataSync terkena batas waktu harian di Android 15+ yang justru
+             bertabrakan dengan kriteria "service hidup 6 jam". -->
+        <service
+            android:name=".GateWatchService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="gate_overlay_for_research" />
+        </service>
     </application>
 
 </manifest>
