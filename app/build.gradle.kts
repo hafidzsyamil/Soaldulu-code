@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.soaldulu"
+    namespace = "id.soaldulu.app"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -12,13 +12,14 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.soaldulu"
+        applicationId = "id.soaldulu.app"
         minSdk = 29
-        targetSdk = 36
+        // Sengaja 34, bukan 36: aturan foreground service Android 15+
+        // (batas waktu FGS harian) tidak berlaku untuk targetSdk 34.
+        // Lihat handoff Bagian 3.1 dan rencana Fase 0.
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -48,11 +49,5 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }

@@ -1,4 +1,4 @@
-package com.example.soaldulu.ui.theme
+package id.soaldulu.app.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
