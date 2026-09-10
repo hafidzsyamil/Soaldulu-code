@@ -65,7 +65,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            SoalduluTheme(darkTheme = true, dynamicColor = false) {
+            SoalduluTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
                     LayarSpike(
                         modifier = Modifier.padding(padding),
@@ -128,7 +128,7 @@ class MainActivity : ComponentActivity() {
     private fun ujiOverlayCompose() {
         overlayUji?.tutup()
         overlayUji = OverlayCompose.tampilkan(this) {
-            SoalduluTheme(darkTheme = true, dynamicColor = false) {
+            SoalduluTheme {
                 Surface(color = Color(0xFF1C1714), modifier = Modifier.fillMaxSize()) {
                     Column(
                         modifier = Modifier.fillMaxSize().padding(24.dp),
