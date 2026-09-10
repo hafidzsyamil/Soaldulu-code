@@ -12,26 +12,84 @@ import android.os.HandlerThread
 import android.os.IBinder
 import android.os.Looper
 import android.os.SystemClock
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import id.soaldulu.app.data.Preferensi
+import id.soaldulu.app.data.SoalLengkap
+import id.soaldulu.app.data.SoalduluRepository
+import id.soaldulu.app.ui.layar.AlurGerbang
+import id.soaldulu.app.ui.layar.JawabanGerbang
+import id.soaldulu.app.ui.layar.formatSisaKredit
+import id.soaldulu.app.ui.theme.Background
+import id.soaldulu.app.ui.theme.OnBackgroundDim
+import id.soaldulu.app.ui.theme.SoalduluTheme
+import id.soaldulu.app.ui.theme.Teks
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
- * Foreground service Fase 0.
+ * Jantung aplikasi.
  *
- * Tugasnya tiga: polling aplikasi depan tiap 1 detik, memunculkan overlay
- * saat aplikasi terpantau dibuka, dan membuktikan dirinya masih hidup
- * setelah 6 jam.
+ * Memantau aplikasi yang sedang di depan tiap detik. Kalau aplikasi terpantau
+ * dibuka sementara kredit habis, gerbang soal muncul di atasnya. Menjawab
+ * tiga soal menghasilkan kredit; selama kredit masih ada, aplikasi itu bebas
+ * dipakai.
  *
- * Uptime dan jumlah polling ditampilkan langsung di notifikasi supaya
- * kriteria 3 bisa diperiksa hanya dengan membuka panel notifikasi —
- * tanpa mencolok kabel ke laptop.
+ * Kredit dihitung dengan JAM DINDING sejak diberikan — bukan hanya saat
+ * aplikasi terpantau dibuka. Alasannya: kolom creditStartedAt/creditEndedAt
+ * di Bagian 6.2 adalah stempel waktu absolut dengan alasan berakhir EXPIRED,
+ * yang hanya masuk akal untuk jendela waktu. Ini keputusan yang perlu kamu
+ * tinjau — kalau maksudmu kredit hanya terpakai saat medsos dibuka,
+ * bilang dan aku ubah.
  */
 class GateWatchService : Service() {
 
     private lateinit var detector: ForegroundAppDetector
-    private lateinit var overlay: OverlayGate
+    private lateinit var repo: SoalduluRepository
 
     private lateinit var threadPantau: HandlerThread
     private lateinit var handlerPantau: Handler
     private val handlerUtama = Handler(Looper.getMainLooper())
+    private val lingkup = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    private var overlay: OverlayCompose? = null
+
+    /**
+     * Soal untuk gerbang yang sedang tampil. null = masih dimuat.
+     * Dibaca dari dalam composition overlay, jadi harus MutableState.
+     */
+    private val soalGerbang = mutableStateOf<List<SoalLengkap>?>(null)
+
+    private var gerbangSedangTampil = false
+
+    /**
+     * Kapan gerbang terakhir ditutup, PER APLIKASI.
+     *
+     * Semula satu nilai untuk semua aplikasi, tapi itu berarti pindah dari
+     * Instagram ke YouTube ikut tertahan cooldown — terukur 3,1 detik di HP
+     * uji, jauh melewati target < 1 detik Bagian 3.5, dan meninggalkan
+     * jendela 5 detik tanpa penjagaan. Cooldown hanya perlu mencegah gerbang
+     * berulang pada aplikasi yang sama.
+     */
+    private val gerbangDitutupPada = mutableMapOf<String, Long>()
+
+    /** Aplikasi yang memicu gerbang yang sedang tampil. */
+    private var paketGerbangSekarang: String? = null
+
+    private var idSesiKreditBerjalan: Long? = null
+    private var kodeResponden = ""
+    private var versiPaket = ""
 
     private var mulaiElapsed = 0L
     private var jumlahPolling = 0L
@@ -39,7 +97,7 @@ class GateWatchService : Service() {
     private var jumlahStart = 1
     private var jumlahGerbang = 0
 
-    /** waktuEvent yang sudah pernah memicu gerbang, supaya tidak memicu dua kali. */
+    /** waktuEvent yang sudah pernah ditangani, supaya satu event tidak dipakai dua kali. */
     private var eventTerakhirDitangani = 0L
 
     override fun onBind(intent: Intent?): IBinder? = null
@@ -48,11 +106,9 @@ class GateWatchService : Service() {
         super.onCreate()
 
         detector = ForegroundAppDetector(this)
-        overlay = OverlayGate(this)
+        repo = SoalduluRepository.ambil(this)
 
-        // Kalau angka ini naik sendiri selama uji 6 jam, artinya service
-        // sempat mati lalu dihidupkan ulang sistem. Itu temuan untuk kriteria 3.
-        val prefs = getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        val prefs = prefs()
         jumlahStart = prefs.getInt(KEY_JUMLAH_START, 0) + 1
         prefs.edit().putInt(KEY_JUMLAH_START, jumlahStart).apply()
 
@@ -60,11 +116,29 @@ class GateWatchService : Service() {
         heartbeatTerakhir = mulaiElapsed
 
         buatChannelNotifikasi()
-        // Versi 2 argumen sengaja dipakai: tipe service diambil dari
-        // foregroundServiceType di manifest, jadi tidak perlu percabangan versi.
         startForeground(ID_NOTIFIKASI, bangunNotifikasi())
 
         SpikeLog.tulis(this, "SERVICE_START ke-$jumlahStart")
+
+        lingkup.launch {
+            kodeResponden = Preferensi.kodeResponden(this@GateWatchService)
+            versiPaket = repo.paketTerpasang()?.version.orEmpty()
+
+            // Sesi kredit yang masih terbuka berarti service sempat mati saat
+            // kredit sedang berjalan. Itu temuan penelitian, bukan kesalahan.
+            val tergantung = repo.tandaiKreditTergantung()
+            if (tergantung > 0) {
+                SpikeLog.tulis(
+                    this@GateWatchService,
+                    "KREDIT_TERGANTUNG $tergantung sesi ditandai SERVICE_KILLED",
+                )
+                repo.catatPeristiwa(
+                    kodeResponden,
+                    "SERVICE_RESTARTED",
+                    "$tergantung sesi kredit ditutup sebagai SERVICE_KILLED",
+                )
+            }
+        }
 
         threadPantau = HandlerThread("pantau-gerbang").apply { start() }
         handlerPantau = Handler(threadPantau.looper)
@@ -74,7 +148,6 @@ class GateWatchService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int = START_STICKY
 
     override fun onTaskRemoved(rootIntent: Intent?) {
-        // Kriteria 4: dipanggil saat aplikasi disapu dari layar recent apps.
         SpikeLog.tulis(this, "TASK_REMOVED — aplikasi disapu dari recent apps, service jalan terus")
         super.onTaskRemoved(rootIntent)
     }
@@ -87,7 +160,9 @@ class GateWatchService : Service() {
         )
         handlerPantau.removeCallbacksAndMessages(null)
         threadPantau.quitSafely()
-        overlay.sembunyikan() // onDestroy berjalan di main thread
+        overlay?.tutup()
+        overlay = null
+        lingkup.cancel()
         super.onDestroy()
     }
 
@@ -105,64 +180,230 @@ class GateWatchService : Service() {
                 )
             }
             heartbeatBilaWaktunya()
-            handlerPantau.postDelayed(this, JEDA_POLL_MS)
+            handlerPantau.postDelayed(this, GateConfig.FOREGROUND_POLL_INTERVAL_SECONDS * 1000L)
         }
     }
 
     private fun periksaSekali() {
-        val depan = detector.cek() ?: return
+        tutupKreditBilaHabis()
 
-        if (depan.paket !in GateConfig.MONITORED_PACKAGES) {
-            if (overlay.sedangTampil) {
-                handlerUtama.post { overlay.sembunyikan() }
+        val depan = detector.cek() ?: return
+        val eventBaru = depan.waktuEvent != eventTerakhirDitangani
+
+        // Peramban sengaja TIDAK diblokir (handoff Bagian 3.6). Hanya dicatat,
+        // karena perpindahan ke peramban adalah temuan penelitian.
+        if (depan.paket in GateConfig.BROWSER_PACKAGES_FOR_LOGGING_ONLY) {
+            if (eventBaru) {
+                eventTerakhirDitangani = depan.waktuEvent
+                lingkup.launch {
+                    repo.catatPeristiwa(kodeResponden, "BROWSER_OPENED", depan.paket)
+                }
             }
             return
         }
 
-        // Event yang sama tidak boleh memicu gerbang dua kali. Ini juga yang
-        // membuat overlay tidak muncul lagi setelah ditutup manual, selama
-        // pengguna belum berpindah aplikasi.
-        if (depan.waktuEvent == eventTerakhirDitangani) return
-        eventTerakhirDitangani = depan.waktuEvent
+        if (depan.paket !in GateConfig.MONITORED_PACKAGES) {
+            // Responden keluar dari aplikasi terpantau; gerbang ikut dilepas.
+            if (gerbangSedangTampil) tutupGerbang()
+            return
+        }
 
-        val latensiDeteksi = System.currentTimeMillis() - depan.waktuEvent
+        if (eventBaru) eventTerakhirDitangani = depan.waktuEvent
+
+        if (sisaKreditDetik() > 0) return // masih punya kredit, biarkan
+        if (gerbangSedangTampil) return
+
+        val ditutupPada = gerbangDitutupPada[depan.paket] ?: 0L
+        if (SystemClock.elapsedRealtime() - ditutupPada <
+            GateConfig.GATE_COOLDOWN_SECONDS * 1000L
+        ) {
+            return
+        }
+
+        bukaGerbang(depan.paket, depan.waktuEvent)
+    }
+
+    // ── Gerbang ─────────────────────────────────────────────────────────────
+
+    /**
+     * Overlay dipasang SEBELUM soal dimuat.
+     *
+     * Bagian 3.5 menuntut overlay muncul < 1 detik. Kalau kita menunggu
+     * DataStore dan Room selesai dulu, waktunya terukur 945 ms di HP uji —
+     * terlalu mepet. Yang dijanjikan Bagian 3.5 adalah gerbangnya muncul,
+     * bukan soalnya sudah tergambar, jadi keduanya dipisah.
+     */
+    private fun bukaGerbang(paketPemicu: String, waktuEvent: Long) {
+        gerbangSedangTampil = true
+        paketGerbangSekarang = paketPemicu
         jumlahGerbang++
+        val idSesiGerbang = System.currentTimeMillis()
+        soalGerbang.value = null
 
         handlerUtama.post {
-            val latensiTotal = System.currentTimeMillis() - depan.waktuEvent
-            val lulus = if (latensiTotal < 1000) "LULUS < 1 detik" else "LEWAT 1 detik"
-            overlay.tampilkan(
-                paketPemicu = depan.paket,
-                latensiMs = latensiTotal,
-                catatan = "$lulus  ·  deteksi ${latensiDeteksi}ms  ·  gerbang ke-$jumlahGerbang",
-            ) {
-                SpikeLog.tulis(this, "OVERLAY_DITUTUP manual")
+            overlay = OverlayCompose.tampilkan(this) {
+                SoalduluTheme {
+                    when (val soal = soalGerbang.value) {
+                        null -> GerbangMemuat()
+                        else -> AlurGerbang(
+                            soal = soal,
+                            sisaKreditDetik = 0,
+                            onSelesai = { jawaban ->
+                                selesaikanGerbang(idSesiGerbang, paketPemicu, jawaban)
+                            },
+                            onLapor = { itemId ->
+                                lingkup.launch {
+                                    repo.catatPeristiwa(kodeResponden, "ITEM_REPORTED", itemId)
+                                }
+                            },
+                        )
+                    }
+                }
             }
+            if (overlay == null) {
+                gerbangSedangTampil = false
+                gerbangDitutupPada[paketPemicu] = SystemClock.elapsedRealtime()
+                paketGerbangSekarang = null
+                return@post
+            }
+
+            val latensi = System.currentTimeMillis() - waktuEvent
             SpikeLog.tulis(
                 this,
-                "GERBANG ke-$jumlahGerbang paket=${depan.paket} " +
-                    "latensiDeteksi=${latensiDeteksi}ms latensiTotal=${latensiTotal}ms",
+                "GERBANG ke-$jumlahGerbang paket=$paketPemicu latensi=${latensi}ms",
+            )
+
+            lingkup.launch {
+                // Disegarkan tiap gerbang supaya kode responden yang baru
+                // dimasukkan langsung terpakai tanpa perlu restart service.
+                kodeResponden = Preferensi.kodeResponden(this@GateWatchService)
+                versiPaket = repo.paketTerpasang()?.version.orEmpty()
+                val soal = repo.soalUntukGerbang(kodeResponden)
+                withContext(Dispatchers.Main) {
+                    soalGerbang.value = soal
+                    SpikeLog.tulis(
+                        this@GateWatchService,
+                        "GERBANG_SOAL_SIAP jumlah=${soal.size} " +
+                            "setelah=${System.currentTimeMillis() - waktuEvent}ms",
+                    )
+                }
+            }
+        }
+    }
+
+    /** Lepas overlay tanpa memberi kredit — dipakai saat responden pindah aplikasi. */
+    private fun tutupGerbang() {
+        gerbangSedangTampil = false
+        paketGerbangSekarang?.let { gerbangDitutupPada[it] = SystemClock.elapsedRealtime() }
+        paketGerbangSekarang = null
+        handlerUtama.post {
+            overlay?.tutup()
+            overlay = null
+        }
+    }
+
+    private fun selesaikanGerbang(
+        idSesiGerbang: Long,
+        paketPemicu: String,
+        jawaban: List<JawabanGerbang>,
+    ) {
+        gerbangSedangTampil = false
+        gerbangDitutupPada[paketPemicu] = SystemClock.elapsedRealtime()
+        paketGerbangSekarang = null
+        overlay?.tutup()
+        overlay = null
+
+        // Katup pengaman gerbang tanpa soal: tidak ada jawaban, tidak ada kredit.
+        if (jawaban.isEmpty()) return
+
+        val kreditDetik = Kredit.totalGerbang(jawaban.sumOf { it.bonusDetik })
+        setKreditBerakhirPada(System.currentTimeMillis() + kreditDetik * 1000L)
+        perbaruiNotifikasi()
+
+        lingkup.launch {
+            jawaban.forEachIndexed { i, j ->
+                repo.catatJawaban(
+                    kode = kodeResponden,
+                    versiPaket = versiPaket,
+                    gateSessionId = idSesiGerbang,
+                    urutanDalamGerbang = i + 1,
+                    butir = j.soal.butir,
+                    opsiDipilih = j.opsiDipilih.optionId,
+                    durasiDetik = j.durasiDetik,
+                    // Kredit dasar gerbang tidak dibagi ke tiap baris jawaban;
+                    // yang tercatat di sini hanya bonus jawaban itu sendiri.
+                    // Totalnya ada di log_kredit.creditGrantedSeconds.
+                    kreditDidapat = j.bonusDetik,
+                    paketPemicu = paketPemicu,
+                )
+            }
+            idSesiKreditBerjalan =
+                repo.mulaiSesiKredit(kodeResponden, idSesiGerbang, kreditDetik)
+
+            SpikeLog.tulis(
+                this@GateWatchService,
+                "GERBANG_SELESAI benar=${jawaban.count { it.benar }}/${jawaban.size} " +
+                    "kredit=${kreditDetik}s pemicu=$paketPemicu",
             )
         }
     }
+
+    // ── Kredit ──────────────────────────────────────────────────────────────
+
+    private fun prefs() = getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+
+    /**
+     * Kapan kredit berakhir, dalam epoch ms. 0 = tidak punya kredit.
+     *
+     * Disimpan di SharedPreferences, bukan DataStore: nilai ini dibaca setiap
+     * detik di dalam loop polling, dan DataStore yang berbasis Flow tidak
+     * cocok untuk pembacaan sinkron sesering itu.
+     */
+    private fun kreditBerakhirPada(): Long = prefs().getLong(KEY_KREDIT_BERAKHIR, 0L)
+
+    private fun setKreditBerakhirPada(waktu: Long) {
+        prefs().edit().putLong(KEY_KREDIT_BERAKHIR, waktu).apply()
+    }
+
+    private fun sisaKreditDetik(): Int {
+        val berakhir = kreditBerakhirPada()
+        if (berakhir == 0L) return 0
+        val sisa = (berakhir - System.currentTimeMillis()) / 1000L
+        return sisa.coerceAtLeast(0L).toInt()
+    }
+
+    private fun tutupKreditBilaHabis() {
+        if (kreditBerakhirPada() == 0L) return
+        if (sisaKreditDetik() > 0) return
+
+        setKreditBerakhirPada(0L)
+        val id = idSesiKreditBerjalan ?: return
+        idSesiKreditBerjalan = null
+        lingkup.launch { repo.tutupSesiKredit(id, "EXPIRED") }
+        SpikeLog.tulis(this, "KREDIT_HABIS sesi=$id")
+        perbaruiNotifikasi()
+    }
+
+    // ── Notifikasi ──────────────────────────────────────────────────────────
 
     private fun heartbeatBilaWaktunya() {
         val sekarang = SystemClock.elapsedRealtime()
         if (sekarang - heartbeatTerakhir < JEDA_HEARTBEAT_MS) return
         heartbeatTerakhir = sekarang
-
-        val uptime = sekarang - mulaiElapsed
         SpikeLog.tulis(
             this,
-            "HEARTBEAT uptime=${formatDurasi(uptime)} polling=$jumlahPolling gerbang=$jumlahGerbang",
+            "HEARTBEAT uptime=${formatDurasi(sekarang - mulaiElapsed)} " +
+                "polling=$jumlahPolling gerbang=$jumlahGerbang kredit=${sisaKreditDetik()}s",
         )
+        perbaruiNotifikasi()
+    }
+
+    private fun perbaruiNotifikasi() {
         handlerUtama.post {
             val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             nm.notify(ID_NOTIFIKASI, bangunNotifikasi())
         }
     }
-
-    // ── Notifikasi ──────────────────────────────────────────────────────────
 
     private fun buatChannelNotifikasi() {
         val channel = NotificationChannel(
@@ -170,7 +411,7 @@ class GateWatchService : Service() {
             "Layanan gerbang",
             NotificationManager.IMPORTANCE_LOW, // tanpa suara
         ).apply {
-            description = "Menampilkan status layanan pemantau Soaldulu."
+            description = "Menampilkan sisa kredit dan status layanan Soaldulu."
             setShowBadge(false)
         }
         val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -178,16 +419,21 @@ class GateWatchService : Service() {
     }
 
     private fun bangunNotifikasi(): Notification {
-        val uptime = SystemClock.elapsedRealtime() - mulaiElapsed
+        val sisa = sisaKreditDetik()
         val buka = PendingIntent.getActivity(
             this,
             0,
             Intent(this, MainActivity::class.java),
             PendingIntent.FLAG_IMMUTABLE,
         )
+        val isi = if (sisa > 0) {
+            "Sisa kredit ${formatSisaKredit(sisa)}"
+        } else {
+            "Gerbang aktif — media sosial terkunci"
+        }
         return Notification.Builder(this, CHANNEL_ID)
-            .setContentTitle("Soaldulu — spike aktif · start ke-$jumlahStart")
-            .setContentText("${formatDurasi(uptime)} · $jumlahPolling polling · $jumlahGerbang gerbang")
+            .setContentTitle("Soaldulu")
+            .setContentText(isi)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentIntent(buka)
             .setOngoing(true)
@@ -203,11 +449,29 @@ class GateWatchService : Service() {
 
     companion object {
         const val PREFS = "spike"
+        // (lanjut di bawah)
         const val KEY_JUMLAH_START = "jumlah_start"
+        private const val KEY_KREDIT_BERAKHIR = "kredit_berakhir_pada"
 
         private const val CHANNEL_ID = "gerbang"
         private const val ID_NOTIFIKASI = 1
-        private const val JEDA_POLL_MS = 1_000L
         private const val JEDA_HEARTBEAT_MS = 60_000L
+    }
+}
+
+/**
+ * Tampilan sekejap antara overlay terpasang dan soal selesai dimuat.
+ *
+ * Sengaja latar polos tanpa spinner: yang penting media sosial di bawahnya
+ * sudah tertutup pada milidetik pertama.
+ */
+@Composable
+private fun GerbangMemuat() {
+    Column(
+        modifier = Modifier.fillMaxSize().background(Background),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text("Menyiapkan soal…", style = Teks.caption, color = OnBackgroundDim)
     }
 }

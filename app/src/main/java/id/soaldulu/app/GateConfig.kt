@@ -58,5 +58,37 @@ object GateConfig {
 
     // ── PENELITIAN ──
     const val EXPORT_FILENAME_TEMPLATE = "soaldulu_log_%s.csv"
-    const val DEV_MODE = false // WAJIB false di APK responden
+
+    // SEDANG true UNTUK PENGEMBANGAN.
+    // WAJIB dikembalikan ke false sebelum APK dibagikan ke responden — ini
+    // yang membuka layar uji Fase 0 dari Settings.
+    const val DEV_MODE = true
+}
+
+/**
+ * Kurs kredit.
+ *
+ * Dipisah dari GateConfig karena ini aturan, bukan angka — tapi seluruh
+ * angkanya tetap berasal dari GateConfig. Satu tempat saja, supaya UI dan
+ * repository tidak pernah menghitung kredit dengan cara yang berbeda.
+ */
+object Kredit {
+
+    /**
+     * Jawaban benar hanya berbuah bonus kalau tidak dijawab terlalu cepat.
+     * Lebih cepat dari MIN_GENUINE_ANSWER_SECONDS dianggap asal tekan.
+     */
+    fun bonusSah(benar: Boolean, durasiDetik: Int): Boolean =
+        benar && durasiDetik >= GateConfig.MIN_GENUINE_ANSWER_SECONDS
+
+    /** Bonus untuk satu jawaban, dalam detik. */
+    fun bonusSatuJawaban(benar: Boolean, durasiDetik: Int): Int =
+        if (bonusSah(benar, durasiDetik)) GateConfig.CORRECT_BONUS_SECONDS else 0
+
+    /** Total kredit satu gerbang: dasar + seluruh bonus, dibatasi plafon. */
+    fun totalGerbang(totalBonusDetik: Int): Int {
+        val mentah = GateConfig.GATE_REWARD_SECONDS + totalBonusDetik
+        val batas = GateConfig.MAX_CREDIT_BALANCE_SECONDS
+        return if (batas > 0) minOf(mentah, batas) else mentah
+    }
 }

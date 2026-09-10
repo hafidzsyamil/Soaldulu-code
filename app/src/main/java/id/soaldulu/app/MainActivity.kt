@@ -35,16 +35,27 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import id.soaldulu.app.data.HasilSeed
+import id.soaldulu.app.data.Preferensi
 import id.soaldulu.app.data.SoalduluRepository
+import id.soaldulu.app.ui.layar.LayarKodeResponden
+import id.soaldulu.app.ui.layar.LayarWelcome
 import id.soaldulu.app.ui.theme.SoalduluTheme
 import kotlinx.coroutines.launch
 
 /**
- * Layar uji Fase 0.
+ * Layar yang sudah ada. Alurnya lurus, jadi navigasinya cukup satu enum
+ * dan satu when — tanpa pustaka Navigation.
  *
- * Ini BUKAN Layar 4 dari mockup — tanpa warna kuningan, tanpa font serif,
- * tanpa kartu. Tujuannya hanya memberi jalan untuk memberikan empat izin,
- * menyalakan service, dan membaca angka hasil spike.
+ * SPIKE tetap jadi layar awal selama Fase 0 belum lulus semua kriteria.
+ * Setelah itu, layar awal diganti WELCOME dan SPIKE dibuang.
+ */
+enum class Layar { SPIKE, WELCOME, KODE_RESPONDEN }
+
+/**
+ * Satu-satunya Activity aplikasi.
+ *
+ * LayarSpike di bawah BUKAN Layar 4 dari mockup — itu alat uji Fase 0 yang
+ * akan dibuang. Layar sungguhan ada di paket ui.layar.
  */
 class MainActivity : ComponentActivity() {
 
@@ -54,6 +65,8 @@ class MainActivity : ComponentActivity() {
     private val isiLog = mutableStateOf("")
     private val statusBank = mutableStateOf("belum diperiksa")
     private val statusOverlayCompose = mutableStateOf("belum diuji")
+    private val layar = mutableStateOf(Layar.SPIKE)
+    private val kodeResponden = mutableStateOf("")
 
     /** Overlay Compose percobaan — dilepas lagi lewat tombol di dalamnya. */
     private var overlayUji: OverlayCompose? = null
@@ -67,7 +80,19 @@ class MainActivity : ComponentActivity() {
         setContent {
             SoalduluTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
-                    LayarSpike(
+                    when (layar.value) {
+                        Layar.WELCOME -> LayarWelcome(
+                            modifier = Modifier.padding(padding),
+                            onMulai = { layar.value = Layar.KODE_RESPONDEN },
+                        )
+
+                        Layar.KODE_RESPONDEN -> LayarKodeResponden(
+                            modifier = Modifier.padding(padding),
+                            kodeAwal = kodeResponden.value,
+                            onLanjut = { kode -> simpanKodeResponden(kode) },
+                        )
+
+                        Layar.SPIKE -> LayarSpike(
                         modifier = Modifier.padding(padding),
                         status = status.value,
                         ringkasanLog = ringkasanLog.value,
@@ -93,7 +118,10 @@ class MainActivity : ComponentActivity() {
                         onHentikanService = {
                             stopService(Intent(this, GateWatchService::class.java))
                         },
-                    )
+                        kodeResponden = kodeResponden.value,
+                        onBukaOnboarding = { layar.value = Layar.WELCOME },
+                        )
+                    }
                 }
             }
         }
@@ -113,6 +141,24 @@ class MainActivity : ComponentActivity() {
         ringkasanLog.value = SpikeLog.ringkasanBerkas(this)
         jumlahStart.value = getSharedPreferences(GateWatchService.PREFS, MODE_PRIVATE)
             .getInt(GateWatchService.KEY_JUMLAH_START, 0)
+        lifecycleScope.launch {
+            kodeResponden.value = Preferensi.kodeResponden(this@MainActivity)
+        }
+    }
+
+    /**
+     * Simpan kode ke DataStore, lalu kembali ke layar uji.
+     *
+     * Layar 3 (Persetujuan) belum dibangun, jadi untuk sementara alurnya
+     * berhenti di sini — dan kode yang tersimpan tampil di layar uji sebagai
+     * bukti DataStore bekerja.
+     */
+    private fun simpanKodeResponden(kode: String) {
+        lifecycleScope.launch {
+            Preferensi.simpanKodeResponden(this@MainActivity, kode)
+            kodeResponden.value = kode
+            layar.value = Layar.SPIKE
+        }
     }
 
     private fun mintaIzinNotifikasi() {
@@ -193,6 +239,8 @@ private fun LayarSpike(
     onSeedBank: () -> Unit,
     statusOverlayCompose: String,
     onUjiOverlayCompose: () -> Unit,
+    kodeResponden: String,
+    onBukaOnboarding: () -> Unit,
     onMuatLog: () -> Unit,
     onHapusLog: () -> Unit,
     onUsageAccess: () -> Unit,
@@ -286,6 +334,28 @@ private fun LayarSpike(
         Text("Aplikasi dipantau", style = MaterialTheme.typography.titleSmall)
         Text(
             GateConfig.MONITORED_PACKAGES.joinToString("\n"),
+            style = MaterialTheme.typography.bodySmall,
+        )
+
+        Spacer(Modifier.height(24.dp))
+        HorizontalDivider()
+        Spacer(Modifier.height(24.dp))
+
+        Text("Layar sungguhan", style = MaterialTheme.typography.titleSmall)
+        Text(
+            "Layar 1 (Welcome) dan Layar 2 (Kode Responden). Alurnya berhenti " +
+                "di Layar 2 karena Layar 3 belum dibangun.",
+            style = MaterialTheme.typography.bodySmall,
+        )
+        Spacer(Modifier.height(8.dp))
+        OutlinedButton(onClick = onBukaOnboarding) { Text("BUKA ALUR ONBOARDING") }
+        Spacer(Modifier.height(8.dp))
+        Text(
+            if (kodeResponden.isEmpty()) {
+                "Kode responden di DataStore: belum ada"
+            } else {
+                "Kode responden di DataStore: $kodeResponden"
+            },
             style = MaterialTheme.typography.bodySmall,
         )
 

@@ -71,23 +71,6 @@ class SoalduluRepository private constructor(private val dao: SoalduluDao) {
         }
     }
 
-    // ── Kurs kredit ─────────────────────────────────────────────────────────
-
-    /**
-     * Jawaban benar hanya berbuah bonus kalau tidak dijawab terlalu cepat.
-     * Lebih cepat dari MIN_GENUINE_ANSWER_SECONDS dianggap asal tekan.
-     */
-    fun bonusSah(benar: Boolean, durasiDetik: Int): Boolean =
-        benar && durasiDetik >= GateConfig.MIN_GENUINE_ANSWER_SECONDS
-
-    /** Kredit yang dihasilkan satu gerbang, dalam detik. */
-    fun hitungKreditGerbang(jumlahBonusSah: Int): Int {
-        val mentah = GateConfig.GATE_REWARD_SECONDS +
-            jumlahBonusSah * GateConfig.CORRECT_BONUS_SECONDS
-        val batas = GateConfig.MAX_CREDIT_BALANCE_SECONDS
-        return if (batas > 0) minOf(mentah, batas) else mentah
-    }
-
     // ── Log penelitian ──────────────────────────────────────────────────────
 
     suspend fun catatJawaban(
