@@ -8,6 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,11 +24,13 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
@@ -50,6 +53,10 @@ class MainActivity : ComponentActivity() {
     private val jumlahStart = mutableStateOf(0)
     private val isiLog = mutableStateOf("")
     private val statusBank = mutableStateOf("belum diperiksa")
+    private val statusOverlayCompose = mutableStateOf("belum diuji")
+
+    /** Overlay Compose percobaan — dilepas lagi lewat tombol di dalamnya. */
+    private var overlayUji: OverlayCompose? = null
 
     private val mintaNotifikasi =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { segarkan() }
@@ -68,6 +75,8 @@ class MainActivity : ComponentActivity() {
                         isiLog = isiLog.value,
                         statusBank = statusBank.value,
                         onSeedBank = { seedBankSoal() },
+                        statusOverlayCompose = statusOverlayCompose.value,
+                        onUjiOverlayCompose = { ujiOverlayCompose() },
                         onMuatLog = { isiLog.value = SpikeLog.bacaBarisTerakhir(this) },
                         onHapusLog = {
                             SpikeLog.hapusBerkas(this)
@@ -112,6 +121,50 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * Membuktikan Compose bisa jalan di dalam jendela overlay.
+     * Seluruh Layar Gerbang di Fase 2 bergantung pada ini.
+     */
+    private fun ujiOverlayCompose() {
+        overlayUji?.tutup()
+        overlayUji = OverlayCompose.tampilkan(this) {
+            SoalduluTheme(darkTheme = true, dynamicColor = false) {
+                Surface(color = Color(0xFF1C1714), modifier = Modifier.fillMaxSize()) {
+                    Column(
+                        modifier = Modifier.fillMaxSize().padding(24.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Text(
+                            "Compose jalan di dalam overlay",
+                            color = Color(0xFFC9A962),
+                            style = MaterialTheme.typography.headlineSmall,
+                        )
+                        Spacer(Modifier.height(16.dp))
+                        Text(
+                            "Kalau kamu melihat ini, ranjau terbesar Fase 2 sudah aman.",
+                            color = Color(0xFF9C8B7A),
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                        Spacer(Modifier.height(32.dp))
+                        Button(onClick = {
+                            overlayUji?.tutup()
+                            overlayUji = null
+                        }) {
+                            Text("TUTUP")
+                        }
+                    }
+                }
+            }
+        }
+        statusOverlayCompose.value =
+            if (overlayUji != null) {
+                "Berhasil — jendela terpasang."
+            } else {
+                "GAGAL — cek izin 'tampil di atas aplikasi lain'. Rincian di berkas log."
+            }
+    }
+
     /** Baca bank_soal_v1.json dari assets dan tulis ke Room. */
     private fun seedBankSoal() {
         statusBank.value = "sedang membaca…"
@@ -138,6 +191,8 @@ private fun LayarSpike(
     isiLog: String,
     statusBank: String,
     onSeedBank: () -> Unit,
+    statusOverlayCompose: String,
+    onUjiOverlayCompose: () -> Unit,
     onMuatLog: () -> Unit,
     onHapusLog: () -> Unit,
     onUsageAccess: () -> Unit,
@@ -233,6 +288,21 @@ private fun LayarSpike(
             GateConfig.MONITORED_PACKAGES.joinToString("\n"),
             style = MaterialTheme.typography.bodySmall,
         )
+
+        Spacer(Modifier.height(24.dp))
+        HorizontalDivider()
+        Spacer(Modifier.height(24.dp))
+
+        Text("Compose di dalam overlay", style = MaterialTheme.typography.titleSmall)
+        Text(
+            "Layar Gerbang harus muncul di dalam overlay, bukan sebagai Activity. " +
+                "Tombol ini membuktikan itu mungkin.",
+            style = MaterialTheme.typography.bodySmall,
+        )
+        Spacer(Modifier.height(8.dp))
+        OutlinedButton(onClick = onUjiOverlayCompose) { Text("UJI OVERLAY COMPOSE") }
+        Spacer(Modifier.height(8.dp))
+        Text(statusOverlayCompose, style = MaterialTheme.typography.bodySmall)
 
         Spacer(Modifier.height(24.dp))
         HorizontalDivider()
