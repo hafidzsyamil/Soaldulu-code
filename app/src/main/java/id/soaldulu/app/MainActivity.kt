@@ -30,7 +30,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
+import id.soaldulu.app.data.HasilSeed
+import id.soaldulu.app.data.SoalduluRepository
 import id.soaldulu.app.ui.theme.SoalduluTheme
+import kotlinx.coroutines.launch
 
 /**
  * Layar uji Fase 0.
@@ -45,6 +49,7 @@ class MainActivity : ComponentActivity() {
     private val ringkasanLog = mutableStateOf("belum ada")
     private val jumlahStart = mutableStateOf(0)
     private val isiLog = mutableStateOf("")
+    private val statusBank = mutableStateOf("belum diperiksa")
 
     private val mintaNotifikasi =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { segarkan() }
@@ -61,6 +66,8 @@ class MainActivity : ComponentActivity() {
                         ringkasanLog = ringkasanLog.value,
                         jumlahStart = jumlahStart.value,
                         isiLog = isiLog.value,
+                        statusBank = statusBank.value,
+                        onSeedBank = { seedBankSoal() },
                         onMuatLog = { isiLog.value = SpikeLog.bacaBarisTerakhir(this) },
                         onHapusLog = {
                             SpikeLog.hapusBerkas(this)
@@ -104,6 +111,23 @@ class MainActivity : ComponentActivity() {
             mintaNotifikasi.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
+
+    /** Baca bank_soal_v1.json dari assets dan tulis ke Room. */
+    private fun seedBankSoal() {
+        statusBank.value = "sedang membaca…"
+        lifecycleScope.launch {
+            val repo = SoalduluRepository.ambil(this@MainActivity)
+            statusBank.value = when (val hasil = repo.seedDariAssets(this@MainActivity)) {
+                is HasilSeed.Berhasil ->
+                    "Berhasil · versi ${hasil.versi} · ${hasil.jumlahButir} butir " +
+                        "(${hasil.jumlahAktif} aktif)"
+
+                is HasilSeed.Gagal ->
+                    "GAGAL — ${hasil.kesalahan.size} masalah:\n" +
+                        hasil.kesalahan.joinToString("\n") { "· $it" }
+            }
+        }
+    }
 }
 
 @Composable
@@ -112,6 +136,8 @@ private fun LayarSpike(
     ringkasanLog: String,
     jumlahStart: Int,
     isiLog: String,
+    statusBank: String,
+    onSeedBank: () -> Unit,
     onMuatLog: () -> Unit,
     onHapusLog: () -> Unit,
     onUsageAccess: () -> Unit,
@@ -204,8 +230,27 @@ private fun LayarSpike(
         Spacer(Modifier.height(16.dp))
         Text("Aplikasi dipantau", style = MaterialTheme.typography.titleSmall)
         Text(
-            PAKET_DIPANTAU.joinToString("\n"),
+            GateConfig.MONITORED_PACKAGES.joinToString("\n"),
             style = MaterialTheme.typography.bodySmall,
+        )
+
+        Spacer(Modifier.height(24.dp))
+        HorizontalDivider()
+        Spacer(Modifier.height(24.dp))
+
+        Text("Bank soal (Fase 1)", style = MaterialTheme.typography.titleSmall)
+        Text(
+            "Membaca ${GateConfig.BUNDLED_PACKAGE_ASSET} dari assets, memvalidasi, " +
+                "lalu menulis ke Room.",
+            style = MaterialTheme.typography.bodySmall,
+        )
+        Spacer(Modifier.height(8.dp))
+        OutlinedButton(onClick = onSeedBank) { Text("BACA & SEED BANK SOAL") }
+        Spacer(Modifier.height(8.dp))
+        Text(
+            statusBank,
+            style = MaterialTheme.typography.bodySmall,
+            fontFamily = FontFamily.Monospace,
         )
 
         Spacer(Modifier.height(24.dp))

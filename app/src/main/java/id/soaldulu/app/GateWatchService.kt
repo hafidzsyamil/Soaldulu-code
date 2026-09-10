@@ -112,7 +112,7 @@ class GateWatchService : Service() {
     private fun periksaSekali() {
         val depan = detector.cek() ?: return
 
-        if (depan.paket !in PAKET_DIPANTAU) {
+        if (depan.paket !in GateConfig.MONITORED_PACKAGES) {
             if (overlay.sedangTampil) {
                 handlerUtama.post { overlay.sembunyikan() }
             }

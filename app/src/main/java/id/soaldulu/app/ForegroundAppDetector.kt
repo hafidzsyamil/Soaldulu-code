@@ -4,19 +4,6 @@ import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
 
-/**
- * Aplikasi yang dipantau selama spike.
- *
- * Sengaja hardcode di sini, BUKAN di GateConfig. Handoff Bagian 4 melarang
- * membuat GateConfig sebelum struktur folder dikonfirmasi, dan daftar
- * package ini masih harus diverifikasi di HP responden.
- */
-val PAKET_DIPANTAU = setOf(
-    "com.zhiliaoapp.musically",   // TikTok
-    "com.instagram.android",      // Instagram
-    "com.google.android.youtube", // YouTube
-)
-
 /** Hasil satu kali pengecekan aplikasi depan. */
 data class AplikasiDepan(
     val paket: String,

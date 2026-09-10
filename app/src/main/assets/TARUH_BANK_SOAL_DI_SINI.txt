@@ -1,0 +1,21 @@
+Taruh berkas bank_soal_v1.json di folder ini.
+
+Path lengkapnya:
+    app/src/main/assets/bank_soal_v1.json
+
+Nama berkasnya harus persis itu — dirujuk oleh
+GateConfig.BUNDLED_PACKAGE_ASSET.
+
+Setelah berkasnya ada, buka aplikasi lalu tekan tombol
+"BACA & SEED BANK SOAL". Aplikasi akan:
+
+  1. Membaca JSON
+  2. Memeriksa lima aturan validasi (handoff Bagian 5.3)
+  3. Menulis ke database Room kalau lolos, atau
+     menampilkan SELURUH daftar kesalahan kalau tidak
+
+Kalau ada kesalahan, semuanya ditampilkan sekaligus —
+tidak satu per satu — supaya kamu tidak perlu build ulang
+berkali-kali saat merapikan 150 butir.
+
+Berkas ini boleh dihapus setelah bank soal masuk.
