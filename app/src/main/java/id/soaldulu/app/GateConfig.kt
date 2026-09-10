@@ -20,7 +20,13 @@ object GateConfig {
 
     // ── PERILAKU GERBANG ──
     const val FOREGROUND_POLL_INTERVAL_SECONDS = 1
-    const val GATE_TRIGGER_DELAY_SECONDS = 2
+
+    // Handoff Bagian 4 semula menetapkan 2 detik, tapi itu bertabrakan dengan
+    // Bagian 3.5 yang minta overlay muncul < 1 detik. Diputuskan 11 Sep 2026:
+    // jeda dibuang, target < 1 detik yang dipertahankan — supaya gerbang
+    // menangkap dorongan membuka medsos sebelum scroll pertama terjadi.
+    // Pengukuran di HP Samsung A55 Android 16: 327-744 ms tanpa jeda.
+    const val GATE_TRIGGER_DELAY_SECONDS = 0
     const val CREDIT_WARNING_BEFORE_EXPIRY_SECONDS = 60
     const val MIN_GENUINE_ANSWER_SECONDS = 2 // lebih cepat = tak dapat bonus
     const val GATE_COOLDOWN_SECONDS = 5
