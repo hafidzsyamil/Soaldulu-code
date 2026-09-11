@@ -14,8 +14,10 @@ import android.os.Looper
 import android.os.SystemClock
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -88,6 +90,9 @@ class GateWatchService : Service() {
     private var paketGerbangSekarang: String? = null
 
     private var idSesiKreditBerjalan: Long? = null
+
+    /** Supaya peringatan kredit hampir habis hanya dikirim sekali per sesi. */
+    private var peringatanSudahDikirim = false
     private var kodeResponden = ""
     private var versiPaket = ""
 
@@ -185,6 +190,7 @@ class GateWatchService : Service() {
     }
 
     private fun periksaSekali() {
+        peringatkanBilaHampirHabis()
         tutupKreditBilaHabis()
 
         val depan = detector.cek() ?: return
@@ -208,6 +214,10 @@ class GateWatchService : Service() {
             return
         }
 
+        // Ditahan sebelum penanda diperbarui: dipakai membedakan gerbang yang
+        // muncul karena aplikasi baru dibuka dari gerbang yang muncul karena
+        // kredit habis saat responden sudah berada di dalam aplikasi.
+        val dipicuBukaanBaru = eventBaru
         if (eventBaru) eventTerakhirDitangani = depan.waktuEvent
 
         if (sisaKreditDetik() > 0) return // masih punya kredit, biarkan
@@ -220,7 +230,7 @@ class GateWatchService : Service() {
             return
         }
 
-        bukaGerbang(depan.paket, depan.waktuEvent)
+        bukaGerbang(depan.paket, depan.waktuEvent, dipicuBukaanBaru)
     }
 
     // ── Gerbang ─────────────────────────────────────────────────────────────
@@ -233,7 +243,11 @@ class GateWatchService : Service() {
      * terlalu mepet. Yang dijanjikan Bagian 3.5 adalah gerbangnya muncul,
      * bukan soalnya sudah tergambar, jadi keduanya dipisah.
      */
-    private fun bukaGerbang(paketPemicu: String, waktuEvent: Long) {
+    private fun bukaGerbang(
+        paketPemicu: String,
+        waktuEvent: Long,
+        dipicuBukaanBaru: Boolean,
+    ) {
         gerbangSedangTampil = true
         paketGerbangSekarang = paketPemicu
         jumlahGerbang++
@@ -243,7 +257,16 @@ class GateWatchService : Service() {
         handlerUtama.post {
             overlay = OverlayCompose.tampilkan(this) {
                 SoalduluTheme {
-                    when (val soal = soalGerbang.value) {
+                    // Overlay memakai FLAG_LAYOUT_NO_LIMITS supaya menutup
+                    // seluruh layar termasuk di balik status bar. Latarnya
+                    // memenuhi semuanya, isinya digeser masuk.
+                    Box(
+                        Modifier
+                            .fillMaxSize()
+                            .background(Background)
+                            .safeDrawingPadding()
+                    ) {
+                        when (val soal = soalGerbang.value) {
                         null -> GerbangMemuat()
                         else -> AlurGerbang(
                             soal = soal,
@@ -257,6 +280,7 @@ class GateWatchService : Service() {
                                 }
                             },
                         )
+                        }
                     }
                 }
             }
@@ -267,10 +291,18 @@ class GateWatchService : Service() {
                 return@post
             }
 
-            val latensi = System.currentTimeMillis() - waktuEvent
+            // Latensi hanya bermakna kalau gerbang muncul sebagai jawaban atas
+            // aplikasi yang baru dibuka. Kalau gerbang muncul karena kredit
+            // habis di tengah pemakaian, selisih terhadap waktuEvent bisa
+            // menit-menitan dan akan merusak statistik Kriteria 2.
             SpikeLog.tulis(
                 this,
-                "GERBANG ke-$jumlahGerbang paket=$paketPemicu latensi=${latensi}ms",
+                if (dipicuBukaanBaru) {
+                    val latensi = System.currentTimeMillis() - waktuEvent
+                    "GERBANG ke-$jumlahGerbang paket=$paketPemicu latensi=${latensi}ms"
+                } else {
+                    "GERBANG ke-$jumlahGerbang paket=$paketPemicu sebab=kredit_habis"
+                },
             )
 
             lingkup.launch {
@@ -283,8 +315,12 @@ class GateWatchService : Service() {
                     soalGerbang.value = soal
                     SpikeLog.tulis(
                         this@GateWatchService,
-                        "GERBANG_SOAL_SIAP jumlah=${soal.size} " +
-                            "setelah=${System.currentTimeMillis() - waktuEvent}ms",
+                        if (dipicuBukaanBaru) {
+                            "GERBANG_SOAL_SIAP jumlah=${soal.size} " +
+                                "setelah=${System.currentTimeMillis() - waktuEvent}ms"
+                        } else {
+                            "GERBANG_SOAL_SIAP jumlah=${soal.size}"
+                        },
                     )
                 }
             }
@@ -318,6 +354,7 @@ class GateWatchService : Service() {
 
         val kreditDetik = Kredit.totalGerbang(jawaban.sumOf { it.bonusDetik })
         setKreditBerakhirPada(System.currentTimeMillis() + kreditDetik * 1000L)
+        peringatanSudahDikirim = false
         perbaruiNotifikasi()
 
         lingkup.launch {
@@ -372,6 +409,35 @@ class GateWatchService : Service() {
         return sisa.coerceAtLeast(0L).toInt()
     }
 
+    /**
+     * Peringatan sebelum kredit habis (GateConfig.CREDIT_WARNING_BEFORE_EXPIRY_SECONDS).
+     *
+     * Dikirim sebagai notifikasi terpisah dengan tingkat kepentingan lebih
+     * tinggi, bukan sekadar mengubah teks notifikasi layanan. Alasannya:
+     * saat kredit hampir habis responden sedang berada di dalam media sosial,
+     * dan notifikasi diam di baki tidak akan terlihat sama sekali.
+     */
+    private fun peringatkanBilaHampirHabis() {
+        val sisa = sisaKreditDetik()
+        if (sisa <= 0 || sisa > Kredit.peringatanDetik) return
+        if (peringatanSudahDikirim) return
+        peringatanSudahDikirim = true
+
+        handlerUtama.post {
+            val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            nm.notify(
+                ID_NOTIFIKASI_PERINGATAN,
+                Notification.Builder(this, CHANNEL_PERINGATAN)
+                    .setContentTitle("Kredit hampir habis")
+                    .setContentText("Sisa ${formatSisaKredit(sisa)}. Gerbang akan menutup lagi.")
+                    .setSmallIcon(android.R.drawable.ic_dialog_info)
+                    .setAutoCancel(true)
+                    .build(),
+            )
+        }
+        SpikeLog.tulis(this, "KREDIT_PERINGATAN sisa=${sisa}s")
+    }
+
     private fun tutupKreditBilaHabis() {
         if (kreditBerakhirPada() == 0L) return
         if (sisaKreditDetik() > 0) return
@@ -414,8 +480,19 @@ class GateWatchService : Service() {
             description = "Menampilkan sisa kredit dan status layanan Soaldulu."
             setShowBadge(false)
         }
+        val peringatan = NotificationChannel(
+            CHANNEL_PERINGATAN,
+            "Peringatan kredit",
+            // Lebih tinggi dari channel layanan supaya muncul sebagai banner
+            // di atas media sosial yang sedang dibuka.
+            NotificationManager.IMPORTANCE_DEFAULT,
+        ).apply {
+            description = "Memberi tahu saat kredit waktu hampir habis."
+        }
+
         val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         nm.createNotificationChannel(channel)
+        nm.createNotificationChannel(peringatan)
     }
 
     private fun bangunNotifikasi(): Notification {
@@ -454,7 +531,9 @@ class GateWatchService : Service() {
         private const val KEY_KREDIT_BERAKHIR = "kredit_berakhir_pada"
 
         private const val CHANNEL_ID = "gerbang"
+        private const val CHANNEL_PERINGATAN = "peringatan_kredit"
         private const val ID_NOTIFIKASI = 1
+        private const val ID_NOTIFIKASI_PERINGATAN = 2
         private const val JEDA_HEARTBEAT_MS = 60_000L
     }
 }

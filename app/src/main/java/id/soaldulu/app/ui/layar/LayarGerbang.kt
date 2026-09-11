@@ -60,43 +60,57 @@ fun LayarGerbang(
     onLapor: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    // Layar dibagi dua: bagian atas menggulir, blok opsi menempel di bawah.
+    //
+    // Handoff Bagian 8 nomor 6 meminta blok opsi diturunkan agar terjangkau
+    // jempol. Kalau seluruh layar satu kolom bergulir, opsi menumpuk di paruh
+    // atas dan separuh layar bawah menganggur — persis yang harus diperbaiki.
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(Background)
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = Ukuran.marginLayar, vertical = Ukuran.antarBagian),
+            .padding(horizontal = Ukuran.marginLayar),
     ) {
-        BilahAtas(
-            nomorSoal = nomorSoal,
-            totalSoal = totalSoal,
-            sisaKreditDetik = sisaKreditDetik,
-            subtest = soal.butir.subtest,
-        )
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .verticalScroll(rememberScrollState())
+                .padding(top = Ukuran.antarBagian),
+        ) {
+            BilahAtas(
+                nomorSoal = nomorSoal,
+                totalSoal = totalSoal,
+                sisaKreditDetik = sisaKreditDetik,
+                subtest = soal.butir.subtest,
+            )
 
-        Spacer(Modifier.height(Ukuran.antarBagian))
+            Spacer(Modifier.height(Ukuran.antarBagian))
 
-        soal.bacaan?.let { PanelBacaan(it) }
+            soal.bacaan?.let {
+                PanelBacaan(it)
+                Spacer(Modifier.height(Ukuran.antarBagian))
+            }
 
-        Text(soal.butir.stem, style = Teks.batangSoal, color = OnBackground)
+            Text(soal.butir.stem, style = Teks.batangSoal, color = OnBackground)
 
-        Spacer(Modifier.height(Ukuran.antarBagian))
-
-        soal.opsi.forEach { opsi ->
-            BarisOpsi(opsi = opsi, terpilih = false, onKlik = { onJawab(opsi.optionId) })
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(Ukuran.antarBagian))
         }
 
-        Spacer(Modifier.height(Ukuran.antarBagian))
+        Column(modifier = Modifier.padding(bottom = Ukuran.antarBagian)) {
+            soal.opsi.forEach { opsi ->
+                BarisOpsi(opsi = opsi, terpilih = false, onKlik = { onJawab(opsi.optionId) })
+                Spacer(Modifier.height(8.dp))
+            }
 
-        Text(
-            "Laporkan soal ini",
-            style = Teks.caption.copy(textDecoration = TextDecoration.Underline),
-            color = OnBackgroundDim,
-            modifier = Modifier.clickable(onClick = onLapor),
-        )
+            Spacer(Modifier.height(16.dp))
 
-        Spacer(Modifier.height(Ukuran.antarBagian))
+            Text(
+                "Laporkan soal ini",
+                style = Teks.caption.copy(textDecoration = TextDecoration.Underline),
+                color = OnBackgroundDim,
+                modifier = Modifier.clickable(onClick = onLapor),
+            )
+        }
     }
 }
 

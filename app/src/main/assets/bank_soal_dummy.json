@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 1,
+  "packageId": "paket-dummy",
+  "packageName": "DUMMY — Bukan Bank Soal Sungguhan",
+  "version": "0.0.0-dummy",
+  "releasedAt": "2026-09-11",
+  "changelog": "Butir contoh untuk menguji aplikasi. Bukan untuk responden.",
+  "itemCount": 10,
+  "activeItemCount": 9,
+
+  "passages": [
+    {
+      "id": "psg-dummy-0001",
+      "title": "Notifikasi dan Konsentrasi Belajar",
+      "text": "Setiap kali sebuah notifikasi muncul, perhatian seseorang berpindah dari pekerjaan yang sedang dikerjakan menuju layar. Perpindahan ini terasa singkat, hanya beberapa detik, sehingga sering dianggap tidak berbahaya.\n\nMasalahnya bukan pada detik-detik itu. Setelah perhatian berpindah, otak membutuhkan waktu tambahan untuk kembali ke keadaan fokus sebelumnya. Waktu pemulihan inilah yang jauh lebih panjang daripada durasi notifikasinya sendiri, dan ia berulang setiap kali notifikasi berikutnya datang.\n\nAkibatnya, seseorang bisa merasa telah belajar selama dua jam, padahal waktu yang benar-benar dihabiskan dalam keadaan fokus penuh jauh lebih sedikit.",
+      "source": {
+        "type": "PLACEHOLDER",
+        "reference": "Teks contoh yang ditulis untuk uji coba aplikasi.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    }
+  ],
+
+  "items": [
+    {
+      "id": "itm-dummy-0001",
+      "active": true,
+      "exam": "BOTH",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": "psg-dummy-0001",
+      "stem": "Gagasan utama paragraf kedua bacaan tersebut adalah…",
+      "options": [
+        { "id": "A", "text": "Notifikasi hanya mengganggu selama beberapa detik saja." },
+        { "id": "B", "text": "Waktu pemulihan fokus lebih panjang daripada durasi notifikasinya." },
+        { "id": "C", "text": "Otak manusia tidak mampu memproses dua hal sekaligus." },
+        { "id": "D", "text": "Belajar selama dua jam sudah cukup untuk sebagian besar siswa." }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Paragraf kedua menegaskan bahwa persoalannya bukan pada durasi notifikasi, melainkan pada waktu yang dibutuhkan otak untuk kembali fokus setelahnya.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 75,
+      "source": { "type": "PLACEHOLDER", "reference": "Butir contoh.", "verifiedBy": null, "verifiedAt": null }
+    },
+    {
+      "id": "itm-dummy-0002",
+      "active": true,
+      "exam": "BOTH",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": "psg-dummy-0001",
+      "stem": "Berdasarkan bacaan, mengapa seseorang bisa merasa telah belajar lebih lama daripada kenyataannya?",
+      "options": [
+        { "id": "A", "text": "Karena ia menghitung waktu belajar sejak membuka buku." },
+        { "id": "B", "text": "Karena notifikasi membuat waktu terasa berjalan lebih lambat." },
+        { "id": "C", "text": "Karena sebagian waktunya habis untuk memulihkan fokus, bukan untuk fokus." },
+        { "id": "D", "text": "Karena ia belajar tanpa jeda istirahat sama sekali." }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Paragraf ketiga menyimpulkan bahwa durasi belajar yang terasa panjang tidak sama dengan durasi fokus penuh, karena sebagian waktu terpakai untuk pemulihan.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 80,
+      "source": { "type": "PLACEHOLDER", "reference": "Butir contoh.", "verifiedBy": null, "verifiedAt": null }
+    },
+    {
+      "id": "itm-dummy-0003",
+      "active": true,
+      "exam": "BOTH",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": "psg-dummy-0001",
+      "stem": "Kata \"ia\" pada kalimat terakhir paragraf kedua merujuk pada…",
+      "options": [
+        { "id": "A", "text": "waktu pemulihan" },
+        { "id": "B", "text": "notifikasi" },
+        { "id": "C", "text": "otak" },
+        { "id": "D", "text": "perhatian" }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Kalimat itu menyatakan waktu pemulihan berulang setiap kali notifikasi berikutnya datang, sehingga rujukannya adalah waktu pemulihan.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": { "type": "PLACEHOLDER", "reference": "Butir contoh.", "verifiedBy": null, "verifiedAt": null }
+    },
+    {
+      "id": "itm-dummy-0004",
+      "active": true,
+      "exam": "BOTH",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": null,
+      "stem": "Semua siswa yang rajin membaca memiliki kosakata luas. Rani memiliki kosakata luas. Simpulan yang tepat adalah…",
+      "options": [
+        { "id": "A", "text": "Rani pasti siswa yang rajin membaca." },
+        { "id": "B", "text": "Rani pasti bukan siswa yang rajin membaca." },
+        { "id": "C", "text": "Belum tentu Rani siswa yang rajin membaca." },
+        { "id": "D", "text": "Semua siswa berkosakata luas pasti rajin membaca." }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Pernyataan hanya menjamin arah rajin membaca menuju kosakata luas, bukan sebaliknya. Kosakata luas bisa datang dari sebab lain, jadi simpulannya belum tentu.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 70,
+      "source": { "type": "PLACEHOLDER", "reference": "Butir contoh.", "verifiedBy": null, "verifiedAt": null }
+    },
+    {
+      "id": "itm-dummy-0005",
+      "active": true,
+      "exam": "BOTH",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": null,
+      "stem": "Kalimat berikut yang menggunakan ejaan baku adalah…",
+      "options": [
+        { "id": "A", "text": "Ia mengubah jadwal belajarnya setiap akhir pekan." },
+        { "id": "B", "text": "Ia merubah jadwal belajarnya setiap akhir pekan." },
+        { "id": "C", "text": "Ia merobah jadwal belajarnya setiap akhir pekan." },
+        { "id": "D", "text": "Ia mengrubah jadwal belajarnya setiap akhir pekan." }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Bentuk baku dari kata dasar ubah adalah mengubah. Bentuk merubah, merobah, dan mengrubah tidak baku.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 45,
+      "source": { "type": "PLACEHOLDER", "reference": "Butir contoh.", "verifiedBy": null, "verifiedAt": null }
+    },
+    {
+      "id": "itm-dummy-0006",
+      "active": true,
+      "exam": "BOTH",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": null,
+      "stem": "Sebuah kelas memiliki 30 siswa. Sebanyak 40% di antaranya mengikuti bimbingan belajar. Berapa siswa yang tidak mengikuti bimbingan belajar?",
+      "options": [
+        { "id": "A", "text": "12 siswa" },
+        { "id": "B", "text": "15 siswa" },
+        { "id": "C", "text": "18 siswa" },
+        { "id": "D", "text": "20 siswa" }
+      ],
+      "correctOptionId": "C",
+      "explanation": "40% dari 30 adalah 12 siswa yang ikut. Sisanya 30 dikurangi 12, yaitu 18 siswa.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 55,
+      "source": { "type": "PLACEHOLDER", "reference": "Butir contoh.", "verifiedBy": null, "verifiedAt": null }
+    },
+    {
+      "id": "itm-dummy-0007",
+      "active": true,
+      "exam": "BOTH",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": null,
+      "stem": "Perhatikan pola bilangan: 3, 6, 12, 24, … Bilangan berikutnya adalah…",
+      "options": [
+        { "id": "A", "text": "30" },
+        { "id": "B", "text": "36" },
+        { "id": "C", "text": "42" },
+        { "id": "D", "text": "48" }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Setiap suku adalah dua kali suku sebelumnya. Maka suku berikutnya adalah 24 dikali 2, yaitu 48.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 40,
+      "source": { "type": "PLACEHOLDER", "reference": "Butir contoh.", "verifiedBy": null, "verifiedAt": null }
+    },
+    {
+      "id": "itm-dummy-0008",
+      "active": true,
+      "exam": "BOTH",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": null,
+      "stem": "Manakah pasangan kata yang hubungannya paling mirip dengan pasangan: haus – minum?",
+      "options": [
+        { "id": "A", "text": "lapar – makan" },
+        { "id": "B", "text": "panas – dingin" },
+        { "id": "C", "text": "tidur – malam" },
+        { "id": "D", "text": "buku – rak" }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Haus adalah keadaan, minum adalah tindakan yang mengatasinya. Pola yang sama berlaku pada lapar dan makan.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 50,
+      "source": { "type": "PLACEHOLDER", "reference": "Butir contoh.", "verifiedBy": null, "verifiedAt": null }
+    },
+    {
+      "id": "itm-dummy-0009",
+      "active": true,
+      "exam": "BOTH",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": null,
+      "stem": "Kalimat yang mengandung hubungan sebab akibat adalah…",
+      "options": [
+        { "id": "A", "text": "Ia belajar di perpustakaan, sedangkan adiknya di rumah." },
+        { "id": "B", "text": "Ia tidak lulus seleksi karena tidak memenuhi syarat usia." },
+        { "id": "C", "text": "Ia membaca buku, lalu menutupnya kembali." },
+        { "id": "D", "text": "Ia rajin belajar dan gemar berolahraga." }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Kata hubung karena menandai hubungan sebab akibat. Pilihan lain menandai pertentangan, urutan waktu, dan penambahan.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 55,
+      "source": { "type": "PLACEHOLDER", "reference": "Butir contoh.", "verifiedBy": null, "verifiedAt": null }
+    },
+    {
+      "id": "itm-dummy-0010",
+      "active": false,
+      "exam": "BOTH",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": null,
+      "stem": "BUTIR NONAKTIF — butir ini sengaja active:false untuk menguji bahwa butir yang ditarik tidak pernah muncul.",
+      "options": [
+        { "id": "A", "text": "Butir ini tidak boleh pernah tampil." },
+        { "id": "B", "text": "Butir ini tidak boleh pernah tampil." },
+        { "id": "C", "text": "Butir ini tidak boleh pernah tampil." },
+        { "id": "D", "text": "Butir ini tidak boleh pernah tampil." }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Kalau kamu melihat butir ini di aplikasi, penyaringan active:false rusak.",
+      "cognitiveLevel": "C1",
+      "estimatedSeconds": 10,
+      "source": { "type": "PLACEHOLDER", "reference": "Butir uji.", "verifiedBy": null, "verifiedAt": null }
+    }
+  ]
+}

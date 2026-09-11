@@ -30,9 +30,27 @@ class SoalduluRepository private constructor(private val dao: SoalduluDao) {
     suspend fun seedBilaPerlu(context: Context): HasilSeed? =
         if (dao.paketTerpasang() == null) seedDariAssets(context) else null
 
-    /** Ganti seluruh bank soal dari assets. Log penelitian tidak ikut terhapus. */
-    suspend fun seedDariAssets(context: Context): HasilSeed =
-        when (val hasil = BankSoalParser.bacaDariAssets(context)) {
+    /**
+     * Ganti seluruh bank soal dari assets. Log penelitian tidak ikut terhapus.
+     *
+     * Kalau bank sungguhan belum ada dan DEV_MODE menyala, jatuh ke bank
+     * dummy supaya aplikasi bisa diuji. Di APK responden DEV_MODE wajib
+     * false, jadi jalur ini mati dan paket yang hilang akan gagal dengan
+     * pesan yang jelas — bukan diam-diam memakai butir contoh.
+     */
+    suspend fun seedDariAssets(context: Context): HasilSeed {
+        val hasilAsli = BankSoalParser.bacaDariAssets(context, GateConfig.BUNDLED_PACKAGE_ASSET)
+        val hasil = if (hasilAsli is HasilBacaPaket.Gagal && GateConfig.DEV_MODE) {
+            val dummy = BankSoalParser.bacaDariAssets(context, GateConfig.DEV_PACKAGE_ASSET)
+            if (dummy is HasilBacaPaket.Berhasil) dummy else hasilAsli
+        } else {
+            hasilAsli
+        }
+        return simpanHasil(hasil)
+    }
+
+    private suspend fun simpanHasil(hasil: HasilBacaPaket): HasilSeed =
+        when (hasil) {
             is HasilBacaPaket.Gagal -> HasilSeed.Gagal(hasil.kesalahan)
             is HasilBacaPaket.Berhasil -> {
                 dao.seedUlang(hasil.paket, hasil.bacaan, hasil.butir, hasil.opsi)
@@ -141,6 +159,13 @@ class SoalduluRepository private constructor(private val dao: SoalduluDao) {
     suspend fun jumlahDijawab(kode: String): Int = dao.jumlahDijawab(kode)
 
     suspend fun jumlahBenar(kode: String): Int = dao.jumlahBenar(kode)
+
+    /** Hari ke berapa responden ini berjalan. 0 kalau belum pernah menjawab. */
+    suspend fun hariBerjalan(kode: String): Int {
+        val pertama = dao.waktuJawabanPertama(kode) ?: return 0
+        val selisih = System.currentTimeMillis() - pertama
+        return (selisih / 86_400_000L).toInt() + 1
+    }
 
     suspend fun jawabanTerakhir(kode: String, jumlah: Int): List<LogJawabanEntity> =
         dao.jawabanTerakhir(kode, jumlah)

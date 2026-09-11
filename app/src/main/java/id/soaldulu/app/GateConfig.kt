@@ -15,6 +15,15 @@ object GateConfig {
     const val CORRECT_BONUS_SECONDS = 180 // 3 menit per jawaban benar
     const val MAX_CREDIT_BALANCE_SECONDS = 3600 // 0 = tanpa batas
 
+    // ── KURS KREDIT VERSI PENDEK, HANYA UNTUK PENGUJIAN ──
+    // Dipakai menggantikan dua nilai di atas selama DEV_MODE true, supaya
+    // perilaku saat kredit habis bisa diuji tanpa menunggu 10 menit.
+    // Karena DEV_MODE wajib false di APK responden, nilai pendek ini tidak
+    // mungkin terbawa ke uji coba sungguhan.
+    const val DEV_GATE_REWARD_SECONDS = 60 // 1 menit
+    const val DEV_CORRECT_BONUS_SECONDS = 20
+    const val DEV_CREDIT_WARNING_BEFORE_EXPIRY_SECONDS = 20
+
     // 3 soal, 0 benar → 600 detik  (10 menit)
     // 3 soal, 3 benar → 1140 detik (19 menit)
 
@@ -51,6 +60,15 @@ object GateConfig {
 
     // ── PAKET SOAL ──
     const val BUNDLED_PACKAGE_ASSET = "bank_soal_v1.json"
+
+    /**
+     * Bank soal contoh untuk menguji aplikasi sebelum bank sungguhan ada.
+     *
+     * HANYA dipakai kalau BUNDLED_PACKAGE_ASSET tidak ditemukan DAN
+     * DEV_MODE true. Karena DEV_MODE wajib false di APK responden, butir
+     * dummy tidak mungkin sampai ke responden.
+     */
+    const val DEV_PACKAGE_ASSET = "bank_soal_dummy.json"
     const val UPDATE_MANIFEST_URL = "" // kosong = fitur mati
     const val UPDATE_CHECK_INTERVAL_SECONDS = 86_400
     const val UPDATE_TIMEOUT_SECONDS = 15
@@ -74,6 +92,30 @@ object GateConfig {
  */
 object Kredit {
 
+    /** Kredit dasar yang sedang berlaku. Pendek saat DEV_MODE. */
+    val dasarDetik: Int
+        get() = if (GateConfig.DEV_MODE) {
+            GateConfig.DEV_GATE_REWARD_SECONDS
+        } else {
+            GateConfig.GATE_REWARD_SECONDS
+        }
+
+    /** Bonus per jawaban benar yang sedang berlaku. Pendek saat DEV_MODE. */
+    val bonusDetik: Int
+        get() = if (GateConfig.DEV_MODE) {
+            GateConfig.DEV_CORRECT_BONUS_SECONDS
+        } else {
+            GateConfig.CORRECT_BONUS_SECONDS
+        }
+
+    /** Berapa detik sebelum kredit habis peringatan ditampilkan. */
+    val peringatanDetik: Int
+        get() = if (GateConfig.DEV_MODE) {
+            GateConfig.DEV_CREDIT_WARNING_BEFORE_EXPIRY_SECONDS
+        } else {
+            GateConfig.CREDIT_WARNING_BEFORE_EXPIRY_SECONDS
+        }
+
     /**
      * Jawaban benar hanya berbuah bonus kalau tidak dijawab terlalu cepat.
      * Lebih cepat dari MIN_GENUINE_ANSWER_SECONDS dianggap asal tekan.
@@ -83,11 +125,11 @@ object Kredit {
 
     /** Bonus untuk satu jawaban, dalam detik. */
     fun bonusSatuJawaban(benar: Boolean, durasiDetik: Int): Int =
-        if (bonusSah(benar, durasiDetik)) GateConfig.CORRECT_BONUS_SECONDS else 0
+        if (bonusSah(benar, durasiDetik)) bonusDetik else 0
 
     /** Total kredit satu gerbang: dasar + seluruh bonus, dibatasi plafon. */
     fun totalGerbang(totalBonusDetik: Int): Int {
-        val mentah = GateConfig.GATE_REWARD_SECONDS + totalBonusDetik
+        val mentah = dasarDetik + totalBonusDetik
         val batas = GateConfig.MAX_CREDIT_BALANCE_SECONDS
         return if (batas > 0) minOf(mentah, batas) else mentah
     }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Hanya folder ekspor yang dibagikan. Database dan berkas lain tidak
+    pernah bisa diambil lewat FileProvider ini.
+-->
+<paths>
+    <files-path
+        name="ekspor"
+        path="ekspor/" />
+</paths>

@@ -130,6 +130,10 @@ abstract class SoalduluDao {
     @Query("SELECT COUNT(*) FROM log_jawaban WHERE respondentCode = :kode AND isCorrect = 1")
     abstract suspend fun jumlahBenar(kode: String): Int
 
+    /** Untuk menghitung "hari berjalan" di Home. null kalau belum pernah menjawab. */
+    @Query("SELECT MIN(timestamp) FROM log_jawaban WHERE respondentCode = :kode")
+    abstract suspend fun waktuJawabanPertama(kode: String): Long?
+
     @Query(
         "SELECT * FROM log_jawaban WHERE respondentCode = :kode " +
             "ORDER BY timestamp DESC LIMIT :jumlah"
