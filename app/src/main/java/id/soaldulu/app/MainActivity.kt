@@ -9,9 +9,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
@@ -19,57 +22,65 @@ import androidx.lifecycle.lifecycleScope
 import id.soaldulu.app.data.EksporCsv
 import id.soaldulu.app.data.HasilSeed
 import id.soaldulu.app.data.Preferensi
+import id.soaldulu.app.data.SoalLengkap
 import id.soaldulu.app.data.SoalduluRepository
+import id.soaldulu.app.ui.layar.AlurGerbang
+import id.soaldulu.app.ui.layar.JawabanGerbang
 import id.soaldulu.app.ui.layar.LayarHome
-import id.soaldulu.app.ui.layar.LayarKodeResponden
+import id.soaldulu.app.ui.layar.LayarNama
 import id.soaldulu.app.ui.layar.LayarPaketSoal
 import id.soaldulu.app.ui.layar.LayarPerizinan
-import id.soaldulu.app.ui.layar.LayarPersetujuan
 import id.soaldulu.app.ui.layar.LayarSettings
 import id.soaldulu.app.ui.layar.LayarSpike
+import id.soaldulu.app.ui.layar.LayarSyarat
 import id.soaldulu.app.ui.layar.LayarWelcome
-import id.soaldulu.app.ui.layar.NavigasiBawah
+import id.soaldulu.app.ui.layar.PemilihAvatar
 import id.soaldulu.app.ui.layar.StatistikHome
 import id.soaldulu.app.ui.layar.StatusPaket
-import id.soaldulu.app.ui.theme.Background
 import id.soaldulu.app.ui.theme.SoalduluTheme
 import kotlinx.coroutines.launch
 
 /**
  * Layar-layar aplikasi.
  *
- * Alurnya lurus, jadi navigasinya cukup satu enum dan satu when — tanpa
- * pustaka Navigation. Tujuh layar berurutan tidak sepadan dengan satu
- * dependency tambahan dan satu konsep baru.
+ * Urutannya mengikuti berkas desain: Welcome, Permission, lalu Enter your Name.
+ * Persetujuan tidak lagi berupa layar tersendiri — menekan tombol centang di
+ * layar nama berarti menyetujui syarat, yang bisa dibaca di LayarSyarat.
  */
 enum class Layar {
     WELCOME,
-    KODE_RESPONDEN,
-    PERSETUJUAN,
-    PERIZINAN,
+    PERMISSION,
+    NAMA,
     PAKET_SOAL,
-    HOME,
-    PENGATURAN,
+    DASHBOARD,
+    SETTINGS,
+    SYARAT,
+    KERJAKAN_SOAL,
     SPIKE,
 }
 
 /**
  * Satu-satunya Activity aplikasi.
  *
- * Menyimpan state layar dan menjembatani UI ke DataStore, Room, dan service.
- * Layar Gerbang TIDAK ada di sini — itu hidup di dalam overlay milik
- * GateWatchService, karena harus bisa muncul di atas aplikasi lain.
+ * Layar Gerbang yang dipicu media sosial TIDAK ada di sini — itu hidup di
+ * dalam overlay milik GateWatchService. Yang ada di sini adalah gerbang yang
+ * dibuka sendiri lewat tombol Kerjakan Soal.
  */
 class MainActivity : ComponentActivity() {
 
     private val layar = mutableStateOf(Layar.WELCOME)
+    private val layarSebelumnya = mutableStateOf(Layar.DASHBOARD)
     private val status = mutableStateOf(StatusIzin())
-    private val kodeResponden = mutableStateOf("")
+    private val nama = mutableStateOf("")
+    private val avatar = mutableIntStateOf(0)
+    private val pilihAvatarTerbuka = mutableStateOf(false)
+    private val temaGelap = mutableStateOf<Boolean?>(null)
     private val statistik = mutableStateOf(StatistikHome())
     private val statusPaket = mutableStateOf<StatusPaket>(StatusPaket.Belum)
     private val statusEkspor = mutableStateOf("")
     private val versiPaket = mutableStateOf("")
     private val jumlahButirAktif = mutableIntStateOf(0)
+    private val soalManual = mutableStateOf<List<SoalLengkap>?>(null)
 
     // Hanya dipakai layar uji Fase 0.
     private val jumlahStart = mutableIntStateOf(0)
@@ -87,63 +98,54 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            SoalduluTheme {
+            SoalduluTheme(paksaGelap = temaGelap.value) {
                 // enableEdgeToEdge membuat konten menggambar di bawah status bar
-                // dan navigation bar. Latar tetap memenuhi layar, tapi isinya
-                // digeser masuk supaya judul tidak tertutup jam.
-                Column(
+                // dan navigation bar. Latar memenuhi layar, isinya digeser masuk.
+                Box(
                     Modifier
                         .fillMaxSize()
-                        .background(Background)
+                        .background(MaterialTheme.colorScheme.background)
                         .safeDrawingPadding()
                 ) {
-                    Column(Modifier.weight(1f)) { IsiLayar() }
-                    if (layar.value == Layar.HOME || layar.value == Layar.PENGATURAN) {
-                        NavigasiBawah(
-                            diBeranda = layar.value == Layar.HOME,
-                            onBeranda = { layar.value = Layar.HOME },
-                            onPengaturan = { layar.value = Layar.PENGATURAN },
-                        )
-                    }
+                    IsiLayar()
+                }
+
+                if (pilihAvatarTerbuka.value) {
+                    PemilihAvatar(
+                        terpilih = avatar.intValue,
+                        onPilih = { i ->
+                            avatar.intValue = i
+                            pilihAvatarTerbuka.value = false
+                            lifecycleScope.launch {
+                                Preferensi.simpanAvatar(this@MainActivity, i)
+                            }
+                        },
+                        onTutup = { pilihAvatarTerbuka.value = false },
+                    )
                 }
             }
         }
     }
 
-    @androidx.compose.runtime.Composable
+    @Composable
     private fun IsiLayar() {
         when (layar.value) {
             Layar.WELCOME -> LayarWelcome(
-                onMulai = { layar.value = Layar.KODE_RESPONDEN },
+                onLanjut = { layar.value = Layar.PERMISSION },
             )
 
-            Layar.KODE_RESPONDEN -> LayarKodeResponden(
-                kodeAwal = kodeResponden.value,
-                onLanjut = { kode ->
-                    lifecycleScope.launch {
-                        Preferensi.simpanKodeResponden(this@MainActivity, kode)
-                        kodeResponden.value = kode
-                        layar.value = Layar.PERSETUJUAN
-                    }
-                },
-            )
-
-            Layar.PERSETUJUAN -> LayarPersetujuan(
-                onSetuju = {
-                    lifecycleScope.launch {
-                        Preferensi.simpanPersetujuan(this@MainActivity, true)
-                        layar.value = Layar.PERIZINAN
-                    }
-                },
-                // Menolak berarti keluar. Tidak ada bujukan kedua — responden
-                // berhak berhenti tanpa konsekuensi (Bagian 8 nomor 3).
-                onTidakBersedia = { finish() },
-            )
-
-            Layar.PERIZINAN -> LayarPerizinan(
+            Layar.PERMISSION -> LayarPerizinan(
                 status = status.value,
-                onBerikanIzin = { mintaIzinBerikutnya() },
-                onLanjut = { layar.value = Layar.PAKET_SOAL },
+                onMinta = { mintaIzin(it) },
+                onLanjut = { layar.value = Layar.NAMA },
+            )
+
+            Layar.NAMA -> LayarNama(
+                namaAwal = nama.value,
+                avatar = avatar.intValue,
+                onGantiAvatar = { pilihAvatarTerbuka.value = true },
+                onSelesai = { diisi -> simpanNama(diisi) },
+                onBukaSyarat = { bukaSyarat(Layar.NAMA) },
             )
 
             Layar.PAKET_SOAL -> LayarPaketSoal(
@@ -151,20 +153,48 @@ class MainActivity : ComponentActivity() {
                 onPasang = { pasangPaketSoal() },
                 onLanjut = {
                     startForegroundService(Intent(this, GateWatchService::class.java))
-                    layar.value = Layar.HOME
+                    layar.value = Layar.DASHBOARD
                 },
             )
 
-            Layar.HOME -> LayarHome(statistik = statistik.value)
+            Layar.DASHBOARD -> LayarHome(
+                statistik = statistik.value,
+                onPengaturan = { layar.value = Layar.SETTINGS },
+                onKerjakanSoal = { mulaiGerbangManual() },
+            )
 
-            Layar.PENGATURAN -> LayarSettings(
-                kodeResponden = kodeResponden.value,
-                versiPaket = versiPaket.value,
+            Layar.SETTINGS -> LayarSettings(
+                nama = nama.value,
+                avatar = avatar.intValue,
+                versiPaket = versiPaket.value.ifBlank { "belum terpasang" },
                 jumlahButirAktif = jumlahButirAktif.intValue,
                 versiAplikasi = versiAplikasi(),
                 statusEkspor = statusEkspor.value,
+                gelapEfektif = temaGelap.value ?: isSystemInDarkTheme(),
+                ikutSistem = temaGelap.value == null,
+                onGantiAvatar = { pilihAvatarTerbuka.value = true },
+                onUbahTema = { gelap -> setTema(gelap) },
+                onIkutSistem = { setTema(null) },
+                onPerizinan = { layar.value = Layar.PERMISSION },
+                onDataPrivasi = { bukaSyarat(Layar.SETTINGS) },
                 onEkspor = { eksporLog() },
-                onBukaLayarUji = { layar.value = Layar.SPIKE },
+                onLayarUji = { layar.value = Layar.SPIKE },
+                onKembali = { layar.value = Layar.DASHBOARD },
+            )
+
+            Layar.SYARAT -> LayarSyarat(
+                onKembali = { layar.value = layarSebelumnya.value },
+            )
+
+            Layar.KERJAKAN_SOAL -> AlurGerbang(
+                soal = soalManual.value.orEmpty(),
+                sisaKreditDetik = sisaKreditDetik(),
+                onSelesai = { jawaban -> selesaikanGerbangManual(jawaban) },
+                onLapor = { itemId ->
+                    lifecycleScope.launch {
+                        repo.catatPeristiwa(nama.value, "ITEM_REPORTED", itemId)
+                    }
+                },
             )
 
             Layar.SPIKE -> LayarSpike(
@@ -179,19 +209,19 @@ class MainActivity : ComponentActivity() {
                     stopService(Intent(this, GateWatchService::class.java))
                 },
                 onMuatLog = { isiLog.value = SpikeLog.bacaBarisTerakhir(this) },
-                onKembali = { layar.value = Layar.PENGATURAN },
+                onKembali = { layar.value = Layar.SETTINGS },
             )
         }
     }
 
-    /**
-     * Status izin dan angka Home disegarkan tiap kali layar kembali ke depan.
-     * Ini juga yang membuat Layar 4 memperbarui dirinya sendiri saat responden
-     * kembali dari Settings (Bagian 8 nomor 4).
-     */
     override fun onResume() {
         super.onResume()
         segarkan()
+    }
+
+    private fun bukaSyarat(dari: Layar) {
+        layarSebelumnya.value = dari
+        layar.value = Layar.SYARAT
     }
 
     private fun segarkan() {
@@ -201,8 +231,10 @@ class MainActivity : ComponentActivity() {
             .getInt(GateWatchService.KEY_JUMLAH_START, 0)
 
         lifecycleScope.launch {
-            val kode = Preferensi.kodeResponden(this@MainActivity)
-            kodeResponden.value = kode
+            val namaTersimpan = Preferensi.nama(this@MainActivity)
+            nama.value = namaTersimpan
+            avatar.intValue = Preferensi.avatar(this@MainActivity)
+            temaGelap.value = Preferensi.temaGelap(this@MainActivity)
 
             val paket = repo.paketTerpasang()
             versiPaket.value = paket?.version.orEmpty()
@@ -215,72 +247,134 @@ class MainActivity : ComponentActivity() {
                 )
             }
 
+            val dijawab = repo.jumlahDijawab(namaTersimpan)
+            val benar = repo.jumlahBenar(namaTersimpan)
+            val (paketSering, jumlahPemicu) = repo.pemicuTerbanyak(namaTersimpan)
             statistik.value = StatistikHome(
-                kodeResponden = kode,
+                nama = namaTersimpan,
+                avatar = avatar.intValue,
                 sisaKreditDetik = sisaKreditDetik(),
-                soalDikerjakan = repo.jumlahDijawab(kode),
-                jumlahBenar = repo.jumlahBenar(kode),
-                hariBerjalan = repo.hariBerjalan(kode),
-                aktivitasTerakhir = repo.jawabanTerakhir(kode, 5),
+                soalDikerjakan = dijawab,
+                jumlahBenar = benar,
+                jumlahSalah = dijawab - benar,
+                paketPalingSering = paketSering,
+                jumlahPemicu = jumlahPemicu,
             )
 
-            val onboardingSelesai = kode.isNotBlank() &&
-                Preferensi.sudahSetuju(this@MainActivity) &&
+            val onboardingSelesai = namaTersimpan.isNotBlank() &&
                 status.value.semuaAktif &&
                 paket != null
 
             if (!rutePertamaSudahDitentukan) {
                 rutePertamaSudahDitentukan = true
-                layar.value = ruteAwal(kode, Preferensi.sudahSetuju(this@MainActivity), paket != null)
+                layar.value = ruteAwal(namaTersimpan, paket != null)
             }
 
-            // Jaring pengaman: kalau service pernah mati — dibunuh sistem,
-            // HP di-restart, atau aplikasi dipasang ulang — membuka aplikasi
-            // menghidupkannya lagi. Tanpa ini gerbang bisa diam-diam mati
-            // selama berhari-hari dan uji coba responden itu hangus.
-            // startForegroundService aman dipanggil berulang.
+            // Jaring pengaman: kalau service pernah mati — dibunuh sistem, HP
+            // di-restart, atau aplikasi dipasang ulang — membuka aplikasi
+            // menghidupkannya lagi. startForegroundService aman dipanggil berulang.
             if (onboardingSelesai) {
                 startForegroundService(Intent(this@MainActivity, GateWatchService::class.java))
             }
         }
     }
 
-    /**
-     * Onboarding bisa dilanjutkan dari tempat terakhir. Kalau responden
-     * menutup aplikasi di tengah jalan, dia tidak diminta mengulang semuanya.
-     */
-    private fun ruteAwal(kode: String, sudahSetuju: Boolean, paketAda: Boolean): Layar = when {
-        kode.isBlank() -> Layar.WELCOME
-        !sudahSetuju -> Layar.PERSETUJUAN
-        !bacaStatusIzin(this).semuaAktif -> Layar.PERIZINAN
+    /** Onboarding bisa dilanjutkan dari tempat terakhir. */
+    private fun ruteAwal(namaTersimpan: String, paketAda: Boolean): Layar = when {
+        !bacaStatusIzin(this).semuaAktif && namaTersimpan.isBlank() -> Layar.WELCOME
+        !bacaStatusIzin(this).semuaAktif -> Layar.PERMISSION
+        namaTersimpan.isBlank() -> Layar.NAMA
         !paketAda -> Layar.PAKET_SOAL
-        else -> Layar.HOME
+        else -> Layar.DASHBOARD
+    }
+
+    private fun simpanNama(diisi: String) {
+        lifecycleScope.launch {
+            Preferensi.simpanNama(this@MainActivity, diisi)
+            // Menekan centang berarti menyetujui syarat penggunaan.
+            Preferensi.simpanPersetujuan(this@MainActivity, true)
+            nama.value = diisi
+            layar.value = if (repo.paketTerpasang() == null) Layar.PAKET_SOAL else Layar.DASHBOARD
+        }
+    }
+
+    private fun setTema(gelap: Boolean?) {
+        temaGelap.value = gelap
+        lifecycleScope.launch { Preferensi.simpanTema(this@MainActivity, gelap) }
     }
 
     /** Sisa kredit dibaca dari tempat yang sama dengan yang ditulis service. */
     private fun sisaKreditDetik(): Int {
         val berakhir = getSharedPreferences(GateWatchService.PREFS, MODE_PRIVATE)
-            .getLong("kredit_berakhir_pada", 0L)
+            .getLong(GateWatchService.KEY_KREDIT_BERAKHIR, 0L)
         if (berakhir == 0L) return 0
         return ((berakhir - System.currentTimeMillis()) / 1000L).coerceAtLeast(0L).toInt()
     }
 
+    private fun setKreditBerakhirPada(waktu: Long) {
+        getSharedPreferences(GateWatchService.PREFS, MODE_PRIVATE)
+            .edit()
+            .putLong(GateWatchService.KEY_KREDIT_BERAKHIR, waktu)
+            .apply()
+    }
+
+    // ── Gerbang atas kemauan sendiri ────────────────────────────────────────
+
+    private fun mulaiGerbangManual() {
+        soalManual.value = null
+        layar.value = Layar.KERJAKAN_SOAL
+        lifecycleScope.launch {
+            soalManual.value = repo.soalUntukGerbang(nama.value)
+        }
+    }
+
     /**
-     * Minta izin yang belum aktif, satu per satu, dalam urutan wajib
-     * Bagian 3.3. Akses Penggunaan lebih dulu karena itu yang paling
-     * mungkin membuat orang menyerah.
+     * Kredit dari tombol Kerjakan Soal.
+     *
+     * Dicatat dengan triggeredByPackage "MANUAL" supaya saat analisis bisa
+     * dipisahkan dari gerbang yang dipicu media sosial — keduanya perilaku
+     * yang sangat berbeda.
      */
-    private fun mintaIzinBerikutnya() {
-        val s = status.value
-        when {
-            !s.usageAccess -> bukaSettingsUsageAccess(this)
-            !s.overlay -> bukaSettingsOverlay(this)
-            !s.notifikasi -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    mintaNotifikasi.launch(Manifest.permission.POST_NOTIFICATIONS)
-                }
+    private fun selesaikanGerbangManual(jawaban: List<JawabanGerbang>) {
+        layar.value = Layar.DASHBOARD
+        soalManual.value = null
+        if (jawaban.isEmpty()) return
+
+        val idSesi = System.currentTimeMillis()
+        val kreditDetik = Kredit.totalGerbang(jawaban.sumOf { it.bonusDetik })
+        val sisaLama = sisaKreditDetik()
+        setKreditBerakhirPada(System.currentTimeMillis() + (sisaLama + kreditDetik) * 1000L)
+
+        lifecycleScope.launch {
+            jawaban.forEachIndexed { i, j ->
+                repo.catatJawaban(
+                    kode = nama.value,
+                    versiPaket = versiPaket.value,
+                    gateSessionId = idSesi,
+                    urutanDalamGerbang = i + 1,
+                    butir = j.soal.butir,
+                    opsiDipilih = j.opsiDipilih.optionId,
+                    durasiDetik = j.durasiDetik,
+                    kreditDidapat = j.bonusDetik,
+                    paketPemicu = "MANUAL",
+                )
             }
-            !s.baterai -> bukaSettingsBaterai(this)
+            repo.mulaiSesiKredit(nama.value, idSesi, kreditDetik)
+            segarkan()
+        }
+    }
+
+    // ── Izin, paket, ekspor ─────────────────────────────────────────────────
+
+    /** nomor mengikuti urutan wajib handoff Bagian 3.3. */
+    private fun mintaIzin(nomor: Int) {
+        when (nomor) {
+            1 -> bukaSettingsUsageAccess(this)
+            2 -> bukaSettingsOverlay(this)
+            3 -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                mintaNotifikasi.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+            4 -> bukaSettingsBaterai(this)
         }
     }
 
@@ -304,9 +398,8 @@ class MainActivity : ComponentActivity() {
         statusEkspor.value = "Menulis berkas…"
         lifecycleScope.launch {
             try {
-                val berkas = EksporCsv.tulis(this@MainActivity, repo, kodeResponden.value)
+                val berkas = EksporCsv.tulis(this@MainActivity, repo, nama.value)
                 statusEkspor.value = "${berkas.name} · ${berkas.length()} byte"
-                // Lembar berbagi sistem; respondenlah yang memilih tujuannya.
                 startActivity(EksporCsv.intentBagikan(this@MainActivity, berkas))
             } catch (e: Exception) {
                 statusEkspor.value = "Gagal mengekspor: ${e.message}"

@@ -130,6 +130,23 @@ abstract class SoalduluDao {
     @Query("SELECT COUNT(*) FROM log_jawaban WHERE respondentCode = :kode AND isCorrect = 1")
     abstract suspend fun jumlahBenar(kode: String): Int
 
+    /**
+     * Aplikasi yang paling sering memicu gerbang. null kalau belum ada jawaban.
+     * Dihitung per sesi gerbang, bukan per jawaban, supaya satu gerbang berisi
+     * tiga soal tidak dihitung tiga kali.
+     */
+    @Query(
+        "SELECT triggeredByPackage FROM log_jawaban WHERE respondentCode = :kode " +
+            "GROUP BY triggeredByPackage ORDER BY COUNT(DISTINCT gateSessionId) DESC LIMIT 1"
+    )
+    abstract suspend fun paketPalingSering(kode: String): String?
+
+    @Query(
+        "SELECT COUNT(DISTINCT gateSessionId) FROM log_jawaban " +
+            "WHERE respondentCode = :kode AND triggeredByPackage = :paket"
+    )
+    abstract suspend fun jumlahGerbangUntuk(kode: String, paket: String): Int
+
     /** Untuk menghitung "hari berjalan" di Home. null kalau belum pernah menjawab. */
     @Query("SELECT MIN(timestamp) FROM log_jawaban WHERE respondentCode = :kode")
     abstract suspend fun waktuJawabanPertama(kode: String): Long?

@@ -1,7 +1,6 @@
 package id.soaldulu.app.ui.layar
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,12 +14,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,27 +28,18 @@ import id.soaldulu.app.data.BacaanEntity
 import id.soaldulu.app.data.ButirEntity
 import id.soaldulu.app.data.OpsiEntity
 import id.soaldulu.app.data.SoalLengkap
-import id.soaldulu.app.ui.LencanaOpsi
-import id.soaldulu.app.ui.theme.Accent
-import id.soaldulu.app.ui.theme.Background
-import id.soaldulu.app.ui.theme.Bentuk
-import id.soaldulu.app.ui.theme.Border
-import id.soaldulu.app.ui.theme.OnBackground
-import id.soaldulu.app.ui.theme.OnBackgroundDim
+import id.soaldulu.app.ui.theme.GayaBatangSoal
 import id.soaldulu.app.ui.theme.SoalduluTheme
-import id.soaldulu.app.ui.theme.Surface
-import id.soaldulu.app.ui.theme.Teks
 import id.soaldulu.app.ui.theme.Ukuran
 
 /**
- * Layar 6 — Gerbang Soal (handoff Bagian 8 nomor 6).
+ * Layar Gerbang.
  *
- * Layar yang paling sering dilihat responden, sekitar 200 kali. Karena itu
- * sengaja paling polos di seluruh aplikasi: tanpa ornamen, tanpa animasi,
- * dan TANPA tombol keluar — satu-satunya jalan maju adalah menjawab.
+ * Layar yang paling sering dilihat responden. Tanpa tombol keluar — satu-satunya
+ * jalan maju adalah menjawab. Menyentuh opsi langsung mengirim jawaban.
  *
- * Menyentuh opsi langsung mengirim jawaban; tidak ada tombol konfirmasi,
- * sesuai daftar elemen di Bagian 8 nomor 6.
+ * Jumlah tombol opsi mengikuti isi bank soal, bukan angka tetap: berkas desain
+ * menggambar lima, tapi butir sungguhan punya empat opsi A sampai D.
  */
 @Composable
 fun LayarGerbang(
@@ -60,134 +51,129 @@ fun LayarGerbang(
     onLapor: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // Layar dibagi dua: bagian atas menggulir, blok opsi menempel di bawah.
-    //
-    // Handoff Bagian 8 nomor 6 meminta blok opsi diturunkan agar terjangkau
-    // jempol. Kalau seluruh layar satu kolom bergulir, opsi menumpuk di paruh
-    // atas dan separuh layar bawah menganggur — persis yang harus diperbaiki.
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Background)
+            .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = Ukuran.marginLayar),
     ) {
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .verticalScroll(rememberScrollState())
-                .padding(top = Ukuran.antarBagian),
+        Spacer(Modifier.height(Ukuran.antarBagian))
+
+        Text(
+            "Credit Left : ${formatKreditPanjang(sisaKreditDetik)}",
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        Spacer(Modifier.height(16.dp))
+
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            ),
+            modifier = Modifier.fillMaxWidth(),
         ) {
-            BilahAtas(
-                nomorSoal = nomorSoal,
-                totalSoal = totalSoal,
-                sisaKreditDetik = sisaKreditDetik,
-                subtest = soal.butir.subtest,
-            )
-
-            Spacer(Modifier.height(Ukuran.antarBagian))
-
-            soal.bacaan?.let {
-                PanelBacaan(it)
-                Spacer(Modifier.height(Ukuran.antarBagian))
+            Row(
+                Modifier.padding(horizontal = Ukuran.paddingKartu, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    namaSubtes(soal.butir.subtest),
+                    style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier.weight(1f),
+                )
+                Text(
+                    "$nomorSoal / $totalSoal",
+                    style = MaterialTheme.typography.labelLarge,
+                )
             }
-
-            Text(soal.butir.stem, style = Teks.batangSoal, color = OnBackground)
-
-            Spacer(Modifier.height(Ukuran.antarBagian))
         }
 
-        Column(modifier = Modifier.padding(bottom = Ukuran.antarBagian)) {
-            soal.opsi.forEach { opsi ->
-                BarisOpsi(opsi = opsi, terpilih = false, onKlik = { onJawab(opsi.optionId) })
+        // Bagian atas menggulir, blok opsi menempel di bawah supaya terjangkau
+        // jempol tanpa memindahkan tangan.
+        Column(
+            Modifier
+                .weight(1f)
+                .verticalScroll(rememberScrollState())
+                .padding(top = 20.dp),
+        ) {
+            soal.bacaan?.let { bacaan ->
+                Text(
+                    bacaan.title,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
                 Spacer(Modifier.height(8.dp))
+                Text(
+                    bacaan.text,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+                Spacer(Modifier.height(24.dp))
             }
 
-            Spacer(Modifier.height(16.dp))
+            Text(
+                soal.butir.stem,
+                style = GayaBatangSoal,
+                color = MaterialTheme.colorScheme.onBackground,
+            )
+
+            Spacer(Modifier.height(20.dp))
+        }
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier.padding(bottom = 16.dp),
+        ) {
+            soal.opsi.forEach { opsi ->
+                TombolOpsi(opsi = opsi, onKlik = { onJawab(opsi.optionId) })
+            }
+
+            Spacer(Modifier.height(4.dp))
 
             Text(
                 "Laporkan soal ini",
-                style = Teks.caption.copy(textDecoration = TextDecoration.Underline),
-                color = OnBackgroundDim,
-                modifier = Modifier.clickable(onClick = onLapor),
+                style = MaterialTheme.typography.bodySmall.copy(
+                    textDecoration = TextDecoration.Underline,
+                ),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier
+                    .clickable(onClick = onLapor)
+                    .padding(vertical = 6.dp),
             )
         }
     }
 }
 
 @Composable
-private fun BilahAtas(
-    nomorSoal: Int,
-    totalSoal: Int,
-    sisaKreditDetik: Int,
-    subtest: String,
-) {
-    Column {
+private fun TombolOpsi(opsi: OpsiEntity, onKlik: () -> Unit) {
+    Card(
+        onClick = onKlik,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = Ukuran.tinggiBarisPilihan),
+    ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            Modifier
+                .fillMaxWidth()
+                .heightIn(min = Ukuran.tinggiBarisPilihan)
+                .padding(horizontal = Ukuran.paddingKartu, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Column {
-                Text("SISA KREDIT", style = Teks.label, color = OnBackgroundDim)
-                Spacer(Modifier.height(4.dp))
-                Text(formatSisaKredit(sisaKreditDetik), style = Teks.isi, color = Accent)
-            }
-            Column(horizontalAlignment = Alignment.End) {
-                Text(
-                    "SOAL $nomorSoal DARI $totalSoal",
-                    style = Teks.label,
-                    color = OnBackgroundDim,
-                )
-                Spacer(Modifier.height(4.dp))
-                Text(namaSubtes(subtest), style = Teks.caption, color = OnBackgroundDim)
-            }
-        }
-    }
-}
-
-@Composable
-private fun PanelBacaan(bacaan: BacaanEntity) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            // Bacaan bisa panjang. Dibatasi tingginya supaya batang soal dan
-            // opsi tidak terdorong keluar layar; isinya digulir sendiri.
-            .heightIn(max = 260.dp)
-            .clip(Bentuk.kartu)
-            .background(Surface)
-            .border(Ukuran.tebalGaris, Border, Bentuk.kartu)
-            .verticalScroll(rememberScrollState())
-            .padding(Ukuran.paddingKartu),
-    ) {
-        Text(bacaan.title, style = Teks.label, color = Accent)
-        Spacer(Modifier.height(12.dp))
-        Text(bacaan.text, style = Teks.isi, color = OnBackground)
-    }
-}
-
-@Composable
-private fun BarisOpsi(
-    opsi: OpsiEntity,
-    terpilih: Boolean,
-    onKlik: () -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = Ukuran.tinggiBarisPilihan)
-            .clip(Bentuk.kartu)
-            .background(if (terpilih) Surface else Color.Transparent)
-            .border(
-                Ukuran.tebalGaris,
-                if (terpilih) Accent else Border,
-                Bentuk.kartu,
+            Text(
+                opsi.optionId,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary,
             )
-            .clickable(onClick = onKlik)
-            .padding(Ukuran.paddingKartu),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        LencanaOpsi(huruf = opsi.optionId, terpilih = terpilih)
-        Spacer(Modifier.width(12.dp))
-        Text(opsi.text, style = Teks.opsi, color = OnBackground)
+            Spacer(Modifier.width(14.dp))
+            Text(opsi.text, style = MaterialTheme.typography.bodyLarge)
+        }
     }
 }
 
@@ -199,21 +185,17 @@ fun formatSisaKredit(detik: Int): String {
 
 /**
  * Ubah nilai enum subtes jadi teks yang bisa dibaca.
+ * LITERASI_BAHASA_INDONESIA menjadi Literasi Bahasa Indonesia.
  *
- * LITERASI_BAHASA_INDONESIA -> Literasi Bahasa Indonesia
- *
- * Ini murni pemformatan tampilan. Nilai aslinya yang disimpan di log tetap
- * apa adanya dari JSON — daftar subtes belum diverifikasi ke kisi-kisi resmi
- * (handoff Bagian 10), jadi tidak ada nama yang dikarang di sini.
+ * Murni pemformatan tampilan; nilai yang disimpan di log tetap apa adanya
+ * dari JSON.
  */
 fun namaSubtes(subtest: String): String =
     subtest.split("_")
         .filter { it.isNotBlank() }
-        .joinToString(" ") { kata ->
-            kata.lowercase().replaceFirstChar { it.uppercase() }
-        }
+        .joinToString(" ") { kata -> kata.lowercase().replaceFirstChar { it.uppercase() } }
 
-@Preview(name = "Layar 6 — Gerbang Soal", heightDp = 900)
+@Preview(name = "Gerbang Soal", heightDp = 860)
 @Composable
 private fun PratinjauGerbang() {
     val butir = ButirEntity(
@@ -222,7 +204,7 @@ private fun PratinjauGerbang() {
         exam = "BOTH",
         subtest = "LITERASI_BAHASA_INDONESIA",
         passageId = "psg-0001",
-        stem = "Gagasan utama paragraf kedua adalah…",
+        stem = "Gagasan utama paragraf kedua bacaan tersebut adalah…",
         correctOptionId = "B",
         explanation = "",
         cognitiveLevel = "C4",
@@ -230,7 +212,7 @@ private fun PratinjauGerbang() {
         sourceType = "PLACEHOLDER",
         sourceReference = "",
     )
-    SoalduluTheme {
+    SoalduluTheme(paksaGelap = true) {
         LayarGerbang(
             soal = SoalLengkap(
                 butir = butir,

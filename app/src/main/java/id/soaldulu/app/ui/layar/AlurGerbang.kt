@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,11 +26,6 @@ import androidx.compose.ui.unit.dp
 import id.soaldulu.app.Kredit
 import id.soaldulu.app.data.OpsiEntity
 import id.soaldulu.app.data.SoalLengkap
-import id.soaldulu.app.ui.TombolPrimer
-import id.soaldulu.app.ui.theme.Background
-import id.soaldulu.app.ui.theme.OnBackground
-import id.soaldulu.app.ui.theme.OnBackgroundDim
-import id.soaldulu.app.ui.theme.Teks
 import id.soaldulu.app.ui.theme.Ukuran
 
 /** Satu jawaban yang sudah diberikan dalam gerbang ini. */
@@ -132,22 +129,26 @@ private fun GerbangTanpaSoal(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Background)
+            .background(MaterialTheme.colorScheme.background)
             .padding(Ukuran.marginLayar),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text("Bank soal belum siap", style = Teks.judulLayar, color = OnBackground)
-        Spacer(Modifier.height(16.dp))
+        Text(
+            "Bank soal belum siap",
+            style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
+        Spacer(Modifier.height(12.dp))
         Text(
             "Tidak ada butir aktif yang bisa ditampilkan, jadi gerbang " +
                 "dilewati kali ini. Beri tahu peneliti.",
-            style = Teks.isi,
-            color = OnBackgroundDim,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
         )
         Spacer(Modifier.height(Ukuran.antarBagian))
-        TombolPrimer("Tutup", onClick = onTutup)
+        Button(onClick = onTutup) { Text("Tutup") }
     }
 }
 

@@ -1,111 +1,57 @@
 package id.soaldulu.app.ui.theme
 
+import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 // ─────────────────────────────────────────────────────────────────────────────
-// BELUM FINAL — berkas font belum ada di proyek.
+// Judul memakai serif, isi memakai sans — mengikuti berkas desain, di mana
+// "Welcome", "Dashboard", "Permission", dan "Settings" jelas berserif
+// sementara isi kartu dan paragraf tidak.
 //
-// Handoff Bagian 7.3 meminta tiga serif dari Google Fonts. Karena aplikasi
-// wajib berjalan penuh tanpa internet, font HARUS dibundel sebagai .ttf,
-// bukan diunduh saat dipakai.
-//
-// Cara menggantinya nanti:
-//   1. Unduh dari fonts.google.com, taruh .ttf di app/src/main/res/font/
-//      (nama berkas huruf kecil, pakai garis bawah, tanpa angka di depan)
-//   2. Ganti ketiga baris di bawah, misalnya:
-//
-//        val Cormorant = FontFamily(
-//            Font(R.font.cormorant_garamond_regular),
-//            Font(R.font.cormorant_garamond_semibold, FontWeight.SemiBold),
-//        )
-//
-// Sampai itu terjadi, ketiganya memakai serif bawaan sistem. Proporsi dan
-// tata letak sudah benar; hanya bentuk hurufnya yang belum sesuai.
+// Berkas font sungguhan belum ada di proyek. Untuk menggantinya nanti:
+//   1. Taruh .ttf di app/src/main/res/font/ (huruf kecil, garis bawah)
+//   2. Ganti dua baris di bawah, misalnya:
+//        val Judul = FontFamily(Font(R.font.playfair_display_regular))
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Judul layar dan angka besar. Rapuh di ukuran kecil — pakai hanya >= 24sp. */
-val Cormorant = FontFamily.Serif
+/** Judul layar dan angka besar. */
+val Judul = FontFamily.Serif
 
-/** Batang soal, opsi, teks umum. */
-val CrimsonPro = FontFamily.Serif
-
-/** Label kapital dan teks tombol. */
-val Cinzel = FontFamily.Serif
+/** Isi, label, tombol. */
+val Isi = FontFamily.SansSerif
 
 /**
- * Skala teks Soaldulu (handoff Bagian 7.3).
+ * Skala Material 3 dengan keluarga huruf Soaldulu.
  *
- * Pakai nilai ini, bukan angka px dari mockup.
+ * Ukuran dibiarkan seperti baku M3 — sudah teruji untuk keterbacaan — kecuali
+ * displayLarge yang dipakai angka kredit di Dashboard.
  */
-object Teks {
-
-    /** 40sp Cormorant — sisa kredit di Home. */
-    val angkaKredit = TextStyle(
-        fontFamily = Cormorant,
-        fontSize = 40.sp,
-        fontWeight = FontWeight.Normal,
-    )
-
-    /** 28sp Cormorant — judul layar. */
-    val judulLayar = TextStyle(
-        fontFamily = Cormorant,
-        fontSize = 28.sp,
-        fontWeight = FontWeight.Normal,
-    )
-
-    /** 32sp Cormorant — "Benar" / "Belum tepat". */
-    val verdict = TextStyle(
-        fontFamily = Cormorant,
-        fontSize = 32.sp,
-        fontWeight = FontWeight.Normal,
-    )
-
-    /** 20sp Crimson Pro — batang soal. */
-    val batangSoal = TextStyle(
-        fontFamily = CrimsonPro,
-        fontSize = 20.sp,
-        lineHeight = 28.sp,
-    )
-
-    /** 17sp Crimson Pro — opsi jawaban. */
-    val opsi = TextStyle(
-        fontFamily = CrimsonPro,
-        fontSize = 17.sp,
-        lineHeight = 24.sp,
-    )
-
-    /** 16sp Crimson Pro — teks isi umum. */
-    val isi = TextStyle(
-        fontFamily = CrimsonPro,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-    )
-
-    /** 15sp Cinzel kapital — teks tombol. */
-    val tombol = TextStyle(
-        fontFamily = Cinzel,
-        fontSize = 15.sp,
-        fontWeight = FontWeight.Medium,
-        letterSpacing = 1.sp,
-    )
-
-    /** 12sp Cinzel kapital — label bagian dan overline. */
-    val label = TextStyle(
-        fontFamily = Cinzel,
-        fontSize = 12.sp,
-        fontWeight = FontWeight.Medium,
-        letterSpacing = 1.5.sp,
-    )
-
-    /** 13sp Crimson Pro miring — caption. */
-    val caption = TextStyle(
-        fontFamily = CrimsonPro,
-        fontSize = 13.sp,
-        fontStyle = FontStyle.Italic,
-        lineHeight = 18.sp,
+val TipografiSoaldulu = Typography().run {
+    copy(
+        displayLarge = displayLarge.copy(fontFamily = Judul, fontSize = 44.sp),
+        displayMedium = displayMedium.copy(fontFamily = Judul),
+        displaySmall = displaySmall.copy(fontFamily = Judul),
+        headlineLarge = headlineLarge.copy(fontFamily = Judul),
+        headlineMedium = headlineMedium.copy(fontFamily = Judul),
+        headlineSmall = headlineSmall.copy(fontFamily = Judul),
+        titleLarge = titleLarge.copy(fontFamily = Judul),
+        titleMedium = titleMedium.copy(fontFamily = Isi, fontWeight = FontWeight.Medium),
+        titleSmall = titleSmall.copy(fontFamily = Isi, fontWeight = FontWeight.Medium),
+        bodyLarge = bodyLarge.copy(fontFamily = Isi),
+        bodyMedium = bodyMedium.copy(fontFamily = Isi),
+        bodySmall = bodySmall.copy(fontFamily = Isi),
+        labelLarge = labelLarge.copy(fontFamily = Isi),
+        labelMedium = labelMedium.copy(fontFamily = Isi),
+        labelSmall = labelSmall.copy(fontFamily = Isi),
     )
 }
+
+/** Batang soal. Sengaja lebih besar dari bodyLarge M3 karena dibaca lama. */
+val GayaBatangSoal = TextStyle(
+    fontFamily = Isi,
+    fontSize = 19.sp,
+    lineHeight = 28.sp,
+)

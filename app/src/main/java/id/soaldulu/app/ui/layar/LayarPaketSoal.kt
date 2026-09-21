@@ -1,7 +1,6 @@
 package id.soaldulu.app.ui.layar
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,25 +10,21 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import id.soaldulu.app.GateConfig
-import id.soaldulu.app.ui.Kartu
-import id.soaldulu.app.ui.TombolPrimer
-import id.soaldulu.app.ui.theme.Accent
-import id.soaldulu.app.ui.theme.Background
-import id.soaldulu.app.ui.theme.Bentuk
-import id.soaldulu.app.ui.theme.Emphasis
-import id.soaldulu.app.ui.theme.Muted
-import id.soaldulu.app.ui.theme.OnBackground
-import id.soaldulu.app.ui.theme.OnBackgroundDim
 import id.soaldulu.app.ui.theme.SoalduluTheme
-import id.soaldulu.app.ui.theme.Teks
 import id.soaldulu.app.ui.theme.Ukuran
+import id.soaldulu.app.ui.theme.WarnaTambah
 
 /** Keadaan pemasangan paket soal. */
 sealed interface StatusPaket {
@@ -40,11 +35,11 @@ sealed interface StatusPaket {
 }
 
 /**
- * Layar 5 — Unduh Paket Soal (handoff Bagian 8 nomor 5).
+ * Pemasangan paket soal.
  *
- * Untuk Fase 1-4 paket dibaca dari assets, bukan diunduh, jadi layar ini
- * menampilkan proses seeding ke Room. Kata "unduh" sengaja tidak dipakai
- * supaya tidak menjanjikan sesuatu yang tidak terjadi.
+ * Paket dibaca dari assets, bukan diunduh, jadi layar ini menampilkan proses
+ * seeding ke Room. Kata "unduh" sengaja tidak dipakai supaya tidak
+ * menjanjikan sesuatu yang tidak terjadi.
  */
 @Composable
 fun LayarPaketSoal(
@@ -56,49 +51,55 @@ fun LayarPaketSoal(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Background)
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
             .padding(horizontal = Ukuran.marginLayar, vertical = Ukuran.antarBagian),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text("LANGKAH 4 DARI 4", style = Teks.label, color = Accent)
-
-        Spacer(Modifier.height(16.dp))
-
-        Text("Paket Soal", style = Teks.judulLayar, color = OnBackground)
+        Text(
+            "Paket Soal",
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
 
         Spacer(Modifier.height(Ukuran.antarBagian))
 
-        Kartu {
-            Text("PAKET", style = Teks.label, color = Accent)
-            Spacer(Modifier.height(12.dp))
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            ),
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Column(Modifier.padding(Ukuran.paddingKartu)) {
+                when (status) {
+                    StatusPaket.Belum -> {
+                        Baris("Berkas", GateConfig.BUNDLED_PACKAGE_ASSET)
+                        Baris("Status", "Belum dipasang")
+                    }
 
-            when (status) {
-                StatusPaket.Belum -> {
-                    Baris("Berkas", GateConfig.BUNDLED_PACKAGE_ASSET)
-                    Baris("Status", "Belum dipasang")
-                }
+                    StatusPaket.Memasang -> {
+                        Baris("Berkas", GateConfig.BUNDLED_PACKAGE_ASSET)
+                        Baris("Status", "Sedang memasang…")
+                    }
 
-                StatusPaket.Memasang -> {
-                    Baris("Berkas", GateConfig.BUNDLED_PACKAGE_ASSET)
-                    Baris("Status", "Sedang memasang…")
-                }
+                    is StatusPaket.Terpasang -> {
+                        Baris("Versi", status.versi)
+                        Baris("Jumlah butir", "${status.jumlahButir}")
+                        Baris("Butir aktif", "${status.jumlahAktif}")
+                    }
 
-                is StatusPaket.Terpasang -> {
-                    Baris("Versi", status.versi)
-                    Baris("Jumlah butir", "${status.jumlahButir}")
-                    Baris("Butir aktif", "${status.jumlahAktif}")
-                }
-
-                is StatusPaket.Gagal -> {
-                    Text(
-                        "Paket ditolak — ${status.kesalahan.size} masalah:",
-                        style = Teks.isi,
-                        color = Emphasis,
-                    )
-                    Spacer(Modifier.height(8.dp))
-                    status.kesalahan.forEach {
-                        Text("· $it", style = Teks.caption, color = OnBackgroundDim)
-                        Spacer(Modifier.height(4.dp))
+                    is StatusPaket.Gagal -> {
+                        Text(
+                            "Paket ditolak — ${status.kesalahan.size} masalah:",
+                            style = MaterialTheme.typography.titleSmall,
+                            color = WarnaTambah.negatif,
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        status.kesalahan.forEach {
+                            Text("· $it", style = MaterialTheme.typography.bodySmall)
+                            Spacer(Modifier.height(4.dp))
+                        }
                     }
                 }
             }
@@ -106,68 +107,61 @@ fun LayarPaketSoal(
 
         Spacer(Modifier.height(16.dp))
 
-        BilahProgres(
-            terisi = when (status) {
-                StatusPaket.Belum -> 0f
-                StatusPaket.Memasang -> 0.5f
-                is StatusPaket.Terpasang -> 1f
-                is StatusPaket.Gagal -> 0f
-            }
+        LinearProgressIndicator(
+            progress = {
+                when (status) {
+                    StatusPaket.Belum -> 0f
+                    StatusPaket.Memasang -> 0.5f
+                    is StatusPaket.Terpasang -> 1f
+                    is StatusPaket.Gagal -> 0f
+                }
+            },
+            modifier = Modifier.fillMaxWidth(),
         )
 
         Spacer(Modifier.height(Ukuran.antarBagian))
 
-        when (status) {
-            is StatusPaket.Terpasang -> TombolPrimer("Selesai", onClick = onLanjut)
-            StatusPaket.Memasang -> TombolPrimer("Memasang…", onClick = {}, aktif = false)
-            else -> TombolPrimer("Pasang paket soal", onClick = onPasang)
+        Button(
+            onClick = if (status is StatusPaket.Terpasang) onLanjut else onPasang,
+            enabled = status !is StatusPaket.Memasang,
+            modifier = Modifier.fillMaxWidth().height(56.dp),
+        ) {
+            Text(
+                when (status) {
+                    is StatusPaket.Terpasang -> "Selesai"
+                    StatusPaket.Memasang -> "Memasang…"
+                    else -> "Pasang paket soal"
+                },
+                style = MaterialTheme.typography.titleMedium,
+            )
         }
 
-        Spacer(Modifier.height(Ukuran.antarBagian))
+        Spacer(Modifier.height(16.dp))
 
         Text(
             "Setelah terpasang, aplikasi tidak lagi memerlukan koneksi internet.",
-            style = Teks.caption,
-            color = OnBackgroundDim,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-
-        Spacer(Modifier.height(Ukuran.antarBagian))
     }
 }
 
 @Composable
 private fun Baris(label: String, nilai: String) {
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-    ) {
-        Text(label, style = Teks.caption, color = OnBackgroundDim, modifier = Modifier.weight(1f))
-        Text(nilai, style = Teks.isi, color = OnBackground)
-    }
-}
-
-@Composable
-private fun BilahProgres(terisi: Float) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(6.dp)
-            .clip(Bentuk.kartu)
-            .background(Muted),
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(terisi.coerceIn(0f, 1f))
-                .height(6.dp)
-                .clip(Bentuk.kartu)
-                .background(Accent),
+    Row(Modifier.fillMaxWidth().padding(bottom = 8.dp)) {
+        Text(
+            label,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.weight(1f),
         )
+        Text(nilai, style = MaterialTheme.typography.bodyMedium)
     }
 }
 
-@Preview(name = "Layar 5 — Paket Soal", heightDp = 800)
+@Preview(name = "Paket Soal", heightDp = 780)
 @Composable
 private fun PratinjauPaketSoal() {
-    SoalduluTheme {
+    SoalduluTheme(paksaGelap = true) {
         LayarPaketSoal(
             status = StatusPaket.Terpasang(versi = "1.0.0", jumlahButir = 150, jumlahAktif = 148),
             onPasang = {},

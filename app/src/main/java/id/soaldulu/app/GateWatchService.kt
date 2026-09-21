@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -29,10 +30,7 @@ import id.soaldulu.app.data.SoalduluRepository
 import id.soaldulu.app.ui.layar.AlurGerbang
 import id.soaldulu.app.ui.layar.JawabanGerbang
 import id.soaldulu.app.ui.layar.formatSisaKredit
-import id.soaldulu.app.ui.theme.Background
-import id.soaldulu.app.ui.theme.OnBackgroundDim
 import id.soaldulu.app.ui.theme.SoalduluTheme
-import id.soaldulu.app.ui.theme.Teks
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -93,7 +91,7 @@ class GateWatchService : Service() {
 
     /** Supaya peringatan kredit hampir habis hanya dikirim sekali per sesi. */
     private var peringatanSudahDikirim = false
-    private var kodeResponden = ""
+    private var namaResponden = ""
     private var versiPaket = ""
 
     private var mulaiElapsed = 0L
@@ -126,7 +124,7 @@ class GateWatchService : Service() {
         SpikeLog.tulis(this, "SERVICE_START ke-$jumlahStart")
 
         lingkup.launch {
-            kodeResponden = Preferensi.kodeResponden(this@GateWatchService)
+            namaResponden = Preferensi.nama(this@GateWatchService)
             versiPaket = repo.paketTerpasang()?.version.orEmpty()
 
             // Sesi kredit yang masih terbuka berarti service sempat mati saat
@@ -138,7 +136,7 @@ class GateWatchService : Service() {
                     "KREDIT_TERGANTUNG $tergantung sesi ditandai SERVICE_KILLED",
                 )
                 repo.catatPeristiwa(
-                    kodeResponden,
+                    namaResponden,
                     "SERVICE_RESTARTED",
                     "$tergantung sesi kredit ditutup sebagai SERVICE_KILLED",
                 )
@@ -202,7 +200,7 @@ class GateWatchService : Service() {
             if (eventBaru) {
                 eventTerakhirDitangani = depan.waktuEvent
                 lingkup.launch {
-                    repo.catatPeristiwa(kodeResponden, "BROWSER_OPENED", depan.paket)
+                    repo.catatPeristiwa(namaResponden, "BROWSER_OPENED", depan.paket)
                 }
             }
             return
@@ -263,7 +261,7 @@ class GateWatchService : Service() {
                     Box(
                         Modifier
                             .fillMaxSize()
-                            .background(Background)
+                            .background(MaterialTheme.colorScheme.background)
                             .safeDrawingPadding()
                     ) {
                         when (val soal = soalGerbang.value) {
@@ -276,7 +274,7 @@ class GateWatchService : Service() {
                             },
                             onLapor = { itemId ->
                                 lingkup.launch {
-                                    repo.catatPeristiwa(kodeResponden, "ITEM_REPORTED", itemId)
+                                    repo.catatPeristiwa(namaResponden, "ITEM_REPORTED", itemId)
                                 }
                             },
                         )
@@ -308,9 +306,9 @@ class GateWatchService : Service() {
             lingkup.launch {
                 // Disegarkan tiap gerbang supaya kode responden yang baru
                 // dimasukkan langsung terpakai tanpa perlu restart service.
-                kodeResponden = Preferensi.kodeResponden(this@GateWatchService)
+                namaResponden = Preferensi.nama(this@GateWatchService)
                 versiPaket = repo.paketTerpasang()?.version.orEmpty()
-                val soal = repo.soalUntukGerbang(kodeResponden)
+                val soal = repo.soalUntukGerbang(namaResponden)
                 withContext(Dispatchers.Main) {
                     soalGerbang.value = soal
                     SpikeLog.tulis(
@@ -360,7 +358,7 @@ class GateWatchService : Service() {
         lingkup.launch {
             jawaban.forEachIndexed { i, j ->
                 repo.catatJawaban(
-                    kode = kodeResponden,
+                    kode = namaResponden,
                     versiPaket = versiPaket,
                     gateSessionId = idSesiGerbang,
                     urutanDalamGerbang = i + 1,
@@ -375,7 +373,7 @@ class GateWatchService : Service() {
                 )
             }
             idSesiKreditBerjalan =
-                repo.mulaiSesiKredit(kodeResponden, idSesiGerbang, kreditDetik)
+                repo.mulaiSesiKredit(namaResponden, idSesiGerbang, kreditDetik)
 
             SpikeLog.tulis(
                 this@GateWatchService,
@@ -528,7 +526,9 @@ class GateWatchService : Service() {
         const val PREFS = "spike"
         // (lanjut di bawah)
         const val KEY_JUMLAH_START = "jumlah_start"
-        private const val KEY_KREDIT_BERAKHIR = "kredit_berakhir_pada"
+        // Dibaca juga oleh MainActivity: Dashboard menampilkan sisa kredit dan
+        // tombol Kerjakan Soal menambahnya.
+        const val KEY_KREDIT_BERAKHIR = "kredit_berakhir_pada"
 
         private const val CHANNEL_ID = "gerbang"
         private const val CHANNEL_PERINGATAN = "peringatan_kredit"
@@ -547,10 +547,14 @@ class GateWatchService : Service() {
 @Composable
 private fun GerbangMemuat() {
     Column(
-        modifier = Modifier.fillMaxSize().background(Background),
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text("Menyiapkan soal…", style = Teks.caption, color = OnBackgroundDim)
+        Text(
+            "Menyiapkan soal…",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }

@@ -160,6 +160,12 @@ class SoalduluRepository private constructor(private val dao: SoalduluDao) {
 
     suspend fun jumlahBenar(kode: String): Int = dao.jumlahBenar(kode)
 
+    /** Aplikasi pemicu terbanyak beserta jumlah gerbangnya. */
+    suspend fun pemicuTerbanyak(kode: String): Pair<String, Int> {
+        val paket = dao.paketPalingSering(kode) ?: return "" to 0
+        return paket to dao.jumlahGerbangUntuk(kode, paket)
+    }
+
     /** Hari ke berapa responden ini berjalan. 0 kalau belum pernah menjawab. */
     suspend fun hariBerjalan(kode: String): Int {
         val pertama = dao.waktuJawabanPertama(kode) ?: return 0

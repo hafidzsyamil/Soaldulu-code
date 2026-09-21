@@ -1,7 +1,6 @@
 package id.soaldulu.app.ui.layar
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,38 +14,33 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import id.soaldulu.app.data.OpsiEntity
-import id.soaldulu.app.ui.Kartu
-import id.soaldulu.app.ui.TombolPrimer
-import id.soaldulu.app.ui.theme.Accent
-import id.soaldulu.app.ui.theme.Background
-import id.soaldulu.app.ui.theme.Emphasis
-import id.soaldulu.app.ui.theme.OnAccent
-import id.soaldulu.app.ui.theme.OnBackground
-import id.soaldulu.app.ui.theme.OnBackgroundDim
 import id.soaldulu.app.ui.theme.SoalduluTheme
-import id.soaldulu.app.ui.theme.Teks
 import id.soaldulu.app.ui.theme.Ukuran
+import id.soaldulu.app.ui.theme.WarnaTambah
 
 /**
- * Layar 7 dan 8 — Umpan Balik (handoff Bagian 8 nomor 7 dan 8).
+ * Umpan balik setelah satu jawaban.
  *
- * Satu composable untuk dua keadaan karena strukturnya sama; yang berbeda
- * hanya isi panel dan warna penandanya.
- *
- * Dua aturan yang mudah dilanggar dan sengaja ditulis di sini:
- * - Kata "Belum tepat" TIDAK berwarna crimson. Crimson di atas latar gelap
- *   kontrasnya buruk; crimson hanya dipakai untuk lingkaran penanda dan
- *   label "JAWABANMU".
- * - Tombolnya tetap kuningan, tidak pernah crimson. Salah bukan akhir.
+ * Satu composable untuk dua keadaan; yang berbeda hanya isi panel dan warna
+ * penandanya. Tombolnya selalu warna utama, tidak pernah merah — salah bukan
+ * akhir, dan tombol merah membuatnya terasa seperti hukuman.
  */
 @Composable
 fun LayarUmpanBalik(
@@ -63,118 +57,145 @@ fun LayarUmpanBalik(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Background)
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
             .padding(horizontal = Ukuran.marginLayar, vertical = Ukuran.antarBagian),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        PenandaHasil(benar)
+        Box(
+            Modifier
+                .size(80.dp)
+                .clip(CircleShape)
+                .background(if (benar) WarnaTambah.positif else WarnaTambah.negatif),
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(
+                if (benar) Icons.Default.Check else Icons.Default.Close,
+                contentDescription = null,
+                tint = Color(0xFF16222A),
+                modifier = Modifier.size(44.dp),
+            )
+        }
 
-        Spacer(Modifier.height(Ukuran.antarBagian))
+        Spacer(Modifier.height(20.dp))
 
         Text(
             if (benar) "Benar" else "Belum tepat",
-            style = Teks.verdict,
-            // Parchment, bukan crimson — lihat catatan di atas.
-            color = if (benar) Accent else OnBackground,
+            style = MaterialTheme.typography.headlineMedium,
+            // Sengaja bukan warna merah: merah di atas latar gelap kontrasnya
+            // buruk, dan warnanya sudah dibawa lingkaran penanda di atas.
+            color = MaterialTheme.colorScheme.onBackground,
         )
 
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(6.dp))
 
         Text(
             "+${kreditDidapatDetik / 60} menit kredit",
-            style = Teks.isi,
-            color = if (benar) Accent else OnBackgroundDim,
+            style = MaterialTheme.typography.bodyLarge,
+            color = if (benar) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.onSurfaceVariant
+            },
         )
 
         Spacer(Modifier.height(Ukuran.antarBagian))
 
-        Kartu {
-            if (!benar) {
-                Text("JAWABANMU", style = Teks.label, color = Emphasis)
-                Spacer(Modifier.height(6.dp))
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            ),
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Column(Modifier.padding(Ukuran.paddingKartu)) {
+                if (!benar) {
+                    Text(
+                        "JAWABANMU",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = WarnaTambah.negatif,
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        "${opsiDipilih.optionId}. ${opsiDipilih.text}",
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+
+                    Spacer(Modifier.height(16.dp))
+
+                    Text(
+                        "JAWABAN TEPAT",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = WarnaTambah.positif,
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        "${opsiBenar.optionId}. ${opsiBenar.text}",
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
+
+                    Spacer(Modifier.height(16.dp))
+                }
+
                 Text(
-                    "${opsiDipilih.optionId}. ${opsiDipilih.text}",
-                    style = Teks.opsi,
-                    color = OnBackgroundDim,
+                    "PEMBAHASAN",
+                    style = MaterialTheme.typography.labelMedium,
                 )
-
-                Spacer(Modifier.height(Ukuran.paddingKartu))
-
-                Text("JAWABAN TEPAT", style = Teks.label, color = Accent)
-                Spacer(Modifier.height(6.dp))
+                Spacer(Modifier.height(4.dp))
                 Text(
-                    "${opsiBenar.optionId}. ${opsiBenar.text}",
-                    style = Teks.opsi,
-                    color = OnBackground,
+                    pembahasan.ifBlank { "Tidak ada pembahasan untuk butir ini." },
+                    style = MaterialTheme.typography.bodyMedium,
                 )
-
-                Spacer(Modifier.height(Ukuran.paddingKartu))
             }
-
-            Text("PEMBAHASAN", style = Teks.label, color = Accent)
-            Spacer(Modifier.height(6.dp))
-            Text(
-                pembahasan.ifBlank { "Tidak ada pembahasan untuk butir ini." },
-                style = Teks.isi,
-                color = OnBackground,
-            )
         }
 
         Spacer(Modifier.height(Ukuran.antarBagian))
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Text("Total kredit sekarang", style = Teks.isi, color = OnBackgroundDim)
-            Text(formatSisaKredit(totalKreditGerbangDetik), style = Teks.isi, color = Accent)
+            Text(
+                "Total kredit sekarang",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+                formatSisaKredit(totalKreditGerbangDetik),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary,
+            )
         }
 
         Spacer(Modifier.height(Ukuran.antarBagian))
 
-        TombolPrimer(
-            teks = when {
-                // "Soal berikutnya" akan bohong di soal terakhir — tidak ada
-                // soal berikutnya, gerbang langsung terbuka.
-                soalTerakhir -> "Selesai"
-                benar -> "Lanjut"
-                else -> "Soal berikutnya"
-            },
+        Button(
             onClick = onLanjut,
-        )
+            modifier = Modifier.fillMaxWidth().height(56.dp),
+        ) {
+            Text(
+                when {
+                    // "Soal berikutnya" akan bohong di soal terakhir.
+                    soalTerakhir -> "Selesai"
+                    benar -> "Lanjut"
+                    else -> "Soal berikutnya"
+                },
+                style = MaterialTheme.typography.titleMedium,
+            )
+        }
 
-        Spacer(Modifier.height(Ukuran.antarBagian))
+        Spacer(Modifier.height(32.dp))
     }
 }
 
-@Composable
-private fun PenandaHasil(benar: Boolean) {
-    Box(
-        modifier = Modifier
-            .size(72.dp)
-            .clip(CircleShape)
-            .background(if (benar) Accent else Emphasis)
-            .border(Ukuran.tebalGarisTombol, if (benar) Accent else Emphasis, CircleShape),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(
-            if (benar) "✓" else "✕",
-            style = Teks.verdict,
-            color = if (benar) OnAccent else OnBackground,
-            textAlign = TextAlign.Center,
-        )
-    }
-}
-
-@Preview(name = "Layar 7 — Benar", heightDp = 800)
+@Preview(name = "Umpan balik — benar", heightDp = 820)
 @Composable
 private fun PratinjauBenar() {
-    SoalduluTheme {
+    SoalduluTheme(paksaGelap = true) {
         LayarUmpanBalik(
             benar = true,
-            opsiDipilih = OpsiEntity(itemId = "itm-0001", optionId = "B", text = "Pilihan B", urutan = 1),
-            opsiBenar = OpsiEntity(itemId = "itm-0001", optionId = "B", text = "Pilihan B", urutan = 1),
+            opsiDipilih = OpsiEntity(itemId = "i", optionId = "B", text = "Pilihan B", urutan = 1),
+            opsiBenar = OpsiEntity(itemId = "i", optionId = "B", text = "Pilihan B", urutan = 1),
             pembahasan = "Paragraf kedua membahas dampak notifikasi terhadap konsentrasi.",
             kreditDidapatDetik = 180,
             totalKreditGerbangDetik = 780,
@@ -184,14 +205,14 @@ private fun PratinjauBenar() {
     }
 }
 
-@Preview(name = "Layar 8 — Belum tepat", heightDp = 800)
+@Preview(name = "Umpan balik — salah", heightDp = 820)
 @Composable
 private fun PratinjauSalah() {
-    SoalduluTheme {
+    SoalduluTheme(paksaGelap = false) {
         LayarUmpanBalik(
             benar = false,
-            opsiDipilih = OpsiEntity(itemId = "itm-0001", optionId = "C", text = "Pilihan C", urutan = 2),
-            opsiBenar = OpsiEntity(itemId = "itm-0001", optionId = "B", text = "Pilihan B", urutan = 1),
+            opsiDipilih = OpsiEntity(itemId = "i", optionId = "C", text = "Pilihan C", urutan = 2),
+            opsiBenar = OpsiEntity(itemId = "i", optionId = "B", text = "Pilihan B", urutan = 1),
             pembahasan = "Paragraf kedua membahas dampak notifikasi terhadap konsentrasi.",
             kreditDidapatDetik = 0,
             totalKreditGerbangDetik = 600,
