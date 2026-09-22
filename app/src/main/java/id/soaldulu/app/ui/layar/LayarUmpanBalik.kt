@@ -29,8 +29,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import id.soaldulu.app.GateConfig
 import id.soaldulu.app.data.OpsiEntity
 import id.soaldulu.app.ui.theme.SoalduluTheme
 import id.soaldulu.app.ui.theme.Ukuran
@@ -93,15 +95,31 @@ fun LayarUmpanBalik(
 
         Spacer(Modifier.height(6.dp))
 
+        // Benar tapi tanpa kredit hanya punya satu sebab: dijawab lebih cepat
+        // dari MIN_GENUINE_ANSWER_SECONDS. Tanpa penjelasan, "+0 menit"
+        // setelah "Benar" terlihat seperti aplikasinya rusak.
+        val terlaluCepat = benar && kreditDidapatDetik == 0
+
         Text(
             "+${kreditDidapatDetik / 60} menit kredit",
             style = MaterialTheme.typography.bodyLarge,
-            color = if (benar) {
+            color = if (benar && !terlaluCepat) {
                 MaterialTheme.colorScheme.primary
             } else {
                 MaterialTheme.colorScheme.onSurfaceVariant
             },
         )
+
+        if (terlaluCepat) {
+            Spacer(Modifier.height(6.dp))
+            Text(
+                "Dijawab kurang dari ${GateConfig.MIN_GENUINE_ANSWER_SECONDS} detik, jadi " +
+                    "dianggap menebak dan tidak mendapat kredit. Baca soalnya dulu.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+            )
+        }
 
         Spacer(Modifier.height(Ukuran.antarBagian))
 
