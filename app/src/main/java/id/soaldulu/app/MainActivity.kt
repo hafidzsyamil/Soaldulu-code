@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
@@ -69,7 +71,15 @@ enum class Layar {
 class MainActivity : ComponentActivity() {
 
     private val layar = mutableStateOf(Layar.WELCOME)
-    private val layarSebelumnya = mutableStateOf(Layar.DASHBOARD)
+
+    /**
+     * Riwayat layar untuk tombol Back.
+     *
+     * Perlu tumpukan sungguhan, bukan tabel tujuan tetap: Permission dan
+     * Terms masing-masing bisa dicapai dari dua arah, dan tabel tetap akan
+     * memulangkan ke tempat yang salah pada salah satunya.
+     */
+    private val tumpukan = mutableStateListOf<Layar>()
     private val status = mutableStateOf(StatusIzin())
     private val nama = mutableStateOf("")
     private val avatar = mutableIntStateOf(0)
@@ -127,17 +137,58 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /** Maju satu layar, menyimpan yang sekarang untuk tombol Back. */
+    private fun buka(tujuan: Layar) {
+        tumpukan.add(layar.value)
+        layar.value = tujuan
+    }
+
+    /** Mundur satu layar. false berarti tidak ada tujuan mundur. */
+    private fun kembali(): Boolean {
+        val sebelumnya = tumpukan.removeLastOrNull() ?: return false
+        layar.value = sebelumnya
+        return true
+    }
+
+    /**
+     * Pindah ke layar akar dan buang riwayatnya.
+     *
+     * Dipakai saat onboarding selesai: Back dari Dashboard harus keluar dari
+     * aplikasi, bukan kembali ke layar pengisian nama.
+     */
+    private fun gantiAkar(tujuan: Layar) {
+        tumpukan.clear()
+        layar.value = tujuan
+    }
+
     @Composable
     private fun IsiLayar() {
+        BackHandler(
+            // Dimatikan selama lembar avatar terbuka supaya Back menutup
+            // lembarnya lebih dulu, bukan melompati satu layar. Tumpukan
+            // kosong berarti Back memang seharusnya menutup aplikasi.
+            enabled = tumpukan.isNotEmpty() && !pilihAvatarTerbuka.value,
+        ) {
+            // Meninggalkan gerbang yang dibuka sendiri: jawaban dibuang dan
+            // tidak ada kredit, karena gerbang yang tidak selesai bukan data.
+            if (layar.value == Layar.KERJAKAN_SOAL) soalManual.value = null
+            kembali()
+        }
+
         when (layar.value) {
             Layar.WELCOME -> LayarWelcome(
-                onLanjut = { layar.value = Layar.PERMISSION },
+                onLanjut = { buka(Layar.PERMISSION) },
             )
 
             Layar.PERMISSION -> LayarPerizinan(
                 status = status.value,
                 onMinta = { mintaIzin(it) },
-                onLanjut = { layar.value = Layar.NAMA },
+                onLanjut = {
+                    // Permission juga bisa dibuka dari Settings. Kalau datang
+                    // dari sana, lanjut berarti kembali ke sana.
+                    if (tumpukan.lastOrNull() == Layar.SETTINGS) kembali()
+                    else buka(Layar.NAMA)
+                },
             )
 
             Layar.NAMA -> LayarNama(
@@ -145,7 +196,7 @@ class MainActivity : ComponentActivity() {
                 avatar = avatar.intValue,
                 onGantiAvatar = { pilihAvatarTerbuka.value = true },
                 onSelesai = { diisi -> simpanNama(diisi) },
-                onBukaSyarat = { bukaSyarat(Layar.NAMA) },
+                onBukaSyarat = { buka(Layar.SYARAT) },
             )
 
             Layar.PAKET_SOAL -> LayarPaketSoal(
@@ -153,13 +204,13 @@ class MainActivity : ComponentActivity() {
                 onPasang = { pasangPaketSoal() },
                 onLanjut = {
                     startForegroundService(Intent(this, GateWatchService::class.java))
-                    layar.value = Layar.DASHBOARD
+                    gantiAkar(Layar.DASHBOARD)
                 },
             )
 
             Layar.DASHBOARD -> LayarHome(
                 statistik = statistik.value,
-                onPengaturan = { layar.value = Layar.SETTINGS },
+                onPengaturan = { buka(Layar.SETTINGS) },
                 onKerjakanSoal = { mulaiGerbangManual() },
             )
 
@@ -175,15 +226,15 @@ class MainActivity : ComponentActivity() {
                 onGantiAvatar = { pilihAvatarTerbuka.value = true },
                 onUbahTema = { gelap -> setTema(gelap) },
                 onIkutSistem = { setTema(null) },
-                onPerizinan = { layar.value = Layar.PERMISSION },
-                onDataPrivasi = { bukaSyarat(Layar.SETTINGS) },
+                onPerizinan = { buka(Layar.PERMISSION) },
+                onDataPrivasi = { buka(Layar.SYARAT) },
                 onEkspor = { eksporLog() },
-                onLayarUji = { layar.value = Layar.SPIKE },
-                onKembali = { layar.value = Layar.DASHBOARD },
+                onLayarUji = { buka(Layar.SPIKE) },
+                onKembali = { kembali() },
             )
 
             Layar.SYARAT -> LayarSyarat(
-                onKembali = { layar.value = layarSebelumnya.value },
+                onKembali = { kembali() },
             )
 
             Layar.KERJAKAN_SOAL -> AlurGerbang(
@@ -209,7 +260,7 @@ class MainActivity : ComponentActivity() {
                     stopService(Intent(this, GateWatchService::class.java))
                 },
                 onMuatLog = { isiLog.value = SpikeLog.bacaBarisTerakhir(this) },
-                onKembali = { layar.value = Layar.SETTINGS },
+                onKembali = { kembali() },
             )
         }
     }
@@ -217,11 +268,6 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         segarkan()
-    }
-
-    private fun bukaSyarat(dari: Layar) {
-        layarSebelumnya.value = dari
-        layar.value = Layar.SYARAT
     }
 
     private fun segarkan() {
@@ -267,7 +313,7 @@ class MainActivity : ComponentActivity() {
 
             if (!rutePertamaSudahDitentukan) {
                 rutePertamaSudahDitentukan = true
-                layar.value = ruteAwal(namaTersimpan, paket != null)
+                gantiAkar(ruteAwal(namaTersimpan, paket != null))
             }
 
             // Jaring pengaman: kalau service pernah mati — dibunuh sistem, HP
@@ -294,7 +340,11 @@ class MainActivity : ComponentActivity() {
             // Menekan centang berarti menyetujui syarat penggunaan.
             Preferensi.simpanPersetujuan(this@MainActivity, true)
             nama.value = diisi
-            layar.value = if (repo.paketTerpasang() == null) Layar.PAKET_SOAL else Layar.DASHBOARD
+            if (repo.paketTerpasang() == null) {
+                buka(Layar.PAKET_SOAL)
+            } else {
+                gantiAkar(Layar.DASHBOARD)
+            }
         }
     }
 
@@ -322,7 +372,7 @@ class MainActivity : ComponentActivity() {
 
     private fun mulaiGerbangManual() {
         soalManual.value = null
-        layar.value = Layar.KERJAKAN_SOAL
+        buka(Layar.KERJAKAN_SOAL)
         lifecycleScope.launch {
             soalManual.value = repo.soalUntukGerbang(nama.value)
         }
@@ -336,7 +386,7 @@ class MainActivity : ComponentActivity() {
      * yang sangat berbeda.
      */
     private fun selesaikanGerbangManual(jawaban: List<JawabanGerbang>) {
-        layar.value = Layar.DASHBOARD
+        gantiAkar(Layar.DASHBOARD)
         soalManual.value = null
         if (jawaban.isEmpty()) return
 
