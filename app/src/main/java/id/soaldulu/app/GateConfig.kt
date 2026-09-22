@@ -107,10 +107,10 @@ object GateConfig {
     // ── PENELITIAN ──
     const val EXPORT_FILENAME_TEMPLATE = "soaldulu_log_%s.csv"
 
-    // SEDANG true UNTUK PENGEMBANGAN.
-    // WAJIB dikembalikan ke false sebelum APK dibagikan ke responden — ini
-    // yang membuka layar uji Fase 0 dari Settings.
-    const val DEV_MODE = true
+    // false: APK siap dibagikan ke responden (22 Sep 2026). Layar uji Fase 0
+    // tersembunyi, dan bank soal contoh tidak pernah dipakai.
+    // Ubah ke true hanya untuk pengembangan, dan kembalikan sebelum membagikan.
+    const val DEV_MODE = false
 }
 
 /**
