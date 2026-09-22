@@ -1,30 +1,27 @@
 package id.soaldulu.app.ui.layar
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import id.soaldulu.app.ui.theme.Judul
+import id.soaldulu.app.R
 import id.soaldulu.app.ui.theme.SoalduluTheme
 import id.soaldulu.app.ui.theme.Ukuran
 
@@ -85,44 +82,20 @@ fun LayarWelcome(
 }
 
 /**
- * Tanda aplikasi: monogram S di dalam lencana bersudut tumpul, dengan satu
- * palang di bawahnya sebagai gerbang.
- *
- * Digambar dengan Compose, bukan berkas gambar, supaya ikut warna tema —
- * terang maupun gelap — tanpa perlu dua versi aset.
+ * Logo aplikasi: dua lembar kertas bertumpuk, diambil apa adanya dari berkas
+ * desain (Project Syamil RNI.svg). Latarnya transparan, jadi cocok di tema
+ * terang maupun gelap. Logo yang sama menjadi ikon peluncur.
  */
 @Composable
 fun LogoSoaldulu(
-    ukuran: androidx.compose.ui.unit.Dp = 128.dp,
+    tinggi: Dp = 200.dp,
     modifier: Modifier = Modifier,
 ) {
-    Box(
-        modifier = modifier
-            .size(ukuran)
-            .clip(RoundedCornerShape(percent = 26))
-            .background(MaterialTheme.colorScheme.primaryContainer),
-        contentAlignment = Alignment.Center,
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                "S",
-                style = MaterialTheme.typography.displayLarge.copy(
-                    fontFamily = Judul,
-                    fontSize = ukuran.value.times(0.52f).sp,
-                ),
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-            )
-            Spacer(Modifier.height(ukuran * 0.04f))
-            // Palang gerbang: garis yang harus dilewati sebelum masuk.
-            Box(
-                Modifier
-                    .width(ukuran * 0.34f)
-                    .height(ukuran * 0.035f)
-                    .clip(RoundedCornerShape(50))
-                    .background(MaterialTheme.colorScheme.primary),
-            )
-        }
-    }
+    Image(
+        painter = painterResource(R.drawable.logo_soaldulu),
+        contentDescription = "Logo Soaldulu",
+        modifier = modifier.height(tinggi),
+    )
 }
 
 @Preview(name = "Welcome — gelap", heightDp = 780)
