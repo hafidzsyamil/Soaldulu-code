@@ -1,0 +1,4455 @@
+{
+  "schemaVersion": 1,
+  "packageId": "paket-snbt-1",
+  "packageName": "Paket SNBT 1 — Tujuh Subtes",
+  "version": "1.0.0",
+  "releasedAt": "2026-09-22",
+  "changelog": "Rilis awal: 105 butir buatan AI untuk tujuh subtes UTBK-SNBT 2026, 15 butir per subtes.",
+  "itemCount": 105,
+  "activeItemCount": 105,
+  "passages": [
+    {
+      "id": "psg-0001",
+      "title": "Mikroplastik di Perairan",
+      "text": "Mikroplastik adalah partikel plastik berukuran kurang dari lima milimeter. Partikel ini dapat berasal dari pecahan sampah plastik yang terurai oleh sinar matahari dan gelombang, atau dari produk yang sejak awal dibuat berukuran kecil, seperti butiran penggosok pada sabun cuci muka.\n\nKarena ukurannya sangat kecil, mikroplastik mudah tertelan oleh plankton dan ikan kecil. Partikel tersebut kemudian berpindah ke hewan yang lebih besar melalui rantai makanan. Dalam jangka panjang, terjadi akumulasi mikroplastik di tubuh ikan yang biasa dikonsumsi manusia.\n\nSejumlah penelitian menemukan mikroplastik pada garam dapur dan air minum kemasan. Dampaknya terhadap kesehatan manusia memang belum dipahami sepenuhnya, tetapi para peneliti sepakat bahwa mengurangi sampah plastik sejak dari sumbernya merupakan langkah yang paling masuk akal.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0002",
+      "title": "Bonus Demografi",
+      "text": "Bonus demografi adalah keadaan ketika jumlah penduduk usia produktif, yaitu 15 sampai 64 tahun, jauh lebih besar daripada jumlah penduduk usia nonproduktif. Pada masa ini, setiap orang yang bekerja menanggung lebih sedikit anak dan lansia dibandingkan masa sebelumnya.\n\nIndonesia diperkirakan berada dalam periode bonus demografi hingga sekitar pertengahan 2030-an. Periode ini sering disebut sebagai momentum karena tidak berlangsung selamanya. Setelah itu, proporsi penduduk lanjut usia akan terus meningkat.\n\nNamun, bonus demografi tidak otomatis membawa kesejahteraan. Jika penduduk usia produktif tidak memiliki pendidikan dan keterampilan yang memadai, atau lapangan kerja tidak tersedia, jumlah penduduk yang besar justru dapat menjadi beban.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0003",
+      "title": "Energi Panas Bumi",
+      "text": "Indonesia terletak di jalur Cincin Api Pasifik, deretan gunung api aktif yang mengelilingi Samudra Pasifik. Letak ini membuat Indonesia memiliki cadangan panas bumi yang sangat besar. Panas dari dalam bumi dapat dimanfaatkan untuk memutar turbin dan menghasilkan listrik.\n\nBerbeda dengan batu bara, panas bumi tergolong energi terbarukan karena panasnya terus dihasilkan oleh bumi. Pembangkit listrik tenaga panas bumi juga menghasilkan emisi karbon yang jauh lebih rendah.\n\nMeskipun demikian, pemanfaatannya tidak mudah. Biaya pengeboran eksplorasi mahal dan berisiko karena tidak semua sumur menghasilkan uap yang cukup. Selain itu, banyak sumber panas bumi berada di kawasan hutan lindung sehingga pembangunannya harus mempertimbangkan kelestarian lingkungan.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0004",
+      "title": "Literasi Digital",
+      "text": "(1) Literasi digital tidak hanya berarti kemampuan menggunakan gawai. (2) Lebih dari itu, literasi digital mencakup kemampuan menilai kebenaran informasi yang beredar di internet. (3) Menurut survei sebuah lembaga riset, banyak pengguna media sosial langsung membagikan berita tanpa membaca isinya terlebih dahulu. (4) Kebiasaan ini membuat berita bohong menyebar dengan sangat cepat sekali. (5) Oleh karena itu, sekolah perlu mengajarkan cara memeriksa sumber berita. (6) Siswa dapat dilatih membandingkan satu berita dengan berita dari media lain. (7) Harga paket data internet di Indonesia terus menurun dalam lima tahun terakhir.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0005",
+      "title": "Bank Sampah",
+      "text": "(1) Bank sampah adalah tempat mengumpulkan sampah yang sudah dipilah menurut jenisnya. (2) Warga yang menyetorkan sampah akan mendapatkan tabungan dalam bentuk uang. (3) Di kota kami, bank sampah pertama didirikan oleh ibu-ibu PKK pada tahun 2019. (4) Setiap hari Minggu, warga membawa botol plastik, kardus, dan kaleng bekas kesana. (5) Petugas kemudian menimbang dan mencatat berat setiap jenis sampah. (6) Hasil penjualan sampah itu, digunakan untuk membiayai kegiatan lingkungan.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0006",
+      "title": "Laporan Penelitian",
+      "text": "(1) Dalam penelitian ini membahas pengaruh durasi tidur terhadap konsentrasi siswa. (2) Data dikumpulkan melalui kuesioner yang diisi oleh 120 siswa kelas XII. (3) Meskipun sebagian besar responden tidur kurang dari tujuh jam, tetapi mereka merasa tetap dapat berkonsentrasi. (4) Hasil tersebut berbeda dengan temuan penelitian sebelumnya. (5) Peneliti menduga perbedaan itu muncul karena responden menilai konsentrasinya sendiri.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0007",
+      "title": "Wisata Danau",
+      "text": "(1) Setiap tahun, ribuan wisatawan datang untuk menikmati keindahan danau Toba. (2) Danau vulkanik terbesar di Indonesia itu terbentuk dari letusan gunung api purba. (3) Pemerintah daerah terus meningkatkan kualitas fasilitas wisata di sekitar danau. (4) Namun, sebagian warga khawatir pembangunan hotel yang berlebihan akan mencemari air danau. (5) Mereka meminta pemerintah melakukan analisa dampak lingkungan sebelum memberikan izin.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0008",
+      "title": "Membuat Roti",
+      "text": "(1) Setelah itu, adonan didiamkan selama satu jam hingga mengembang. (2) Pertama, campurkan tepung terigu, ragi, gula, dan air hangat dalam wadah. (3) Terakhir, roti dipanggang dalam oven selama dua puluh menit. (4) Adonan yang sudah mengembang kemudian dibentuk bulat-bulat. (5) Aduk semua bahan hingga menjadi adonan yang kalis.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0009",
+      "title": "Tidur dan Ingatan",
+      "text": "Selama ini, tidur sering dianggap sebagai waktu ketika otak beristirahat total. Penelitian neurosains beberapa dekade terakhir menunjukkan hal sebaliknya. Saat seseorang tidur, otak tetap bekerja aktif mengolah informasi yang diterima sepanjang hari.\n\nSalah satu proses penting yang terjadi adalah konsolidasi memori, yaitu penguatan ingatan jangka pendek menjadi ingatan jangka panjang. Proses ini banyak berlangsung pada tahap tidur nyenyak. Karena itu, siswa yang begadang untuk belajar semalaman justru berisiko kehilangan sebagian materi yang sudah dipelajarinya.\n\nTemuan ini tidak berarti bahwa semakin lama tidur, semakin baik ingatan seseorang. Yang lebih menentukan adalah kualitas dan keteraturan tidur. Bagi remaja, tidur delapan hingga sepuluh jam dengan jadwal yang teratur dinilai lebih bermanfaat daripada tidur sangat lama pada akhir pekan untuk \"membayar\" kurang tidur selama sepekan.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0010",
+      "title": "Bahasa Daerah yang Terancam",
+      "text": "Indonesia memiliki lebih dari 700 bahasa daerah. Namun, banyak di antaranya kini terancam punah karena jumlah penuturnya terus berkurang. Sebuah bahasa dikatakan terancam apabila anak-anak tidak lagi mempelajarinya sebagai bahasa pertama di rumah.\n\nPenyebabnya beragam. Perpindahan penduduk ke kota, perkawinan antarsuku, dan anggapan bahwa bahasa daerah kurang bergengsi membuat banyak orang tua memilih berbicara dalam bahasa Indonesia kepada anak-anaknya. Keputusan ini sering diambil dengan niat baik, yaitu agar anak lebih mudah bersekolah.\n\nHilangnya sebuah bahasa berarti hilangnya pula pengetahuan yang tersimpan di dalamnya, misalnya nama-nama tumbuhan obat, cerita rakyat, dan cara masyarakat memahami alamnya. Karena itu, sejumlah daerah mulai memasukkan bahasa daerah ke dalam muatan lokal di sekolah dan mengadakan lomba bercerita dalam bahasa ibu.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0011",
+      "title": "Tiga Malam (Cuplikan Cerpen)",
+      "text": "Sudah tiga malam Nara tidak menyentuh gawainya setelah pukul sembilan. Ponsel itu ia titipkan kepada ibunya, seperti orang menitipkan kunci rumah sebelum bepergian jauh.\n\nMalam pertama terasa panjang. Tangannya berkali-kali meraba saku yang kosong, dan setiap bunyi dari dapur membuatnya menoleh, seolah-olah itu nada pesan masuk. Ia membuka buku latihan soal, membaca satu nomor, lalu mendapati dirinya melamun memikirkan apa yang sedang ramai dibicarakan teman-temannya.\n\nMalam ketiga berbeda. Nara menyelesaikan dua puluh soal tanpa sekali pun menoleh ke arah dapur. Ketika ibunya mengetuk pintu dan bertanya apakah ia ingin ponselnya dikembalikan, Nara menggeleng. \"Besok saja, Bu,\" katanya. Ia sendiri terkejut mendengar suaranya begitu tenang.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0012",
+      "title": "Seberapa Hijau Kendaraan Listrik?",
+      "text": "Kendaraan listrik sering disebut ramah lingkungan karena tidak mengeluarkan asap dari knalpot. Anggapan ini benar ketika kendaraan sedang digunakan di jalan. Namun, untuk menilai dampak lingkungan secara utuh, para peneliti menggunakan analisis daur hidup, yaitu perhitungan dampak sejak bahan baku ditambang hingga kendaraan tidak lagi dipakai.\n\nDari sudut pandang itu, gambarannya menjadi lebih rumit. Pembuatan baterai membutuhkan nikel, litium, dan kobalt yang penambangannya dapat merusak lingkungan jika tidak dikelola dengan baik. Selain itu, jika listrik untuk mengisi baterai berasal dari pembangkit batu bara, sebagian emisi hanya berpindah dari knalpot ke cerobong pembangkit.\n\nMeski begitu, banyak studi menunjukkan bahwa sepanjang umur pakainya, kendaraan listrik umumnya tetap menghasilkan emisi lebih rendah daripada kendaraan berbahan bakar minyak. Selisihnya makin besar apabila listrik dihasilkan dari sumber energi terbarukan.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0013",
+      "title": "Sampah di Jalur Pendakian",
+      "text": "Dalam sepuluh tahun terakhir, pendakian gunung menjadi kegiatan yang sangat populer di kalangan anak muda. Foto-foto puncak gunung yang indah di media sosial mendorong banyak orang untuk mencoba mendaki, termasuk mereka yang belum pernah berkegiatan di alam bebas.\n\nLonjakan jumlah pendaki membawa persoalan baru. Di beberapa jalur pendakian, petugas menemukan tumpukan sampah plastik bekas makanan dan minuman yang ditinggalkan begitu saja. Sampah tersebut sulit diangkut turun karena medannya berat.\n\nSejumlah taman nasional kemudian menerapkan pemeriksaan barang bawaan. Sebelum mendaki, pendaki mencatat setiap barang yang berpotensi menjadi sampah. Saat turun, barang-barang itu diperiksa kembali, dan pendaki yang tidak membawa pulang sampahnya dikenai sanksi. Aturan ini dilaporkan mengurangi sampah di jalur pendakian, meskipun sebagian pendaki menganggapnya merepotkan.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0014",
+      "title": "Urban Heat Islands",
+      "text": "Cities are often several degrees warmer than the countryside around them. This effect, known as the urban heat island, happens because concrete, asphalt, and dark rooftops absorb sunlight during the day and release the heat slowly at night. Cities also have fewer trees, which normally cool the air by providing shade and releasing water vapour.\n\nThe consequences go beyond discomfort. Higher temperatures increase the demand for air conditioning, which raises electricity use and, in many places, air pollution. During heatwaves, elderly people and outdoor workers face serious health risks.\n\nSome cities are fighting back with simple measures. Painting roofs white reflects more sunlight, while planting trees along streets and creating small parks can lower local temperatures noticeably. These solutions are relatively cheap, but they require long-term commitment from both governments and residents.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0015",
+      "title": "Why Cramming Fails",
+      "text": "Many students prepare for exams by studying for long hours the night before. Although this strategy, often called cramming, can help students remember information for a short time, research suggests it is not the most effective way to learn.\n\nPsychologists have found that spreading study sessions over several days leads to better long-term memory than studying the same amount of material in one long session. This is known as the spacing effect. Each time we return to information after a break, our brain has to work a little harder to recall it, and this effort makes the memory stronger.\n\nTeachers can use this finding by briefly reviewing earlier topics at the start of each lesson. Students, meanwhile, can create a simple study schedule that revisits each subject several times before the exam instead of leaving everything to the last minute.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0016",
+      "title": "A Message from the Green School Club",
+      "text": "Dear members of the Green School Club,\n\nThank you to everyone who joined last Saturday's clean-up at the river behind our school. Together, we collected more than forty bags of rubbish, most of which were plastic bottles and food wrappers.\n\nHowever, our work is not finished. The rubbish will come back unless people change their habits. Starting next month, the club will place labelled bins for plastic, paper, and food waste in every corridor. We need volunteers to help explain the new system to other students during break time.\n\nIf you are interested, please sign up at the club room before Friday. Snacks will be provided at the first volunteer meeting!\n\nBest regards,\nDita\nClub Coordinator",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0017",
+      "title": "Guardians of the Coast",
+      "text": "Mangrove forests grow along tropical coastlines where land meets the sea. Their tangled roots, which rise above the mud, slow down waves and trap sediment. As a result, mangroves protect coastal villages from erosion and reduce the damage caused by storms.\n\nMangroves are also valuable nurseries for marine life. Young fish, crabs, and shrimp shelter among the roots before moving out to the open sea. Many coastal families depend on these animals for food and income.\n\nDespite these benefits, large areas of mangrove forest have been cleared to make room for fish farms, ports, and housing. Once removed, mangroves are slow to recover. Replanting projects have increased in recent years, but experts warn that planting seedlings in the wrong location often leads to failure, so local knowledge of tides and soil is essential.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0018",
+      "title": "The Phone on Your Desk",
+      "text": "Many teenagers keep their phones within reach while they study. Even when the phone is silent and face down, its presence may affect concentration. In one experiment, students who left their phones in another room performed better on memory and problem-solving tasks than students who kept their phones on the desk.\n\nResearchers believe that part of our attention is used to resist the urge to check the phone. This mental effort happens without us noticing, but it reduces the brainpower available for the task in front of us.\n\nThe good news is that the solution is simple. Putting the phone in a bag, in a drawer, or in another room for a fixed period can make studying more efficient. Some students also find it helpful to reward themselves with a short break to check messages after completing a set amount of work.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0019",
+      "title": "Paket Internet",
+      "text": "Sebuah operator seluler menawarkan tiga paket internet bulanan berikut.\n\n• Paket Hemat: Rp45.000 untuk kuota 15 GB\n• Paket Pelajar: Rp60.000 untuk kuota 25 GB\n• Paket Jumbo: Rp100.000 untuk kuota 50 GB\n\nPelanggan hanya dapat memilih satu paket per bulan. Jika kuota habis sebelum akhir bulan, pelanggan dapat membeli kuota tambahan seharga Rp5.000 per GB.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0020",
+      "title": "Menabung untuk Laptop",
+      "text": "Sinta ingin membeli laptop seharga Rp7.200.000. Saat ini ia sudah memiliki tabungan Rp1.500.000. Setiap bulan ia menyisihkan Rp450.000 dari hasil berjualan kue secara daring. Toko tempat ia akan membeli laptop memberikan potongan harga 10% untuk pembeli berstatus pelajar.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0021",
+      "title": "Dua Kereta",
+      "text": "Jarak kota A ke kota B adalah 240 km. Kereta Ekspres berangkat dari kota A pukul 07.00 dengan kecepatan rata-rata 80 km/jam. Kereta Ekonomi berangkat dari kota A pukul 06.00 dengan kecepatan rata-rata 60 km/jam. Kedua kereta menuju kota B melalui jalur yang sama tanpa berhenti.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0022",
+      "title": "Promo Toko Buku",
+      "text": "Sebuah toko buku mengadakan promo akhir tahun.\n\n• Promo 1: diskon 25% untuk semua buku\n• Promo 2: beli 3 buku, bayar 2 buku (buku termurah gratis)\n\nPembeli hanya boleh memilih satu promo. Doni ingin membeli tiga buku seharga Rp80.000, Rp60.000, dan Rp40.000.",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "psg-0023",
+      "title": "Catatan Latihan Soal",
+      "text": "Ardi mencatat banyak soal latihan UTBK yang ia kerjakan selama lima hari.\n\n• Senin: 12 soal\n• Selasa: 18 soal\n• Rabu: 15 soal\n• Kamis: 9 soal\n• Jumat: 21 soal",
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "itm-0001",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_UMUM",
+      "passageId": null,
+      "stem": "Semua peserta olimpiade sains di SMA Harapan mengikuti kelas tambahan pada hari Sabtu. Sebagian siswa yang mengikuti kelas tambahan pada hari Sabtu adalah anggota klub robotik.\n\nSimpulan yang PASTI benar berdasarkan kedua pernyataan tersebut adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Semua anggota klub robotik adalah peserta olimpiade sains."
+        },
+        {
+          "id": "B",
+          "text": "Sebagian peserta olimpiade sains adalah anggota klub robotik."
+        },
+        {
+          "id": "C",
+          "text": "Semua peserta olimpiade sains adalah anggota klub robotik."
+        },
+        {
+          "id": "D",
+          "text": "Sebagian siswa yang mengikuti kelas tambahan hari Sabtu bukan peserta olimpiade sains."
+        },
+        {
+          "id": "E",
+          "text": "Tidak dapat ditarik simpulan pasti tentang hubungan peserta olimpiade sains dan anggota klub robotik."
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Anggota klub robotik yang ikut kelas Sabtu bisa saja seluruhnya bukan peserta olimpiade, bisa juga sebagian peserta olimpiade. Kedua premis tidak menghubungkan kedua kelompok itu secara pasti, jadi tidak ada simpulan pasti tentang hubungan keduanya.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0002",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_UMUM",
+      "passageId": null,
+      "stem": "Jika hujan turun deras, jalan menuju sekolah tergenang. Jika jalan menuju sekolah tergenang, bus sekolah datang terlambat. Hari ini bus sekolah datang tepat waktu.\n\nSimpulan yang tepat adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Hari ini hujan tidak turun deras."
+        },
+        {
+          "id": "B",
+          "text": "Hari ini hujan turun deras, tetapi jalan tidak tergenang."
+        },
+        {
+          "id": "C",
+          "text": "Hari ini jalan menuju sekolah tergenang."
+        },
+        {
+          "id": "D",
+          "text": "Hari ini hujan turun, tetapi tidak deras."
+        },
+        {
+          "id": "E",
+          "text": "Bus sekolah tidak pernah terlambat jika tidak hujan."
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Rantai premisnya: hujan deras → jalan tergenang → bus terlambat. Bus tidak terlambat, jadi jalan tidak tergenang, dan karena itu hujan tidak turun deras (modus tollens). Apakah turun hujan ringan atau tidak sama sekali tidak bisa dipastikan.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0003",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_UMUM",
+      "passageId": null,
+      "stem": "Setiap siswa yang lulus seleksi tahap pertama wajib mengikuti wawancara. Tidak ada siswa kelas X yang mengikuti wawancara. Dimas adalah siswa kelas X.\n\nSimpulan yang tepat tentang Dimas adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Dimas lulus seleksi tahap pertama, tetapi tidak mengikuti wawancara."
+        },
+        {
+          "id": "B",
+          "text": "Dimas tidak lulus seleksi tahap pertama."
+        },
+        {
+          "id": "C",
+          "text": "Dimas mengikuti wawancara."
+        },
+        {
+          "id": "D",
+          "text": "Dimas belum mendaftar seleksi."
+        },
+        {
+          "id": "E",
+          "text": "Dimas akan mengikuti seleksi tahun depan."
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Dimas siswa kelas X, jadi ia tidak mengikuti wawancara. Semua yang lulus tahap pertama pasti wawancara, maka Dimas tidak lulus tahap pertama. Apakah ia mendaftar atau tidak, premis tidak menjelaskannya.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0004",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_UMUM",
+      "passageId": null,
+      "stem": "Pada hari Senin, Rani belajar di perpustakaan atau di rumah, tetapi tidak keduanya. Jika Rani belajar di perpustakaan, ia meminjam buku. Senin ini Rani tidak meminjam buku.\n\nSimpulan yang tepat adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Senin ini Rani belajar di rumah."
+        },
+        {
+          "id": "B",
+          "text": "Senin ini Rani belajar di perpustakaan."
+        },
+        {
+          "id": "C",
+          "text": "Senin ini Rani tidak belajar sama sekali."
+        },
+        {
+          "id": "D",
+          "text": "Senin ini Rani belajar di rumah dan meminjam buku."
+        },
+        {
+          "id": "E",
+          "text": "Rani tidak pernah meminjam buku saat belajar di rumah."
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Rani tidak meminjam buku, jadi ia tidak belajar di perpustakaan. Karena pilihannya hanya perpustakaan atau rumah, Senin ini ia belajar di rumah.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0005",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_UMUM",
+      "passageId": null,
+      "stem": "Lima pelari, yaitu P, Q, R, S, dan T, mencapai garis finis pada waktu yang berbeda-beda.\n• Q finis sebelum R.\n• R finis sebelum P.\n• S finis tepat setelah P.\n• T finis paling akhir.\n\nPelari yang finis di urutan kedua adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "P"
+        },
+        {
+          "id": "B",
+          "text": "Q"
+        },
+        {
+          "id": "C",
+          "text": "R"
+        },
+        {
+          "id": "D",
+          "text": "S"
+        },
+        {
+          "id": "E",
+          "text": "T"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "T di urutan kelima. P dan S harus berurutan, dan Q serta R harus sebelum P, jadi P dan S berada di urutan ketiga dan keempat. Q sebelum R, sehingga urutannya Q, R, P, S, T. Urutan kedua adalah R.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0006",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_UMUM",
+      "passageId": null,
+      "stem": "Sebuah survei di tiga kota menemukan bahwa siswa yang tidur lebih dari tujuh jam per malam rata-rata memperoleh nilai ujian lebih tinggi daripada siswa yang tidur kurang dari enam jam. Peneliti menyimpulkan bahwa tidur yang cukup meningkatkan prestasi belajar.\n\nPernyataan yang paling MEMPERKUAT simpulan peneliti adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Siswa yang tidur lebih lama cenderung berasal dari keluarga berpenghasilan lebih tinggi."
+        },
+        {
+          "id": "B",
+          "text": "Dalam eksperimen terkontrol, siswa yang diminta menambah jam tidur selama sebulan mengalami kenaikan nilai dibandingkan kelompok yang jam tidurnya tetap."
+        },
+        {
+          "id": "C",
+          "text": "Sebagian siswa yang tidur kurang dari enam jam tetap memperoleh nilai tinggi."
+        },
+        {
+          "id": "D",
+          "text": "Survei dilakukan pada bulan ujian ketika banyak siswa begadang."
+        },
+        {
+          "id": "E",
+          "text": "Nilai ujian di ketiga kota tersebut dihitung dengan cara yang berbeda."
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Survei hanya menunjukkan hubungan. Eksperimen terkontrol yang mengubah jam tidur lalu melihat nilai naik menunjukkan hubungan sebab-akibat, sehingga paling memperkuat simpulan. Penghasilan keluarga justru memberi penjelasan lain yang melemahkan.",
+      "cognitiveLevel": "C5",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0007",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_UMUM",
+      "passageId": null,
+      "stem": "Setelah kantin sekolah berhenti menjual minuman bersoda pada awal semester, jumlah siswa yang mengeluh sakit gigi ke UKS turun 40% dibandingkan semester sebelumnya. Kepala sekolah menyimpulkan bahwa penghentian penjualan minuman bersoda menurunkan keluhan sakit gigi.\n\nPernyataan yang paling MELEMAHKAN simpulan tersebut adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Pada awal semester yang sama, puskesmas setempat mengadakan pemeriksaan dan perawatan gigi gratis untuk seluruh siswa sekolah itu."
+        },
+        {
+          "id": "B",
+          "text": "Minuman bersoda mengandung gula dalam jumlah tinggi."
+        },
+        {
+          "id": "C",
+          "text": "Kantin tetap menjual air mineral dan jus buah."
+        },
+        {
+          "id": "D",
+          "text": "Jumlah siswa di sekolah tersebut tidak berubah dibandingkan semester sebelumnya."
+        },
+        {
+          "id": "E",
+          "text": "Keluhan sakit gigi paling banyak dilaporkan oleh siswa kelas X."
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Perawatan gigi gratis pada waktu yang sama adalah penyebab lain yang juga bisa menurunkan keluhan. Adanya penjelasan lain ini membuat simpulan kepala sekolah paling lemah.",
+      "cognitiveLevel": "C5",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0008",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_UMUM",
+      "passageId": null,
+      "stem": "Di sebuah kebun percobaan, lima petak tanaman cabai diberi pupuk organik jenis K dan lima petak lain tidak diberi pupuk. Kondisi tanah, air, dan cahaya di kesepuluh petak dibuat sama. Pada kelima petak yang diberi pupuk K, hasil panen lebih tinggi daripada petak tanpa pupuk.\n\nSimpulan yang paling tepat adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Pupuk K kemungkinan besar meningkatkan hasil panen cabai pada kondisi seperti di kebun tersebut."
+        },
+        {
+          "id": "B",
+          "text": "Pupuk K pasti meningkatkan hasil panen semua jenis tanaman."
+        },
+        {
+          "id": "C",
+          "text": "Tanaman cabai tidak dapat tumbuh tanpa pupuk."
+        },
+        {
+          "id": "D",
+          "text": "Pupuk organik selalu lebih baik daripada pupuk kimia."
+        },
+        {
+          "id": "E",
+          "text": "Hasil panen cabai hanya ditentukan oleh jenis pupuk."
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Percobaan hanya pada cabai dan pada kondisi tertentu, jadi simpulan yang sah terbatas pada itu. Pilihan lain menggeneralisasi berlebihan atau tidak didukung data.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0009",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_UMUM",
+      "passageId": null,
+      "stem": "Setiap kali Pak Arif memarkir mobilnya di bawah pohon mangga pada malam hari, keesokan paginya kaca mobil kotor oleh getah dan daun. Pada malam-malam ia memarkir mobil di garasi, kaca mobil tetap bersih. Rabu pagi ini kaca mobil Pak Arif kotor oleh getah dan daun.\n\nSimpulan yang paling mungkin adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Selasa malam Pak Arif memarkir mobilnya di garasi."
+        },
+        {
+          "id": "B",
+          "text": "Selasa malam Pak Arif memarkir mobilnya di bawah pohon mangga."
+        },
+        {
+          "id": "C",
+          "text": "Pohon mangga di dekat rumah Pak Arif sedang berbuah."
+        },
+        {
+          "id": "D",
+          "text": "Pak Arif tidak pernah memarkir mobil di garasi."
+        },
+        {
+          "id": "E",
+          "text": "Kaca mobil Pak Arif akan tetap kotor sampai Kamis."
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Pola yang teramati: kaca kotor hanya muncul setelah mobil diparkir di bawah pohon mangga pada malam sebelumnya. Maka yang paling mungkin, Selasa malam mobil diparkir di bawah pohon mangga.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0010",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_UMUM",
+      "passageId": null,
+      "stem": "Sebuah toko buku mencatat bahwa penjualan buku latihan soal UTBK selalu meningkat tajam dari Januari hingga April, lalu turun drastis mulai pertengahan Mei.\n\nPenjelasan yang paling mungkin untuk pola tersebut adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Harga buku latihan soal selalu naik setiap bulan Mei."
+        },
+        {
+          "id": "B",
+          "text": "Toko buku tersebut tutup setiap bulan Mei."
+        },
+        {
+          "id": "C",
+          "text": "Siswa lebih menyukai novel daripada buku latihan."
+        },
+        {
+          "id": "D",
+          "text": "Penerbit berhenti mencetak buku latihan soal setiap tahun."
+        },
+        {
+          "id": "E",
+          "text": "UTBK umumnya dilaksanakan sekitar akhir April hingga awal Mei, sehingga kebutuhan buku latihan menurun setelah ujian selesai."
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Penjualan naik menjelang ujian dan turun setelahnya. Jadwal ujian menjelaskan pola naik-turun itu sekaligus; pilihan lain tidak menjelaskan kenaikan pada Januari–April.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0011",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_UMUM",
+      "passageId": null,
+      "stem": "Perhatikan barisan bilangan berikut.\n\n3, 6, 11, 18, 27, …\n\nBilangan berikutnya adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "36"
+        },
+        {
+          "id": "B",
+          "text": "37"
+        },
+        {
+          "id": "C",
+          "text": "38"
+        },
+        {
+          "id": "D",
+          "text": "39"
+        },
+        {
+          "id": "E",
+          "text": "40"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Selisih antarsuku bertambah 2: +3, +5, +7, +9. Selisih berikutnya +11, sehingga 27 + 11 = 38.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0012",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_UMUM",
+      "passageId": null,
+      "stem": "Perhatikan barisan bilangan berikut.\n\n2, 6, 3, 9, 6, 18, 15, …\n\nBilangan berikutnya adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "36"
+        },
+        {
+          "id": "B",
+          "text": "39"
+        },
+        {
+          "id": "C",
+          "text": "42"
+        },
+        {
+          "id": "D",
+          "text": "45"
+        },
+        {
+          "id": "E",
+          "text": "48"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Polanya bergantian dikali 3 lalu dikurangi 3: 2×3 = 6, 6−3 = 3, 3×3 = 9, 9−3 = 6, 6×3 = 18, 18−3 = 15. Berikutnya 15×3 = 45.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0013",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_UMUM",
+      "passageId": null,
+      "stem": "Perhatikan barisan huruf berikut.\n\nA, C, F, J, O, …\n\nHuruf berikutnya adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "T"
+        },
+        {
+          "id": "B",
+          "text": "U"
+        },
+        {
+          "id": "C",
+          "text": "V"
+        },
+        {
+          "id": "D",
+          "text": "W"
+        },
+        {
+          "id": "E",
+          "text": "X"
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Urutan huruf dalam alfabet: A = 1, C = 3, F = 6, J = 10, O = 15. Lompatannya +2, +3, +4, +5, jadi berikutnya +6: 15 + 6 = 21, yaitu U.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0014",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_UMUM",
+      "passageId": null,
+      "stem": "Harga 3 buku tulis dan 2 pensil adalah Rp21.000. Harga 2 buku tulis dan 3 pensil adalah Rp19.000.\n\nHarga 1 buku tulis dan 1 pensil adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Rp6.500"
+        },
+        {
+          "id": "B",
+          "text": "Rp7.000"
+        },
+        {
+          "id": "C",
+          "text": "Rp7.500"
+        },
+        {
+          "id": "D",
+          "text": "Rp8.000"
+        },
+        {
+          "id": "E",
+          "text": "Rp8.500"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Jumlahkan kedua persamaan: 5 buku + 5 pensil = Rp40.000, sehingga 1 buku + 1 pensil = Rp8.000. (Harga masing-masing: buku Rp5.000, pensil Rp3.000.)",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0015",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_UMUM",
+      "passageId": null,
+      "stem": "Rata-rata nilai 5 siswa adalah 76. Setelah seorang siswa lain bergabung, rata-rata nilai keenam siswa menjadi 78.\n\nNilai siswa yang baru bergabung adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "80"
+        },
+        {
+          "id": "B",
+          "text": "82"
+        },
+        {
+          "id": "C",
+          "text": "84"
+        },
+        {
+          "id": "D",
+          "text": "86"
+        },
+        {
+          "id": "E",
+          "text": "88"
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Jumlah nilai 5 siswa = 5 × 76 = 380. Jumlah nilai 6 siswa = 6 × 78 = 468. Nilai siswa baru = 468 − 380 = 88.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0016",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_KUANTITATIF",
+      "passageId": null,
+      "stem": "Jika 2x + 5 = 17, nilai 3x − 4 adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "12"
+        },
+        {
+          "id": "B",
+          "text": "14"
+        },
+        {
+          "id": "C",
+          "text": "16"
+        },
+        {
+          "id": "D",
+          "text": "18"
+        },
+        {
+          "id": "E",
+          "text": "20"
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "2x = 12, jadi x = 6. Maka 3x − 4 = 18 − 4 = 14.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0017",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_KUANTITATIF",
+      "passageId": null,
+      "stem": "Kelipatan persekutuan terkecil (KPK) dari 12, 18, dan 30 adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "60"
+        },
+        {
+          "id": "B",
+          "text": "90"
+        },
+        {
+          "id": "C",
+          "text": "120"
+        },
+        {
+          "id": "D",
+          "text": "180"
+        },
+        {
+          "id": "E",
+          "text": "360"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "12 = 2²·3, 18 = 2·3², 30 = 2·3·5. KPK mengambil pangkat tertinggi tiap faktor: 2²·3²·5 = 180.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0018",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_KUANTITATIF",
+      "passageId": null,
+      "stem": "Dua dadu bermata enam dilempar bersamaan satu kali. Peluang jumlah mata dadu yang muncul sama dengan 8 adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "1/12"
+        },
+        {
+          "id": "B",
+          "text": "1/9"
+        },
+        {
+          "id": "C",
+          "text": "5/36"
+        },
+        {
+          "id": "D",
+          "text": "1/6"
+        },
+        {
+          "id": "E",
+          "text": "7/36"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Pasangan yang berjumlah 8: (2,6), (3,5), (4,4), (5,3), (6,2), ada 5 dari 36 kemungkinan. Peluangnya 5/36.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0019",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_KUANTITATIF",
+      "passageId": null,
+      "stem": "Keliling sebuah persegi panjang adalah 36 cm dan panjangnya dua kali lebarnya. Luas persegi panjang tersebut adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "48 cm²"
+        },
+        {
+          "id": "B",
+          "text": "54 cm²"
+        },
+        {
+          "id": "C",
+          "text": "60 cm²"
+        },
+        {
+          "id": "D",
+          "text": "64 cm²"
+        },
+        {
+          "id": "E",
+          "text": "72 cm²"
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Misalkan lebar l, panjang 2l. Keliling 2(2l + l) = 6l = 36, jadi l = 6 cm dan panjang 12 cm. Luas = 12 × 6 = 72 cm².",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0020",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_KUANTITATIF",
+      "passageId": null,
+      "stem": "P = 25% dari 80\nQ = 20% dari 100\n\nHubungan yang tepat antara P dan Q adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "P > Q"
+        },
+        {
+          "id": "B",
+          "text": "P < Q"
+        },
+        {
+          "id": "C",
+          "text": "P = Q"
+        },
+        {
+          "id": "D",
+          "text": "Informasi yang diberikan tidak cukup untuk memutuskan hubungan P dan Q"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "P = 0,25 × 80 = 20 dan Q = 0,20 × 100 = 20. Jadi P = Q.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0021",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_KUANTITATIF",
+      "passageId": null,
+      "stem": "x adalah bilangan real positif.\n\nP = x²\nQ = x\n\nHubungan yang tepat antara P dan Q adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "P > Q"
+        },
+        {
+          "id": "B",
+          "text": "P < Q"
+        },
+        {
+          "id": "C",
+          "text": "P = Q"
+        },
+        {
+          "id": "D",
+          "text": "Informasi yang diberikan tidak cukup untuk memutuskan hubungan P dan Q"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Untuk x = 2, P = 4 > Q = 2. Untuk x = 1/2, P = 1/4 < Q = 1/2. Untuk x = 1, P = Q. Hubungannya bergantung pada nilai x, jadi informasinya tidak cukup.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0022",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_KUANTITATIF",
+      "passageId": null,
+      "stem": "Jika a + b = 7 dan ab = 10, nilai a² + b² adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "29"
+        },
+        {
+          "id": "B",
+          "text": "30"
+        },
+        {
+          "id": "C",
+          "text": "34"
+        },
+        {
+          "id": "D",
+          "text": "39"
+        },
+        {
+          "id": "E",
+          "text": "49"
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "a² + b² = (a + b)² − 2ab = 49 − 20 = 29.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0023",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_KUANTITATIF",
+      "passageId": null,
+      "stem": "Jumlah semua bilangan bulat dari 1 sampai 50 yang habis dibagi 3 adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "399"
+        },
+        {
+          "id": "B",
+          "text": "408"
+        },
+        {
+          "id": "C",
+          "text": "417"
+        },
+        {
+          "id": "D",
+          "text": "425"
+        },
+        {
+          "id": "E",
+          "text": "459"
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Bilangannya 3, 6, …, 48, yaitu 3 × (1 + 2 + … + 16). Jumlah 1 sampai 16 = 136, jadi totalnya 3 × 136 = 408.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0024",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_KUANTITATIF",
+      "passageId": null,
+      "stem": "Data nilai ulangan sembilan siswa: 6, 7, 7, 8, 8, 8, 9, 10, x. Jika rata-rata nilai kesembilan siswa adalah 8, nilai x adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "5"
+        },
+        {
+          "id": "B",
+          "text": "6"
+        },
+        {
+          "id": "C",
+          "text": "7"
+        },
+        {
+          "id": "D",
+          "text": "8"
+        },
+        {
+          "id": "E",
+          "text": "9"
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Jumlah seluruh nilai = 9 × 8 = 72. Jumlah delapan nilai yang diketahui = 63. Jadi x = 72 − 63 = 9.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0025",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_KUANTITATIF",
+      "passageId": null,
+      "stem": "Sebuah segitiga siku-siku memiliki sisi siku-siku 9 cm dan 12 cm. Keliling segitiga tersebut adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "27 cm"
+        },
+        {
+          "id": "B",
+          "text": "30 cm"
+        },
+        {
+          "id": "C",
+          "text": "33 cm"
+        },
+        {
+          "id": "D",
+          "text": "36 cm"
+        },
+        {
+          "id": "E",
+          "text": "42 cm"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Sisi miring = √(9² + 12²) = √225 = 15 cm. Keliling = 9 + 12 + 15 = 36 cm.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0026",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_KUANTITATIF",
+      "passageId": null,
+      "stem": "Harga sebuah tas dinaikkan 20%, lalu beberapa minggu kemudian harga barunya diturunkan 20%. Dibandingkan harga semula, harga akhir tas tersebut…",
+      "options": [
+        {
+          "id": "A",
+          "text": "turun 4%"
+        },
+        {
+          "id": "B",
+          "text": "naik 4%"
+        },
+        {
+          "id": "C",
+          "text": "tetap sama"
+        },
+        {
+          "id": "D",
+          "text": "turun 2%"
+        },
+        {
+          "id": "E",
+          "text": "turun 8%"
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Misalkan harga awal 100. Setelah naik 20% menjadi 120, lalu turun 20% dari 120 menjadi 96. Harga akhir turun 4% dari harga semula.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0027",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_KUANTITATIF",
+      "passageId": null,
+      "stem": "Dari 5 siswa putra dan 4 siswi putri akan dipilih 2 orang secara acak. Peluang yang terpilih keduanya putri adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "1/12"
+        },
+        {
+          "id": "B",
+          "text": "1/9"
+        },
+        {
+          "id": "C",
+          "text": "1/8"
+        },
+        {
+          "id": "D",
+          "text": "1/6"
+        },
+        {
+          "id": "E",
+          "text": "2/9"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Banyak cara memilih 2 dari 9 orang = 36. Banyak cara memilih 2 dari 4 putri = 6. Peluangnya 6/36 = 1/6.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0028",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_KUANTITATIF",
+      "passageId": null,
+      "stem": "Pada sebuah barisan aritmetika, suku ke-3 adalah 11 dan suku ke-7 adalah 23. Suku ke-10 barisan tersebut adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "32"
+        },
+        {
+          "id": "B",
+          "text": "33"
+        },
+        {
+          "id": "C",
+          "text": "35"
+        },
+        {
+          "id": "D",
+          "text": "38"
+        },
+        {
+          "id": "E",
+          "text": "41"
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Dari suku ke-3 ke suku ke-7 ada 4 beda: 23 − 11 = 12, jadi beda = 3. Suku ke-10 = suku ke-7 + 3 × 3 = 23 + 9 = 32.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0029",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_KUANTITATIF",
+      "passageId": null,
+      "stem": "P = luas persegi dengan panjang sisi 6 cm\nQ = luas lingkaran dengan jari-jari 3,5 cm (gunakan π = 22/7)\n\nHubungan yang tepat antara P dan Q adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "P > Q"
+        },
+        {
+          "id": "B",
+          "text": "P < Q"
+        },
+        {
+          "id": "C",
+          "text": "P = Q"
+        },
+        {
+          "id": "D",
+          "text": "Informasi yang diberikan tidak cukup untuk memutuskan hubungan P dan Q"
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "P = 6 × 6 = 36 cm². Q = 22/7 × 3,5 × 3,5 = 38,5 cm². Jadi P < Q.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0030",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_KUANTITATIF",
+      "passageId": null,
+      "stem": "Banyak bilangan bulat x yang memenuhi |x − 2| < 5 adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "5"
+        },
+        {
+          "id": "B",
+          "text": "6"
+        },
+        {
+          "id": "C",
+          "text": "7"
+        },
+        {
+          "id": "D",
+          "text": "8"
+        },
+        {
+          "id": "E",
+          "text": "9"
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "|x − 2| < 5 berarti −5 < x − 2 < 5, yaitu −3 < x < 7. Bilangan bulatnya −2, −1, 0, 1, 2, 3, 4, 5, 6, ada 9 bilangan.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0031",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_DAN_PEMAHAMAN_UMUM",
+      "passageId": null,
+      "stem": "Sinonim kata KENDALA adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "tujuan"
+        },
+        {
+          "id": "B",
+          "text": "hambatan"
+        },
+        {
+          "id": "C",
+          "text": "peluang"
+        },
+        {
+          "id": "D",
+          "text": "dukungan"
+        },
+        {
+          "id": "E",
+          "text": "keputusan"
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Kendala berarti halangan atau rintangan yang membuat sesuatu sulit dicapai, sama dengan hambatan.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 45,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0032",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_DAN_PEMAHAMAN_UMUM",
+      "passageId": null,
+      "stem": "Antonim kata SPORADIS adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "jarang"
+        },
+        {
+          "id": "B",
+          "text": "terus-menerus"
+        },
+        {
+          "id": "C",
+          "text": "acak"
+        },
+        {
+          "id": "D",
+          "text": "tiba-tiba"
+        },
+        {
+          "id": "E",
+          "text": "sesekali"
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Sporadis berarti terjadi sesekali atau tidak tentu waktunya. Lawannya adalah terus-menerus. Jarang, acak, dan sesekali justru dekat maknanya dengan sporadis.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 45,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0033",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_DAN_PEMAHAMAN_UMUM",
+      "passageId": null,
+      "stem": "Kata MITIGASI dalam konteks kebencanaan berarti…",
+      "options": [
+        {
+          "id": "A",
+          "text": "pemulihan kondisi setelah bencana terjadi"
+        },
+        {
+          "id": "B",
+          "text": "peringatan dini tentang perubahan cuaca"
+        },
+        {
+          "id": "C",
+          "text": "upaya mengurangi risiko dan dampak bencana"
+        },
+        {
+          "id": "D",
+          "text": "pembangunan tempat pengungsian"
+        },
+        {
+          "id": "E",
+          "text": "pendataan korban bencana"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Mitigasi adalah tindakan untuk mengurangi risiko dan dampak bencana, dilakukan sebelum maupun saat bencana. Pemulihan setelah bencana disebut rehabilitasi.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 45,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0034",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_DAN_PEMAHAMAN_UMUM",
+      "passageId": null,
+      "stem": "TERMOMETER : SUHU = BAROMETER : …",
+      "options": [
+        {
+          "id": "A",
+          "text": "tekanan udara"
+        },
+        {
+          "id": "B",
+          "text": "kelembapan udara"
+        },
+        {
+          "id": "C",
+          "text": "kecepatan angin"
+        },
+        {
+          "id": "D",
+          "text": "curah hujan"
+        },
+        {
+          "id": "E",
+          "text": "arah angin"
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Termometer adalah alat untuk mengukur suhu. Dengan hubungan yang sama, barometer adalah alat untuk mengukur tekanan udara.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 45,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0035",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_DAN_PEMAHAMAN_UMUM",
+      "passageId": null,
+      "stem": "Kata yang penulisannya baku adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "apotik"
+        },
+        {
+          "id": "B",
+          "text": "praktek"
+        },
+        {
+          "id": "C",
+          "text": "nasehat"
+        },
+        {
+          "id": "D",
+          "text": "resiko"
+        },
+        {
+          "id": "E",
+          "text": "kualitas"
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Bentuk bakunya: apotek, praktik, kualitas, nasihat, dan risiko. Hanya kualitas yang sudah ditulis dalam bentuk baku.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 45,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0036",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_DAN_PEMAHAMAN_UMUM",
+      "passageId": null,
+      "stem": "Ungkapan BESAR KEPALA bermakna…",
+      "options": [
+        {
+          "id": "A",
+          "text": "pemimpin"
+        },
+        {
+          "id": "B",
+          "text": "pintar"
+        },
+        {
+          "id": "C",
+          "text": "sombong"
+        },
+        {
+          "id": "D",
+          "text": "keras kepala"
+        },
+        {
+          "id": "E",
+          "text": "pemarah"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Besar kepala berarti sombong atau angkuh. Keras kepala berbeda maknanya, yaitu sulit dinasihati.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 45,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0037",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_DAN_PEMAHAMAN_UMUM",
+      "passageId": "psg-0001",
+      "stem": "Makna kata AKUMULASI pada paragraf kedua adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "penguraian"
+        },
+        {
+          "id": "B",
+          "text": "perpindahan tempat"
+        },
+        {
+          "id": "C",
+          "text": "penyerapan secara cepat"
+        },
+        {
+          "id": "D",
+          "text": "penyebaran secara merata"
+        },
+        {
+          "id": "E",
+          "text": "penumpukan sedikit demi sedikit"
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Mikroplastik berpindah melalui rantai makanan dan dalam jangka panjang terkumpul di tubuh ikan. Akumulasi berarti penumpukan atau pengumpulan sedikit demi sedikit.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 45,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0038",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_DAN_PEMAHAMAN_UMUM",
+      "passageId": "psg-0001",
+      "stem": "Kata TERURAI pada paragraf pertama paling dekat maknanya dengan…",
+      "options": [
+        {
+          "id": "A",
+          "text": "terbakar"
+        },
+        {
+          "id": "B",
+          "text": "terpecah menjadi bagian yang lebih kecil"
+        },
+        {
+          "id": "C",
+          "text": "tenggelam"
+        },
+        {
+          "id": "D",
+          "text": "terkumpul"
+        },
+        {
+          "id": "E",
+          "text": "tercemar"
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Sampah plastik yang terkena sinar matahari dan gelombang pecah menjadi partikel kecil. Terurai berarti terpisah atau terpecah menjadi bagian-bagian yang lebih kecil.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 45,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0039",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_DAN_PEMAHAMAN_UMUM",
+      "passageId": "psg-0001",
+      "stem": "Topik bacaan tersebut adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "asal mikroplastik dan penyebarannya hingga ke makanan manusia"
+        },
+        {
+          "id": "B",
+          "text": "bahaya garam dapur bagi kesehatan"
+        },
+        {
+          "id": "C",
+          "text": "cara membuat sabun cuci muka"
+        },
+        {
+          "id": "D",
+          "text": "manfaat plankton bagi ikan kecil"
+        },
+        {
+          "id": "E",
+          "text": "hasil penelitian tentang air minum kemasan"
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Ketiga paragraf membahas dari mana mikroplastik berasal, bagaimana ia berpindah lewat rantai makanan, dan temuannya pada makanan manusia. Pilihan lain hanya bagian kecil dari bacaan.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 45,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0040",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_DAN_PEMAHAMAN_UMUM",
+      "passageId": "psg-0002",
+      "stem": "Kata MOMENTUM pada paragraf kedua bermakna…",
+      "options": [
+        {
+          "id": "A",
+          "text": "gaya dorong pada benda yang bergerak"
+        },
+        {
+          "id": "B",
+          "text": "peristiwa bersejarah"
+        },
+        {
+          "id": "C",
+          "text": "hambatan dalam pembangunan"
+        },
+        {
+          "id": "D",
+          "text": "perhitungan jumlah penduduk"
+        },
+        {
+          "id": "E",
+          "text": "saat yang tepat dan terbatas untuk bertindak"
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Periode bonus demografi disebut momentum karena tidak berlangsung selamanya, jadi artinya kesempatan yang tepat dan terbatas waktunya. Gaya dorong adalah makna momentum dalam fisika.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 45,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0041",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_DAN_PEMAHAMAN_UMUM",
+      "passageId": "psg-0002",
+      "stem": "Antonim kata MEMADAI pada paragraf ketiga adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "mencukupi"
+        },
+        {
+          "id": "B",
+          "text": "kurang"
+        },
+        {
+          "id": "C",
+          "text": "layak"
+        },
+        {
+          "id": "D",
+          "text": "sepadan"
+        },
+        {
+          "id": "E",
+          "text": "seimbang"
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Memadai berarti cukup atau sesuai dengan kebutuhan. Lawannya adalah kurang. Mencukupi, layak, dan sepadan justru dekat maknanya.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 45,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0042",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_DAN_PEMAHAMAN_UMUM",
+      "passageId": "psg-0002",
+      "stem": "Kata BEBAN pada kalimat terakhir bacaan bermakna…",
+      "options": [
+        {
+          "id": "A",
+          "text": "berat suatu benda"
+        },
+        {
+          "id": "B",
+          "text": "kewajiban membayar pajak"
+        },
+        {
+          "id": "C",
+          "text": "tugas sekolah"
+        },
+        {
+          "id": "D",
+          "text": "tanggungan yang menyulitkan"
+        },
+        {
+          "id": "E",
+          "text": "muatan kendaraan"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Penduduk usia produktif yang tidak terampil atau tidak bekerja justru harus ditanggung. Beban di sini berarti tanggungan yang menyulitkan, bukan berat benda.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 45,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0043",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_DAN_PEMAHAMAN_UMUM",
+      "passageId": "psg-0003",
+      "stem": "Istilah ENERGI TERBARUKAN pada paragraf kedua berarti energi yang…",
+      "options": [
+        {
+          "id": "A",
+          "text": "dapat terus tersedia karena diperbarui secara alami"
+        },
+        {
+          "id": "B",
+          "text": "baru saja ditemukan"
+        },
+        {
+          "id": "C",
+          "text": "harganya paling murah"
+        },
+        {
+          "id": "D",
+          "text": "menggunakan teknologi paling modern"
+        },
+        {
+          "id": "E",
+          "text": "hanya terdapat di Indonesia"
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Bacaan menyebut panas bumi terbarukan karena panasnya terus dihasilkan oleh bumi, artinya sumbernya tidak habis dan diperbarui secara alami.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 45,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0044",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_DAN_PEMAHAMAN_UMUM",
+      "passageId": "psg-0003",
+      "stem": "Kata EKSPLORASI pada paragraf ketiga bermakna…",
+      "options": [
+        {
+          "id": "A",
+          "text": "pemanfaatan secara berlebihan"
+        },
+        {
+          "id": "B",
+          "text": "pengolahan hasil tambang"
+        },
+        {
+          "id": "C",
+          "text": "penjelajahan lapangan untuk menemukan sumber"
+        },
+        {
+          "id": "D",
+          "text": "pengiriman hasil ke luar negeri"
+        },
+        {
+          "id": "E",
+          "text": "perbaikan mesin pembangkit"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Pengeboran eksplorasi dilakukan untuk mencari tahu apakah sebuah sumur menghasilkan uap. Eksplorasi berarti penjelajahan atau penyelidikan untuk menemukan sumber. Pemanfaatan berlebihan adalah makna eksploitasi.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 45,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0045",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENGETAHUAN_DAN_PEMAHAMAN_UMUM",
+      "passageId": "psg-0003",
+      "stem": "Hubungan isi paragraf ketiga dengan paragraf kedua adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "paragraf ketiga memberi contoh dari paragraf kedua"
+        },
+        {
+          "id": "B",
+          "text": "paragraf ketiga mengulang isi paragraf kedua dengan kata lain"
+        },
+        {
+          "id": "C",
+          "text": "paragraf ketiga menyampaikan kendala setelah paragraf kedua menyampaikan keunggulan"
+        },
+        {
+          "id": "D",
+          "text": "paragraf ketiga membantah bahwa panas bumi adalah energi terbarukan"
+        },
+        {
+          "id": "E",
+          "text": "paragraf ketiga menjelaskan sejarah panas bumi di Indonesia"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Paragraf kedua menyebut kelebihan panas bumi (terbarukan dan rendah emisi). Paragraf ketiga diawali 'Meskipun demikian' lalu menyebut kesulitannya: biaya, risiko, dan lokasi di hutan lindung.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 45,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0046",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PEMAHAMAN_BACAAN_DAN_MENULIS",
+      "passageId": "psg-0004",
+      "stem": "Kalimat yang tidak efektif dalam paragraf tersebut adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "kalimat (1)"
+        },
+        {
+          "id": "B",
+          "text": "kalimat (2)"
+        },
+        {
+          "id": "C",
+          "text": "kalimat (4)"
+        },
+        {
+          "id": "D",
+          "text": "kalimat (5)"
+        },
+        {
+          "id": "E",
+          "text": "kalimat (6)"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Kalimat (4) memakai 'sangat' dan 'sekali' bersamaan untuk kata 'cepat'. Keduanya bermakna sama, jadi salah satunya harus dihilangkan.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 75,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0047",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PEMAHAMAN_BACAAN_DAN_MENULIS",
+      "passageId": "psg-0004",
+      "stem": "Kalimat yang tidak padu dengan isi paragraf tersebut adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "kalimat (3)"
+        },
+        {
+          "id": "B",
+          "text": "kalimat (4)"
+        },
+        {
+          "id": "C",
+          "text": "kalimat (5)"
+        },
+        {
+          "id": "D",
+          "text": "kalimat (6)"
+        },
+        {
+          "id": "E",
+          "text": "kalimat (7)"
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Paragraf membahas kemampuan menilai kebenaran informasi. Kalimat (7) tentang harga paket data tidak berhubungan dengan gagasan itu.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 75,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0048",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PEMAHAMAN_BACAAN_DAN_MENULIS",
+      "passageId": "psg-0004",
+      "stem": "Perbaikan yang tepat untuk kalimat (4) adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Kebiasaan ini membuat berita bohong menyebar dengan cepat sekali sangat."
+        },
+        {
+          "id": "B",
+          "text": "Kebiasaan ini, membuat berita bohong menyebar dengan sangat cepat sekali."
+        },
+        {
+          "id": "C",
+          "text": "Kebiasaan ini membuat berita bohong menyebar dengan amat sangat cepat."
+        },
+        {
+          "id": "D",
+          "text": "Kebiasaan ini membuat berita bohongnya menyebar sangat cepat sekali."
+        },
+        {
+          "id": "E",
+          "text": "Kebiasaan ini membuat berita bohong menyebar dengan sangat cepat."
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Cukup satu penanda 'paling', yaitu 'sangat' saja atau 'sekali' saja. Pilihan lain masih berlebihan atau menambahkan koma yang memisahkan subjek dari predikat.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 75,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0049",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PEMAHAMAN_BACAAN_DAN_MENULIS",
+      "passageId": "psg-0005",
+      "stem": "Kesalahan penulisan kata terdapat pada…",
+      "options": [
+        {
+          "id": "A",
+          "text": "kalimat (1)"
+        },
+        {
+          "id": "B",
+          "text": "kalimat (2)"
+        },
+        {
+          "id": "C",
+          "text": "kalimat (3)"
+        },
+        {
+          "id": "D",
+          "text": "kalimat (4)"
+        },
+        {
+          "id": "E",
+          "text": "kalimat (5)"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "'Kesana' pada kalimat (4) seharusnya ditulis 'ke sana'. 'Ke' di sini kata depan yang menunjukkan tempat, jadi ditulis terpisah.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 75,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0050",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PEMAHAMAN_BACAAN_DAN_MENULIS",
+      "passageId": "psg-0005",
+      "stem": "Kalimat yang penggunaan tanda bacanya tidak tepat adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "kalimat (2)"
+        },
+        {
+          "id": "B",
+          "text": "kalimat (3)"
+        },
+        {
+          "id": "C",
+          "text": "kalimat (4)"
+        },
+        {
+          "id": "D",
+          "text": "kalimat (5)"
+        },
+        {
+          "id": "E",
+          "text": "kalimat (6)"
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Kalimat (6) memakai koma di antara subjek 'Hasil penjualan sampah itu' dan predikat 'digunakan'. Subjek dan predikat tidak dipisahkan dengan koma.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 75,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0051",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PEMAHAMAN_BACAAN_DAN_MENULIS",
+      "passageId": "psg-0005",
+      "stem": "Kalimat yang paling tepat ditambahkan setelah kalimat (5) agar paragraf tetap padu adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sampah plastik membutuhkan waktu ratusan tahun untuk terurai."
+        },
+        {
+          "id": "B",
+          "text": "Catatan itu menjadi dasar untuk menghitung jumlah tabungan setiap warga."
+        },
+        {
+          "id": "C",
+          "text": "Kardus bekas dapat didaur ulang menjadi kertas baru."
+        },
+        {
+          "id": "D",
+          "text": "Banyak warga lebih suka berbelanja di pasar tradisional."
+        },
+        {
+          "id": "E",
+          "text": "Pemerintah pusat juga membangun tempat pembuangan akhir yang baru."
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Kalimat (5) tentang penimbangan dan pencatatan. Kalimat yang meneruskan alurnya adalah yang menjelaskan kegunaan catatan itu, yaitu menghitung tabungan warga.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 75,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0052",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PEMAHAMAN_BACAAN_DAN_MENULIS",
+      "passageId": "psg-0006",
+      "stem": "Kalimat yang tidak memiliki subjek adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "kalimat (1)"
+        },
+        {
+          "id": "B",
+          "text": "kalimat (2)"
+        },
+        {
+          "id": "C",
+          "text": "kalimat (3)"
+        },
+        {
+          "id": "D",
+          "text": "kalimat (4)"
+        },
+        {
+          "id": "E",
+          "text": "kalimat (5)"
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Pada kalimat (1), 'Dalam penelitian ini' adalah keterangan karena diawali kata depan 'dalam'. Akibatnya kalimat itu tidak punya subjek. Perbaikannya: 'Penelitian ini membahas…'.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 75,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0053",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PEMAHAMAN_BACAAN_DAN_MENULIS",
+      "passageId": "psg-0006",
+      "stem": "Perbaikan yang tepat untuk kalimat (3) adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Meskipun sebagian besar responden tidur kurang dari tujuh jam, mereka merasa tetap dapat berkonsentrasi."
+        },
+        {
+          "id": "B",
+          "text": "Meskipun sebagian besar responden tidur kurang dari tujuh jam tetapi mereka merasa tetap dapat berkonsentrasi."
+        },
+        {
+          "id": "C",
+          "text": "Walaupun sebagian besar responden tidur kurang dari tujuh jam, namun mereka merasa tetap dapat berkonsentrasi."
+        },
+        {
+          "id": "D",
+          "text": "Meskipun sebagian besar responden tidur kurang dari tujuh jam. Mereka merasa tetap dapat berkonsentrasi."
+        },
+        {
+          "id": "E",
+          "text": "Sebagian besar responden tidur kurang dari tujuh jam, meskipun tetapi mereka merasa tetap dapat berkonsentrasi."
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "'Meskipun' dan 'tetapi' tidak dipakai bersamaan dalam satu kalimat, begitu pula 'walaupun' dan 'namun'. Cukup satu konjungsi, dan anak kalimat tidak boleh dipisah titik menjadi kalimat sendiri.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 75,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0054",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PEMAHAMAN_BACAAN_DAN_MENULIS",
+      "passageId": "psg-0006",
+      "stem": "Kata MENDUGA pada kalimat (5) dapat diganti dengan kata…",
+      "options": [
+        {
+          "id": "A",
+          "text": "memastikan"
+        },
+        {
+          "id": "B",
+          "text": "membuktikan"
+        },
+        {
+          "id": "C",
+          "text": "menyimpulkan"
+        },
+        {
+          "id": "D",
+          "text": "memperkirakan"
+        },
+        {
+          "id": "E",
+          "text": "menolak"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Menduga berarti mengira atau memperkirakan sesuatu yang belum pasti. Memastikan dan membuktikan justru bermakna sudah pasti.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 75,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0055",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PEMAHAMAN_BACAAN_DAN_MENULIS",
+      "passageId": "psg-0007",
+      "stem": "Kesalahan penggunaan huruf kapital terdapat pada…",
+      "options": [
+        {
+          "id": "A",
+          "text": "kalimat (1)"
+        },
+        {
+          "id": "B",
+          "text": "kalimat (2)"
+        },
+        {
+          "id": "C",
+          "text": "kalimat (3)"
+        },
+        {
+          "id": "D",
+          "text": "kalimat (4)"
+        },
+        {
+          "id": "E",
+          "text": "kalimat (5)"
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "'Danau Toba' adalah nama geografi, jadi kata 'danau' ditulis dengan huruf kapital: Danau Toba. Kata 'danau' yang tidak diikuti nama, seperti pada kalimat (3) dan (4), tetap huruf kecil.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 75,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0056",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PEMAHAMAN_BACAAN_DAN_MENULIS",
+      "passageId": "psg-0007",
+      "stem": "Kata tidak baku terdapat pada…",
+      "options": [
+        {
+          "id": "A",
+          "text": "kalimat (1)"
+        },
+        {
+          "id": "B",
+          "text": "kalimat (2)"
+        },
+        {
+          "id": "C",
+          "text": "kalimat (3)"
+        },
+        {
+          "id": "D",
+          "text": "kalimat (4)"
+        },
+        {
+          "id": "E",
+          "text": "kalimat (5)"
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Bentuk baku 'analisa' adalah 'analisis'. Kata lain seperti vulkanik, kualitas, khawatir, dan izin sudah baku.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 75,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0057",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PEMAHAMAN_BACAAN_DAN_MENULIS",
+      "passageId": "psg-0007",
+      "stem": "Kata penghubung yang tepat untuk menggantikan kata 'Namun' pada kalimat (4) adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Akan tetapi"
+        },
+        {
+          "id": "B",
+          "text": "Oleh karena itu"
+        },
+        {
+          "id": "C",
+          "text": "Selain itu"
+        },
+        {
+          "id": "D",
+          "text": "Dengan demikian"
+        },
+        {
+          "id": "E",
+          "text": "Misalnya"
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Kalimat (4) bertentangan dengan kalimat (3): pembangunan terus dilakukan, tetapi warga khawatir. Hubungan pertentangan antarkalimat ditandai 'Namun' atau 'Akan tetapi'.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 75,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0058",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PEMAHAMAN_BACAAN_DAN_MENULIS",
+      "passageId": "psg-0008",
+      "stem": "Urutan kalimat yang tepat agar menjadi paragraf yang padu adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "(2), (1), (5), (4), (3)"
+        },
+        {
+          "id": "B",
+          "text": "(5), (2), (1), (4), (3)"
+        },
+        {
+          "id": "C",
+          "text": "(2), (5), (1), (4), (3)"
+        },
+        {
+          "id": "D",
+          "text": "(2), (5), (4), (1), (3)"
+        },
+        {
+          "id": "E",
+          "text": "(2), (4), (5), (1), (3)"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Langkah dimulai dengan 'Pertama' (2), lalu mengaduk sampai kalis (5), mendiamkan adonan (1, diawali 'Setelah itu'), membentuk adonan yang sudah mengembang (4), dan 'Terakhir' memanggang (3).",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 75,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0059",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PEMAHAMAN_BACAAN_DAN_MENULIS",
+      "passageId": "psg-0008",
+      "stem": "Kalimat yang paling tepat untuk mengawali paragraf tersebut adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Roti merupakan makanan pokok di banyak negara Eropa."
+        },
+        {
+          "id": "B",
+          "text": "Oven listrik lebih hemat daripada oven gas."
+        },
+        {
+          "id": "C",
+          "text": "Ragi merupakan jamur bersel satu."
+        },
+        {
+          "id": "D",
+          "text": "Membuat roti sendiri di rumah ternyata tidak sulit."
+        },
+        {
+          "id": "E",
+          "text": "Harga tepung terigu naik pada bulan ini."
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Paragraf berisi langkah-langkah membuat roti, jadi kalimat pembukanya harus memperkenalkan kegiatan membuat roti. Pilihan lain tidak mengantar ke langkah-langkah itu.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 75,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0060",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PEMAHAMAN_BACAAN_DAN_MENULIS",
+      "passageId": "psg-0008",
+      "stem": "Kata KALIS pada kalimat (5) bermakna…",
+      "options": [
+        {
+          "id": "A",
+          "text": "sudah matang"
+        },
+        {
+          "id": "B",
+          "text": "tidak lengket lagi dan mudah dibentuk"
+        },
+        {
+          "id": "C",
+          "text": "berwarna cokelat keemasan"
+        },
+        {
+          "id": "D",
+          "text": "sangat cair"
+        },
+        {
+          "id": "E",
+          "text": "sudah mengembang dua kali lipat"
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Adonan yang kalis adalah adonan yang sudah tidak lengket di tangan atau wadah sehingga mudah dibentuk.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 75,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0061",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": "psg-0009",
+      "stem": "Gagasan utama paragraf kedua adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Otak berhenti bekerja ketika seseorang tidur nyenyak."
+        },
+        {
+          "id": "B",
+          "text": "Siswa sebaiknya belajar semalaman menjelang ujian."
+        },
+        {
+          "id": "C",
+          "text": "Ingatan jangka pendek lebih penting daripada ingatan jangka panjang."
+        },
+        {
+          "id": "D",
+          "text": "Tahap tidur nyenyak hanya terjadi pada remaja."
+        },
+        {
+          "id": "E",
+          "text": "Tidur nyenyak berperan dalam memperkuat ingatan sehingga begadang dapat merugikan belajar."
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Paragraf kedua menjelaskan konsolidasi memori yang terjadi saat tidur nyenyak, lalu menarik akibatnya: begadang berisiko menghilangkan materi yang sudah dipelajari.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 85,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0062",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": "psg-0009",
+      "stem": "Berdasarkan bacaan, pernyataan yang PALING mungkin benar adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Tidur dua belas jam setiap hari pasti membuat ingatan semakin baik."
+        },
+        {
+          "id": "B",
+          "text": "Tidur panjang di akhir pekan dapat sepenuhnya menggantikan kurang tidur selama sepekan."
+        },
+        {
+          "id": "C",
+          "text": "Konsolidasi memori hanya terjadi ketika seseorang terjaga."
+        },
+        {
+          "id": "D",
+          "text": "Otak remaja beristirahat total saat tidur."
+        },
+        {
+          "id": "E",
+          "text": "Siswa yang tidur cukup setelah belajar cenderung lebih mampu mengingat materi keesokan harinya."
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Karena ingatan diperkuat selama tidur nyenyak, tidur cukup setelah belajar mendukung kemampuan mengingat. Pilihan lain bertentangan dengan paragraf pertama atau ketiga.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 85,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0063",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": "psg-0009",
+      "stem": "Tujuan penulis menulis bacaan tersebut adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "menceritakan pengalaman penulis saat begadang"
+        },
+        {
+          "id": "B",
+          "text": "meluruskan anggapan keliru tentang tidur dan menjelaskan kaitannya dengan kemampuan mengingat"
+        },
+        {
+          "id": "C",
+          "text": "mengajak pembaca tidur sepanjang akhir pekan"
+        },
+        {
+          "id": "D",
+          "text": "membandingkan tidur remaja dan orang dewasa"
+        },
+        {
+          "id": "E",
+          "text": "menjelaskan cara kerja obat tidur"
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Bacaan dibuka dengan anggapan bahwa otak beristirahat total saat tidur, lalu membantahnya dan menjelaskan peran tidur bagi ingatan serta pentingnya tidur yang teratur.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 85,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0064",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": "psg-0010",
+      "stem": "Menurut bacaan, sebuah bahasa dikatakan terancam apabila…",
+      "options": [
+        {
+          "id": "A",
+          "text": "jumlah kosakatanya sedikit"
+        },
+        {
+          "id": "B",
+          "text": "tidak diajarkan di perguruan tinggi"
+        },
+        {
+          "id": "C",
+          "text": "anak-anak tidak lagi mempelajarinya sebagai bahasa pertama di rumah"
+        },
+        {
+          "id": "D",
+          "text": "penuturnya tinggal di kota besar"
+        },
+        {
+          "id": "E",
+          "text": "tidak memiliki sistem tulisan sendiri"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Paragraf pertama menyebut ukurannya secara langsung: bahasa terancam apabila anak-anak tidak lagi mempelajarinya sebagai bahasa pertama di rumah.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 85,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0065",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": "psg-0010",
+      "stem": "Kata BERGENGSI pada paragraf kedua bermakna…",
+      "options": [
+        {
+          "id": "A",
+          "text": "dipandang terhormat atau bernilai tinggi"
+        },
+        {
+          "id": "B",
+          "text": "mudah dipelajari"
+        },
+        {
+          "id": "C",
+          "text": "sudah lama digunakan"
+        },
+        {
+          "id": "D",
+          "text": "dipakai oleh banyak orang"
+        },
+        {
+          "id": "E",
+          "text": "memiliki banyak dialek"
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Bahasa daerah dianggap 'kurang bergengsi', artinya dipandang kurang terhormat atau kurang bernilai dibandingkan bahasa Indonesia.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 85,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0066",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": "psg-0010",
+      "stem": "Sikap penulis terhadap orang tua yang memilih berbahasa Indonesia kepada anak-anaknya adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "menyalahkan mereka sepenuhnya atas punahnya bahasa daerah"
+        },
+        {
+          "id": "B",
+          "text": "mendukung keputusan itu tanpa syarat"
+        },
+        {
+          "id": "C",
+          "text": "tidak peduli terhadap keputusan itu"
+        },
+        {
+          "id": "D",
+          "text": "memahami alasan mereka, tetapi menunjukkan akibatnya bagi kelestarian bahasa daerah"
+        },
+        {
+          "id": "E",
+          "text": "menganjurkan agar bahasa Indonesia dilarang di rumah"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Penulis menyebut keputusan itu diambil 'dengan niat baik', tetapi paragraf berikutnya menjelaskan kerugian hilangnya bahasa. Penulis memahami alasannya sambil menunjukkan akibatnya.",
+      "cognitiveLevel": "C5",
+      "estimatedSeconds": 85,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0067",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": "psg-0011",
+      "stem": "Perumpamaan 'seperti orang menitipkan kunci rumah sebelum bepergian jauh' menggambarkan bahwa Nara…",
+      "options": [
+        {
+          "id": "A",
+          "text": "menyerahkan ponselnya dengan sadar untuk sementara waktu"
+        },
+        {
+          "id": "B",
+          "text": "kehilangan ponselnya"
+        },
+        {
+          "id": "C",
+          "text": "akan pergi jauh dari rumah"
+        },
+        {
+          "id": "D",
+          "text": "tidak memercayai ibunya"
+        },
+        {
+          "id": "E",
+          "text": "ingin menjual ponselnya"
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Orang menitipkan kunci dengan sengaja dan akan mengambilnya kembali. Begitu pula Nara: ia menyerahkan ponsel secara sadar, hanya untuk sementara.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 85,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0068",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": "psg-0011",
+      "stem": "Perubahan yang dialami Nara dari malam pertama ke malam ketiga adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "dari tenang menjadi gelisah"
+        },
+        {
+          "id": "B",
+          "text": "dari rajin belajar menjadi malas"
+        },
+        {
+          "id": "C",
+          "text": "dari dekat dengan ibunya menjadi menjauh"
+        },
+        {
+          "id": "D",
+          "text": "dari tidak memiliki ponsel menjadi memiliki ponsel"
+        },
+        {
+          "id": "E",
+          "text": "dari gelisah dan mudah teralihkan menjadi tenang dan fokus"
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Malam pertama Nara terus meraba saku dan melamun. Malam ketiga ia menyelesaikan dua puluh soal tanpa menoleh dan menolak ponselnya dengan tenang.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 85,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0069",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": "psg-0011",
+      "stem": "Kalimat 'Ia sendiri terkejut mendengar suaranya begitu tenang' menunjukkan bahwa…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Nara marah kepada ibunya"
+        },
+        {
+          "id": "B",
+          "text": "suara Nara sedang serak"
+        },
+        {
+          "id": "C",
+          "text": "Nara tidak menyangka dirinya sudah mampu menahan keinginan memakai ponsel"
+        },
+        {
+          "id": "D",
+          "text": "Nara ingin segera tidur"
+        },
+        {
+          "id": "E",
+          "text": "ibu Nara terkejut dengan jawaban anaknya"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Keterkejutan Nara pada ketenangannya sendiri menunjukkan perubahan yang tidak ia duga: ia kini bisa menolak ponselnya tanpa gelisah.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 85,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0070",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": "psg-0012",
+      "stem": "Menurut bacaan, analisis daur hidup digunakan untuk…",
+      "options": [
+        {
+          "id": "A",
+          "text": "menghitung kecepatan maksimal kendaraan"
+        },
+        {
+          "id": "B",
+          "text": "menentukan harga jual kendaraan listrik"
+        },
+        {
+          "id": "C",
+          "text": "mengukur daya tahan baterai"
+        },
+        {
+          "id": "D",
+          "text": "menilai dampak lingkungan sejak bahan baku ditambang hingga kendaraan tidak lagi dipakai"
+        },
+        {
+          "id": "E",
+          "text": "membandingkan desain kendaraan"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Paragraf pertama mendefinisikannya secara langsung: perhitungan dampak sejak bahan baku ditambang hingga kendaraan tidak lagi dipakai.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 85,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0071",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": "psg-0012",
+      "stem": "Pernyataan yang TIDAK sesuai dengan isi bacaan adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Penambangan bahan baku baterai dapat merusak lingkungan."
+        },
+        {
+          "id": "B",
+          "text": "Kendaraan listrik sama sekali tidak menimbulkan dampak bagi lingkungan."
+        },
+        {
+          "id": "C",
+          "text": "Sumber listrik memengaruhi besarnya emisi kendaraan listrik."
+        },
+        {
+          "id": "D",
+          "text": "Kendaraan listrik tidak mengeluarkan asap dari knalpot."
+        },
+        {
+          "id": "E",
+          "text": "Sepanjang umur pakainya, emisi kendaraan listrik umumnya lebih rendah."
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Bacaan justru menunjukkan dampak dari penambangan bahan baterai dan dari pembangkit listrik. Pernyataan bahwa kendaraan listrik tidak berdampak sama sekali bertentangan dengan bacaan.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 85,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0072",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": "psg-0012",
+      "stem": "Frasa 'sebagian emisi hanya berpindah dari knalpot ke cerobong pembangkit' bermakna…",
+      "options": [
+        {
+          "id": "A",
+          "text": "pencemaran tetap terjadi, hanya tempatnya yang berbeda"
+        },
+        {
+          "id": "B",
+          "text": "cerobong pembangkit lebih bersih daripada knalpot"
+        },
+        {
+          "id": "C",
+          "text": "kendaraan listrik memiliki cerobong"
+        },
+        {
+          "id": "D",
+          "text": "emisi karbon hilang seluruhnya"
+        },
+        {
+          "id": "E",
+          "text": "pembangkit listrik tidak menghasilkan emisi"
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Jika listriknya dari batu bara, asap tidak keluar dari kendaraan tetapi dari pembangkit. Pencemarannya tetap ada, hanya lokasinya berpindah.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 85,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0073",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": "psg-0013",
+      "stem": "Menurut bacaan, salah satu penyebab meningkatnya jumlah pendaki adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "harga perlengkapan mendaki yang turun"
+        },
+        {
+          "id": "B",
+          "text": "foto-foto puncak gunung di media sosial"
+        },
+        {
+          "id": "C",
+          "text": "kewajiban dari sekolah"
+        },
+        {
+          "id": "D",
+          "text": "dibukanya jalur pendakian baru"
+        },
+        {
+          "id": "E",
+          "text": "aturan pemeriksaan barang bawaan"
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Paragraf pertama menyebut foto-foto puncak gunung di media sosial mendorong banyak orang mencoba mendaki.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 85,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0074",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": "psg-0013",
+      "stem": "Hubungan antara paragraf kedua dan paragraf ketiga adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "paragraf kedua dan ketiga sama-sama menjelaskan penyebab masalah"
+        },
+        {
+          "id": "B",
+          "text": "paragraf ketiga membantah isi paragraf kedua"
+        },
+        {
+          "id": "C",
+          "text": "paragraf ketiga memberi contoh tambahan dari paragraf kedua"
+        },
+        {
+          "id": "D",
+          "text": "paragraf kedua menyajikan masalah, paragraf ketiga menyajikan upaya mengatasinya"
+        },
+        {
+          "id": "E",
+          "text": "paragraf kedua merupakan simpulan dari paragraf ketiga"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Paragraf kedua memaparkan masalah sampah di jalur pendakian. Paragraf ketiga menjelaskan aturan pemeriksaan barang sebagai upaya mengatasinya.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 85,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0075",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INDONESIA",
+      "passageId": "psg-0013",
+      "stem": "Berdasarkan bacaan, tujuan pencatatan barang bawaan sebelum mendaki adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "membatasi jumlah makanan yang boleh dibawa"
+        },
+        {
+          "id": "B",
+          "text": "menghitung jumlah pendaki setiap hari"
+        },
+        {
+          "id": "C",
+          "text": "mencocokkan barang saat turun agar pendaki membawa pulang sampahnya"
+        },
+        {
+          "id": "D",
+          "text": "memastikan pendaki membawa perlengkapan keselamatan"
+        },
+        {
+          "id": "E",
+          "text": "menarik biaya tambahan dari pendaki"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Barang yang dicatat diperiksa kembali saat turun, dan pendaki yang tidak membawa pulang sampahnya dikenai sanksi. Pencatatan itu menjadi dasar pencocokan.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 85,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0076",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INGGRIS",
+      "passageId": "psg-0014",
+      "stem": "What is the passage mainly about?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The history of air conditioning in big cities"
+        },
+        {
+          "id": "B",
+          "text": "Why elderly people prefer living in the countryside"
+        },
+        {
+          "id": "C",
+          "text": "How to paint roofs correctly"
+        },
+        {
+          "id": "D",
+          "text": "The benefits of concrete as a building material"
+        },
+        {
+          "id": "E",
+          "text": "The causes and effects of urban heat islands and ways to reduce them"
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Paragraf pertama menjelaskan penyebab, paragraf kedua akibat, dan paragraf ketiga cara mengatasinya. Gagasan utamanya mencakup ketiganya.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0077",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INGGRIS",
+      "passageId": "psg-0014",
+      "stem": "The word 'noticeably' in paragraph 3 is closest in meaning to…",
+      "options": [
+        {
+          "id": "A",
+          "text": "slightly"
+        },
+        {
+          "id": "B",
+          "text": "rarely"
+        },
+        {
+          "id": "C",
+          "text": "gradually"
+        },
+        {
+          "id": "D",
+          "text": "secretly"
+        },
+        {
+          "id": "E",
+          "text": "clearly"
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "'Noticeably' berarti cukup besar sehingga terasa atau terlihat jelas, paling dekat dengan 'clearly'.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0078",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INGGRIS",
+      "passageId": "psg-0014",
+      "stem": "It can be inferred from the passage that…",
+      "options": [
+        {
+          "id": "A",
+          "text": "a city with more trees and lighter-coloured roofs is likely to be cooler"
+        },
+        {
+          "id": "B",
+          "text": "air conditioning reduces air pollution in cities"
+        },
+        {
+          "id": "C",
+          "text": "urban heat islands only affect elderly people"
+        },
+        {
+          "id": "D",
+          "text": "the countryside is usually warmer than the city"
+        },
+        {
+          "id": "E",
+          "text": "white roofs are too expensive for most cities"
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Pohon mendinginkan udara dan atap putih memantulkan sinar matahari, jadi kota yang memiliki keduanya cenderung lebih sejuk. Pilihan lain bertentangan dengan bacaan.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0079",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INGGRIS",
+      "passageId": "psg-0015",
+      "stem": "What is the writer's main purpose?",
+      "options": [
+        {
+          "id": "A",
+          "text": "To describe the writer's own exam experience"
+        },
+        {
+          "id": "B",
+          "text": "To criticise teachers who give too much homework"
+        },
+        {
+          "id": "C",
+          "text": "To explain how the brain stores images"
+        },
+        {
+          "id": "D",
+          "text": "To recommend spreading study sessions over time, based on research"
+        },
+        {
+          "id": "E",
+          "text": "To encourage students to study all night before exams"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Penulis memaparkan hasil penelitian tentang spacing effect lalu memberi saran bagi guru dan siswa untuk membagi waktu belajar.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0080",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INGGRIS",
+      "passageId": "psg-0015",
+      "stem": "According to the passage, why does spaced study strengthen memory?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Students sleep more when they study less"
+        },
+        {
+          "id": "B",
+          "text": "Long sessions give the brain too much rest"
+        },
+        {
+          "id": "C",
+          "text": "Recalling information after a break takes effort, and that effort makes the memory stronger"
+        },
+        {
+          "id": "D",
+          "text": "Teachers repeat the same lesson every day"
+        },
+        {
+          "id": "E",
+          "text": "Short sessions are always more enjoyable"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Paragraf kedua menjelaskan bahwa setiap kali kita kembali ke informasi setelah jeda, otak bekerja lebih keras untuk mengingatnya, dan usaha itu memperkuat ingatan.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0081",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INGGRIS",
+      "passageId": "psg-0015",
+      "stem": "The word 'this' in 'this effort makes the memory stronger' refers to…",
+      "options": [
+        {
+          "id": "A",
+          "text": "studying for long hours the night before an exam"
+        },
+        {
+          "id": "B",
+          "text": "the extra work the brain does to recall information after a break"
+        },
+        {
+          "id": "C",
+          "text": "a teacher reviewing earlier topics"
+        },
+        {
+          "id": "D",
+          "text": "creating a study schedule"
+        },
+        {
+          "id": "E",
+          "text": "the amount of material in one session"
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "'This effort' merujuk pada kalimat sebelumnya: otak harus bekerja sedikit lebih keras untuk mengingat informasi setelah jeda.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0082",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INGGRIS",
+      "passageId": "psg-0016",
+      "stem": "What is the main purpose of the text?",
+      "options": [
+        {
+          "id": "A",
+          "text": "To announce that the river clean-up has been cancelled"
+        },
+        {
+          "id": "B",
+          "text": "To complain about the amount of snacks at school"
+        },
+        {
+          "id": "C",
+          "text": "To report the results of an exam"
+        },
+        {
+          "id": "D",
+          "text": "To ask students to stop using plastic bottles completely"
+        },
+        {
+          "id": "E",
+          "text": "To thank members and invite them to volunteer for a new waste-sorting programme"
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Surat dibuka dengan ucapan terima kasih atas kegiatan bersih sungai, lalu mengajak anggota menjadi relawan untuk sistem tempat sampah terpilah yang baru.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0083",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INGGRIS",
+      "passageId": "psg-0016",
+      "stem": "Why does the writer say 'our work is not finished'?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Because they did not collect enough bags of rubbish"
+        },
+        {
+          "id": "B",
+          "text": "Because the river is too far from the school"
+        },
+        {
+          "id": "C",
+          "text": "Because many members did not join the clean-up"
+        },
+        {
+          "id": "D",
+          "text": "Because the rubbish will return unless people change their habits"
+        },
+        {
+          "id": "E",
+          "text": "Because the club room is being renovated"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Kalimat berikutnya langsung menjelaskan alasannya: sampah akan kembali kecuali kebiasaan orang berubah.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0084",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INGGRIS",
+      "passageId": "psg-0016",
+      "stem": "What can be inferred about the new bins?",
+      "options": [
+        {
+          "id": "A",
+          "text": "They will be placed along the river"
+        },
+        {
+          "id": "B",
+          "text": "They are only for plastic bottles"
+        },
+        {
+          "id": "C",
+          "text": "They are meant to help students separate their waste by type"
+        },
+        {
+          "id": "D",
+          "text": "They will replace the need for volunteers"
+        },
+        {
+          "id": "E",
+          "text": "They were bought by the students themselves"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Tempat sampah diberi label plastik, kertas, dan sisa makanan, jadi tujuannya membantu siswa memilah sampah menurut jenisnya.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0085",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INGGRIS",
+      "passageId": "psg-0017",
+      "stem": "The passage mainly discusses…",
+      "options": [
+        {
+          "id": "A",
+          "text": "how to build ports along tropical coastlines"
+        },
+        {
+          "id": "B",
+          "text": "the benefits of mangrove forests and the threats they face"
+        },
+        {
+          "id": "C",
+          "text": "the life cycle of crabs and shrimp"
+        },
+        {
+          "id": "D",
+          "text": "the causes of tropical storms"
+        },
+        {
+          "id": "E",
+          "text": "the best seedlings for fish farms"
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Dua paragraf pertama menjelaskan manfaat mangrove, paragraf ketiga menjelaskan ancaman terhadapnya dan tantangan penanaman kembali.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0086",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INGGRIS",
+      "passageId": "psg-0017",
+      "stem": "The word 'nurseries' in paragraph 2 refers to places where…",
+      "options": [
+        {
+          "id": "A",
+          "text": "young animals are protected while they grow"
+        },
+        {
+          "id": "B",
+          "text": "farmers grow vegetables"
+        },
+        {
+          "id": "C",
+          "text": "children are looked after"
+        },
+        {
+          "id": "D",
+          "text": "fish are sold to buyers"
+        },
+        {
+          "id": "E",
+          "text": "scientists study the sea"
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Kalimat berikutnya menjelaskan bahwa ikan, kepiting, dan udang muda berlindung di antara akar sebelum ke laut lepas. 'Nurseries' di sini berarti tempat hewan muda berlindung selama tumbuh.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0087",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INGGRIS",
+      "passageId": "psg-0017",
+      "stem": "Which of the following is NOT mentioned as a benefit of mangroves?",
+      "options": [
+        {
+          "id": "A",
+          "text": "They reduce the damage caused by storms."
+        },
+        {
+          "id": "B",
+          "text": "They protect coastal villages from erosion."
+        },
+        {
+          "id": "C",
+          "text": "They produce timber for building houses."
+        },
+        {
+          "id": "D",
+          "text": "They shelter young fish, crabs, and shrimp."
+        },
+        {
+          "id": "E",
+          "text": "They support the income of coastal families."
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Bacaan tidak menyebut kayu mangrove untuk bangunan. Manfaat lainnya disebut di paragraf pertama dan kedua.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0088",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INGGRIS",
+      "passageId": "psg-0018",
+      "stem": "What did the experiment described in the passage show?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Students performed better when their phones were face up"
+        },
+        {
+          "id": "B",
+          "text": "Silent phones improve memory"
+        },
+        {
+          "id": "C",
+          "text": "Phones have no effect on problem-solving"
+        },
+        {
+          "id": "D",
+          "text": "Students whose phones were in another room performed better on the tasks"
+        },
+        {
+          "id": "E",
+          "text": "Students who checked messages often scored higher"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Paragraf pertama menyebut siswa yang meninggalkan ponsel di ruangan lain mengerjakan tugas ingatan dan pemecahan masalah lebih baik.",
+      "cognitiveLevel": "C2",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0089",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INGGRIS",
+      "passageId": "psg-0018",
+      "stem": "According to the passage, why can a silent phone still reduce concentration?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It makes a sound when a message arrives"
+        },
+        {
+          "id": "B",
+          "text": "Part of our attention is used to resist the urge to check it"
+        },
+        {
+          "id": "C",
+          "text": "Its screen light keeps us awake"
+        },
+        {
+          "id": "D",
+          "text": "It is heavier than a book"
+        },
+        {
+          "id": "E",
+          "text": "It automatically opens social media"
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Paragraf kedua menjelaskan bahwa sebagian perhatian terpakai untuk menahan dorongan mengecek ponsel, sehingga tenaga pikiran untuk tugas di depan kita berkurang.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0090",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "LITERASI_BAHASA_INGGRIS",
+      "passageId": "psg-0018",
+      "stem": "The writer's attitude towards the problem is best described as…",
+      "options": [
+        {
+          "id": "A",
+          "text": "optimistic"
+        },
+        {
+          "id": "B",
+          "text": "indifferent"
+        },
+        {
+          "id": "C",
+          "text": "angry"
+        },
+        {
+          "id": "D",
+          "text": "doubtful"
+        },
+        {
+          "id": "E",
+          "text": "sarcastic"
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Penulis menulis 'The good news is that the solution is simple' lalu memberi saran praktis. Sikapnya optimis.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 60,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0091",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_MATEMATIKA",
+      "passageId": "psg-0019",
+      "stem": "Paket yang harga per GB-nya paling murah adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Paket Hemat"
+        },
+        {
+          "id": "B",
+          "text": "Paket Pelajar"
+        },
+        {
+          "id": "C",
+          "text": "Paket Jumbo"
+        },
+        {
+          "id": "D",
+          "text": "Paket Hemat dan Paket Pelajar sama murahnya"
+        },
+        {
+          "id": "E",
+          "text": "Ketiga paket sama murahnya"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Harga per GB: Hemat Rp3.000, Pelajar Rp2.400, Jumbo Rp2.000. Yang paling murah Paket Jumbo.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 120,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0092",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_MATEMATIKA",
+      "passageId": "psg-0019",
+      "stem": "Rani membutuhkan 30 GB setiap bulan. Biaya paling murah yang dapat ia keluarkan dalam sebulan adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Rp80.000"
+        },
+        {
+          "id": "B",
+          "text": "Rp85.000"
+        },
+        {
+          "id": "C",
+          "text": "Rp90.000"
+        },
+        {
+          "id": "D",
+          "text": "Rp100.000"
+        },
+        {
+          "id": "E",
+          "text": "Rp120.000"
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Hemat + 15 GB tambahan = 45.000 + 75.000 = Rp120.000. Pelajar + 5 GB tambahan = 60.000 + 25.000 = Rp85.000. Jumbo = Rp100.000. Yang paling murah Rp85.000.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 120,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0093",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_MATEMATIKA",
+      "passageId": "psg-0019",
+      "stem": "Budi berlangganan Paket Pelajar mulai tanggal 1 dan memakai rata-rata 1,5 GB per hari. Jika ia tidak membeli kuota tambahan, kuotanya habis pada hari ke-…",
+      "options": [
+        {
+          "id": "A",
+          "text": "14"
+        },
+        {
+          "id": "B",
+          "text": "15"
+        },
+        {
+          "id": "C",
+          "text": "16"
+        },
+        {
+          "id": "D",
+          "text": "17"
+        },
+        {
+          "id": "E",
+          "text": "18"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Setelah 16 hari terpakai 16 × 1,5 = 24 GB, sisa 1 GB. Pada hari ke-17 kebutuhannya 1,5 GB, sehingga kuota habis pada hari itu.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 120,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0094",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_MATEMATIKA",
+      "passageId": "psg-0020",
+      "stem": "Harga laptop yang harus dibayar Sinta setelah mendapat potongan harga pelajar adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Rp5.760.000"
+        },
+        {
+          "id": "B",
+          "text": "Rp6.000.000"
+        },
+        {
+          "id": "C",
+          "text": "Rp6.200.000"
+        },
+        {
+          "id": "D",
+          "text": "Rp6.300.000"
+        },
+        {
+          "id": "E",
+          "text": "Rp6.480.000"
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Potongan 10% dari Rp7.200.000 adalah Rp720.000. Harga setelah potongan = Rp7.200.000 − Rp720.000 = Rp6.480.000.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 120,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0095",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_MATEMATIKA",
+      "passageId": "psg-0020",
+      "stem": "Paling cepat, setelah berapa bulan menabung Sinta dapat membeli laptop dengan harga pelajar?",
+      "options": [
+        {
+          "id": "A",
+          "text": "10 bulan"
+        },
+        {
+          "id": "B",
+          "text": "11 bulan"
+        },
+        {
+          "id": "C",
+          "text": "12 bulan"
+        },
+        {
+          "id": "D",
+          "text": "13 bulan"
+        },
+        {
+          "id": "E",
+          "text": "14 bulan"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Kekurangannya Rp6.480.000 − Rp1.500.000 = Rp4.980.000. Dibagi Rp450.000 per bulan hasilnya 11,07, jadi 11 bulan belum cukup dan dibutuhkan 12 bulan.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 120,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0096",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_MATEMATIKA",
+      "passageId": "psg-0020",
+      "stem": "Jika Sinta tidak mendapat potongan harga, berapa bulan lebih lama ia harus menabung dibandingkan jika mendapat potongan?",
+      "options": [
+        {
+          "id": "A",
+          "text": "1 bulan"
+        },
+        {
+          "id": "B",
+          "text": "2 bulan"
+        },
+        {
+          "id": "C",
+          "text": "3 bulan"
+        },
+        {
+          "id": "D",
+          "text": "4 bulan"
+        },
+        {
+          "id": "E",
+          "text": "Sama saja"
+        }
+      ],
+      "correctOptionId": "A",
+      "explanation": "Tanpa potongan, kekurangannya Rp5.700.000 ÷ Rp450.000 = 12,67, jadi perlu 13 bulan. Dengan potongan perlu 12 bulan. Selisihnya 1 bulan.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 120,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0097",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_MATEMATIKA",
+      "passageId": "psg-0021",
+      "stem": "Kereta Ekspres tiba di kota B pukul…",
+      "options": [
+        {
+          "id": "A",
+          "text": "08.30"
+        },
+        {
+          "id": "B",
+          "text": "09.00"
+        },
+        {
+          "id": "C",
+          "text": "09.30"
+        },
+        {
+          "id": "D",
+          "text": "10.00"
+        },
+        {
+          "id": "E",
+          "text": "10.30"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Waktu tempuh 240 ÷ 80 = 3 jam. Berangkat pukul 07.00, tiba pukul 10.00.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 120,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0098",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_MATEMATIKA",
+      "passageId": "psg-0021",
+      "stem": "Pernyataan yang tepat tentang waktu kedatangan kedua kereta di kota B adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Kereta Ekspres tiba 1 jam lebih dahulu."
+        },
+        {
+          "id": "B",
+          "text": "Kereta Ekspres tiba 30 menit lebih dahulu."
+        },
+        {
+          "id": "C",
+          "text": "Kedua kereta tiba bersamaan."
+        },
+        {
+          "id": "D",
+          "text": "Kereta Ekonomi tiba 30 menit lebih dahulu."
+        },
+        {
+          "id": "E",
+          "text": "Kereta Ekonomi tiba 1 jam lebih dahulu."
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Ekspres: 3 jam dari pukul 07.00, tiba pukul 10.00. Ekonomi: 240 ÷ 60 = 4 jam dari pukul 06.00, juga tiba pukul 10.00. Keduanya tiba bersamaan.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 120,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0099",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_MATEMATIKA",
+      "passageId": "psg-0021",
+      "stem": "Pada pukul 08.00, jarak antara kedua kereta adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "30 km"
+        },
+        {
+          "id": "B",
+          "text": "40 km"
+        },
+        {
+          "id": "C",
+          "text": "50 km"
+        },
+        {
+          "id": "D",
+          "text": "60 km"
+        },
+        {
+          "id": "E",
+          "text": "80 km"
+        }
+      ],
+      "correctOptionId": "B",
+      "explanation": "Pukul 08.00, Ekonomi sudah berjalan 2 jam: 2 × 60 = 120 km. Ekspres sudah berjalan 1 jam: 80 km. Jaraknya 120 − 80 = 40 km.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 120,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0100",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_MATEMATIKA",
+      "passageId": "psg-0022",
+      "stem": "Jika Doni memilih Promo 1, jumlah uang yang harus ia bayar adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Rp120.000"
+        },
+        {
+          "id": "B",
+          "text": "Rp125.000"
+        },
+        {
+          "id": "C",
+          "text": "Rp130.000"
+        },
+        {
+          "id": "D",
+          "text": "Rp135.000"
+        },
+        {
+          "id": "E",
+          "text": "Rp140.000"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Total harga Rp180.000. Diskon 25% berarti membayar 75%: 0,75 × 180.000 = Rp135.000.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 120,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0101",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_MATEMATIKA",
+      "passageId": "psg-0022",
+      "stem": "Promo yang lebih menguntungkan bagi Doni beserta selisih pembayarannya adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Promo 2, lebih hemat Rp5.000"
+        },
+        {
+          "id": "B",
+          "text": "Promo 1, lebih hemat Rp10.000"
+        },
+        {
+          "id": "C",
+          "text": "Promo 2, lebih hemat Rp15.000"
+        },
+        {
+          "id": "D",
+          "text": "Keduanya sama menguntungkan"
+        },
+        {
+          "id": "E",
+          "text": "Promo 1, lebih hemat Rp5.000"
+        }
+      ],
+      "correctOptionId": "E",
+      "explanation": "Promo 1: Rp135.000. Promo 2: bayar dua buku termahal, 80.000 + 60.000 = Rp140.000. Promo 1 lebih hemat Rp5.000.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 120,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0102",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_MATEMATIKA",
+      "passageId": "psg-0022",
+      "stem": "Misalkan dua buku lainnya tetap seharga Rp80.000 dan Rp60.000, sedangkan harga buku ketiga (yang termurah) diganti. Di antara pilihan berikut, harga buku ketiga TERENDAH yang membuat Promo 2 lebih menguntungkan daripada Promo 1 adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "Rp40.000"
+        },
+        {
+          "id": "B",
+          "text": "Rp45.000"
+        },
+        {
+          "id": "C",
+          "text": "Rp47.000"
+        },
+        {
+          "id": "D",
+          "text": "Rp50.000"
+        },
+        {
+          "id": "E",
+          "text": "Rp55.000"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Promo 2 selalu Rp140.000. Promo 1 = 0,75 × (140.000 + x). Promo 2 lebih untung jika 0,75 × (140.000 + x) > 140.000, yaitu x > Rp46.667. Untuk Rp45.000, Promo 1 masih Rp138.750; untuk Rp47.000, Promo 1 menjadi Rp140.250. Jadi jawabannya Rp47.000.",
+      "cognitiveLevel": "C5",
+      "estimatedSeconds": 120,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0103",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_MATEMATIKA",
+      "passageId": "psg-0023",
+      "stem": "Rata-rata banyak soal yang dikerjakan Ardi per hari adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "12 soal"
+        },
+        {
+          "id": "B",
+          "text": "13 soal"
+        },
+        {
+          "id": "C",
+          "text": "14 soal"
+        },
+        {
+          "id": "D",
+          "text": "15 soal"
+        },
+        {
+          "id": "E",
+          "text": "16 soal"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Jumlah soal = 12 + 18 + 15 + 9 + 21 = 75. Rata-rata = 75 ÷ 5 = 15 soal per hari.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 120,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0104",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_MATEMATIKA",
+      "passageId": "psg-0023",
+      "stem": "Ardi menargetkan rata-rata 17 soal per hari selama enam hari, Senin sampai Sabtu. Banyak soal yang harus ia kerjakan pada hari Sabtu adalah…",
+      "options": [
+        {
+          "id": "A",
+          "text": "21 soal"
+        },
+        {
+          "id": "B",
+          "text": "24 soal"
+        },
+        {
+          "id": "C",
+          "text": "25 soal"
+        },
+        {
+          "id": "D",
+          "text": "27 soal"
+        },
+        {
+          "id": "E",
+          "text": "30 soal"
+        }
+      ],
+      "correctOptionId": "D",
+      "explanation": "Target total = 6 × 17 = 102 soal. Sudah dikerjakan 75 soal, jadi hari Sabtu perlu 102 − 75 = 27 soal.",
+      "cognitiveLevel": "C4",
+      "estimatedSeconds": 120,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    },
+    {
+      "id": "itm-0105",
+      "active": true,
+      "exam": "SNBT",
+      "subtest": "PENALARAN_MATEMATIKA",
+      "passageId": "psg-0023",
+      "stem": "Jika pada hari Kamis Ardi mengerjakan 6 soal lebih banyak dari yang tercatat, rata-rata banyak soal per hari selama lima hari menjadi…",
+      "options": [
+        {
+          "id": "A",
+          "text": "15,6 soal"
+        },
+        {
+          "id": "B",
+          "text": "16 soal"
+        },
+        {
+          "id": "C",
+          "text": "16,2 soal"
+        },
+        {
+          "id": "D",
+          "text": "16,5 soal"
+        },
+        {
+          "id": "E",
+          "text": "21 soal"
+        }
+      ],
+      "correctOptionId": "C",
+      "explanation": "Jumlah soal menjadi 75 + 6 = 81. Rata-rata = 81 ÷ 5 = 16,2 soal per hari.",
+      "cognitiveLevel": "C3",
+      "estimatedSeconds": 120,
+      "source": {
+        "type": "LLM_GENERATED",
+        "reference": "Dibuat dengan AI (Claude) mengikuti kerangka UTBK-SNBT 2026 dari snpmb.id/fr. Bukan soal resmi; belum ditelaah guru.",
+        "verifiedBy": null,
+        "verifiedAt": null
+      }
+    }
+  ]
+}
