@@ -8,6 +8,7 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Icon
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.IBinder
@@ -97,6 +98,35 @@ class GateWatchService : Service() {
 
     private val power by lazy { getSystemService(Context.POWER_SERVICE) as PowerManager }
     private val keyguard by lazy { getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager }
+
+    // Dibuat sekali: notifikasi dibangun ulang setiap detik, dan setiap
+    // PendingIntent.getActivity adalah panggilan ke sistem.
+    private val niatBuka by lazy {
+        PendingIntent.getActivity(
+            this,
+            0,
+            Intent(this, MainActivity::class.java),
+            PendingIntent.FLAG_IMMUTABLE,
+        )
+    }
+
+    private val niatKerjakanSoal by lazy {
+        PendingIntent.getActivity(
+            this,
+            1,
+            Intent(this, MainActivity::class.java)
+                .putExtra(MainActivity.EXTRA_KERJAKAN_SOAL, true)
+                // SINGLE_TOP + CLEAR_TOP: kalau aplikasi sedang terbuka,
+                // Activity yang sama menerimanya lewat onNewIntent — tidak
+                // dibuat ulang dan tidak menumpuk dua salinan.
+                .addFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK or
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP or
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP,
+                ),
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+        )
+    }
 
     /** Teks notifikasi layanan yang terakhir dikirim. Hanya disentuh di thread utama. */
     private var teksNotifikasiTerakhir: String? = null
@@ -555,17 +585,17 @@ class GateWatchService : Service() {
     }
 
     private fun bangunNotifikasi(isi: String): Notification {
-        val buka = PendingIntent.getActivity(
-            this,
-            0,
-            Intent(this, MainActivity::class.java),
-            PendingIntent.FLAG_IMMUTABLE,
-        )
+        val kerjakanSoal = Notification.Action.Builder(
+            Icon.createWithResource(this, android.R.drawable.ic_menu_edit),
+            "Kerjakan Soal",
+            niatKerjakanSoal,
+        ).build()
         return Notification.Builder(this, CHANNEL_ID)
             .setContentTitle("Soaldulu")
             .setContentText(isi)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentIntent(buka)
+            .setContentIntent(niatBuka)
+            .addAction(kerjakanSoal)
             .setOngoing(true)
             // Diperbarui tiap detik: jangan berbunyi atau bergetar ulang, dan
             // jangan tampilkan jam yang ikut berganti setiap pembaruan.

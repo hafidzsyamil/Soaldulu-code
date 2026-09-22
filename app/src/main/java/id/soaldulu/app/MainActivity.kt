@@ -136,6 +136,15 @@ class MainActivity : ComponentActivity() {
      */
     private var hapusSetelahGerbang: String? = null
 
+    /** triggeredByPackage untuk gerbang yang sedang dibuka lewat Kerjakan Soal. */
+    private var pemicuGerbangManual = PEMICU_MANUAL
+
+    /**
+     * Tombol Kerjakan Soal di notifikasi ditekan. Dijalankan begitu rute awal
+     * sudah ditentukan — saat aplikasi baru dibuka, itu belum tentu sudah.
+     */
+    private var mintaKerjakanSoal = false
+
     // Hanya dipakai layar uji Fase 0.
     private val jumlahStart = mutableIntStateOf(0)
     private val ringkasanLog = mutableStateOf("belum ada")
@@ -151,6 +160,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Hanya saat benar-benar baru dibuat. Saat dibuat ulang (rotasi, ganti
+        // tema), intent lama tidak boleh membuka gerbang lagi.
+        if (savedInstanceState == null) terimaIntent(intent)
         enableEdgeToEdge()
         setContent {
             // enableEdgeToEdge() di atas memilih warna ikon status bar dari
@@ -200,11 +212,11 @@ class MainActivity : ComponentActivity() {
     }
 
     /** Maju satu layar, menyimpan yang sekarang untuk tombol Back. */
-    private fun buka(tujuan: Layar) {
+    private fun buka(tujuan: Layar, arahBaru: Arah = Arah.MAJU) {
         // Ketukan ganda saat animasi berjalan tidak boleh menumpuk layar
         // yang sama dua kali — Back akan terasa tidak bekerja.
         if (tujuan == layar.value) return
-        arah = Arah.MAJU
+        arah = arahBaru
         tumpukan.add(layar.value)
         layar.value = tujuan
     }
@@ -453,6 +465,36 @@ class MainActivity : ComponentActivity() {
         segarkan()
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        terimaIntent(intent)
+        if (rutePertamaSudahDitentukan) jalankanPermintaanKerjakanSoal()
+    }
+
+    private fun terimaIntent(intent: Intent?) {
+        if (intent == null) return
+        // Dibuka ulang dari daftar aplikasi terbaru membawa intent lama;
+        // itu bukan tekanan tombol yang baru.
+        if (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY != 0) return
+        if (intent.getBooleanExtra(EXTRA_KERJAKAN_SOAL, false)) mintaKerjakanSoal = true
+    }
+
+    /**
+     * Buka gerbang Kerjakan Soal di atas Dashboard, sehingga Back kembali ke
+     * Dashboard. Langsung tampil tanpa animasi masuk: saat aplikasi baru
+     * dibuka, animasi justru akan memperlihatkan layar Welcome sekilas.
+     */
+    private fun jalankanPermintaanKerjakanSoal() {
+        if (!mintaKerjakanSoal) return
+        mintaKerjakanSoal = false
+        // Hanya setelah onboarding selesai: perlu nama dan bank soal.
+        if (nama.value.isBlank() || versiPaket.value.isBlank()) return
+        if (layar.value == Layar.KERJAKAN_SOAL) return
+        gantiAkar(Layar.DASHBOARD, Arah.TANPA)
+        mulaiGerbangManual(pemicu = PEMICU_NOTIFIKASI, arahMasuk = Arah.TANPA)
+    }
+
     private fun segarkan() {
         status.value = bacaStatusIzin(this)
         ringkasanLog.value = SpikeLog.ringkasanBerkas(this)
@@ -523,6 +565,7 @@ class MainActivity : ComponentActivity() {
             rutePertamaSudahDitentukan = true
             gantiAkar(ruteAwal(namaTersimpan, paket != null), Arah.TANPA)
         }
+        jalankanPermintaanKerjakanSoal()
 
         // Jaring pengaman: kalau service pernah mati — dibunuh sistem, HP
         // di-restart, atau aplikasi dipasang ulang — membuka aplikasi
@@ -572,10 +615,15 @@ class MainActivity : ComponentActivity() {
     // ── Gerbang atas kemauan sendiri ────────────────────────────────────────
 
     /** `untukHapus` terisi: gerbang ini syarat menghapus aplikasi tambahan. */
-    private fun mulaiGerbangManual(untukHapus: String? = null) {
+    private fun mulaiGerbangManual(
+        untukHapus: String? = null,
+        pemicu: String = PEMICU_MANUAL,
+        arahMasuk: Arah = Arah.MAJU,
+    ) {
         hapusSetelahGerbang = untukHapus
+        pemicuGerbangManual = if (untukHapus != null) PEMICU_HAPUS_APLIKASI else pemicu
         soalManual.value = null
-        buka(Layar.KERJAKAN_SOAL)
+        buka(Layar.KERJAKAN_SOAL, arahMasuk)
         lifecycleScope.launch {
             soalManual.value = repo.soalUntukGerbang(nama.value)
         }
@@ -586,8 +634,9 @@ class MainActivity : ComponentActivity() {
      *
      * Dicatat dengan triggeredByPackage "MANUAL" supaya saat analisis bisa
      * dipisahkan dari gerbang yang dipicu media sosial — keduanya perilaku
-     * yang sangat berbeda. Gerbang yang menjadi syarat menghapus aplikasi
-     * dicatat sebagai "REMOVE_APP"; kreditnya tetap diberikan seperti biasa.
+     * yang sangat berbeda. Yang dibuka dari tombol notifikasi dicatat sebagai
+     * "NOTIFICATION". Gerbang yang menjadi syarat menghapus aplikasi dicatat
+     * sebagai "REMOVE_APP"; kreditnya tetap diberikan seperti biasa.
      */
     private fun selesaikanGerbangManual(jawaban: List<JawabanGerbang>) {
         // Hanya sekali per gerbang. Layar gerbang masih tergambar selama
@@ -595,6 +644,7 @@ class MainActivity : ComponentActivity() {
         // mencatat jawaban dan memberi kredit untuk kedua kalinya.
         if (layar.value != Layar.KERJAKAN_SOAL) return
         val paketDihapus = hapusSetelahGerbang
+        val pemicu = pemicuGerbangManual
         hapusSetelahGerbang = null
         // Dari daftar aplikasi, kembali ke daftar itu; dari Dashboard, ke Dashboard.
         if (paketDihapus != null) kembali() else gantiAkar(Layar.DASHBOARD)
@@ -620,7 +670,7 @@ class MainActivity : ComponentActivity() {
                     opsiDipilih = j.opsiDipilih.optionId,
                     durasiDetik = j.durasiDetik,
                     kreditDidapat = j.bonusDetik,
-                    paketPemicu = if (paketDihapus != null) "REMOVE_APP" else "MANUAL",
+                    paketPemicu = pemicu,
                 )
             }
             if (kreditDetik > 0) repo.mulaiSesiKredit(nama.value, idSesi, kreditDetik)
@@ -779,8 +829,14 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private companion object {
-        const val UKURAN_IKON_PX = 96
+    companion object {
+        /** Extra dari tombol Kerjakan Soal di notifikasi layanan. */
+        const val EXTRA_KERJAKAN_SOAL = "kerjakan_soal"
+
+        private const val PEMICU_MANUAL = "MANUAL"
+        private const val PEMICU_NOTIFIKASI = "NOTIFICATION"
+        private const val PEMICU_HAPUS_APLIKASI = "REMOVE_APP"
+        private const val UKURAN_IKON_PX = 96
     }
 
     private fun versiAplikasi(): String = try {
