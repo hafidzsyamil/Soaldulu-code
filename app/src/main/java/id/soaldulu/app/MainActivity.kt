@@ -933,7 +933,7 @@ class MainActivity : ComponentActivity() {
 
     private fun ringkasanKirim(): String {
         if (!StatusKirim.disetel) return "Tujuan pengiriman belum disetel di APK ini"
-        if (!StatusKirim.aktif(this)) return "Dimatikan — catatan tidak dikirim"
+        if (!StatusKirim.aktif(this)) return "Mati — data tidak dikirim ke pengembang"
         val berhasil = StatusKirim.terakhirBerhasil(this)
         val coba = StatusKirim.terakhirCoba(this)
         val pesan = StatusKirim.pesanTerakhir(this)

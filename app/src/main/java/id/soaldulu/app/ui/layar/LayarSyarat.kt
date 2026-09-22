@@ -97,22 +97,10 @@ fun LayarSyarat(
             // memang tidak mengirim apa pun, dan janji sebaliknya akan bohong.
             if (StatusKirim.disetel) {
                 Bagian(
-                    "Catatan dikirim ke peneliti",
-                    "Dengan menyetujui syarat ini, kamu setuju catatan di atas " +
-                        "dikirim ke peneliti lewat internet, otomatis dan berkala, " +
-                        "tanpa perlu kamu kirim sendiri. Yang terkirim adalah nama " +
-                        "yang kamu isi, ringkasan pemakaian, dan seluruh catatan " +
-                        "jawaban — sama persis dengan yang bisa kamu lihat sendiri " +
-                        "lewat tombol ekspor di Settings. Isi chat, foto, kontak, " +
-                        "dan lokasi tidak pernah ikut.",
-                )
-                Bagian(
-                    "Di mana data disimpan",
-                    "Catatan tersimpan di HP-mu sendiri, dan salinannya disimpan " +
-                        "di penyimpanan tertutup milik peneliti yang hanya bisa " +
-                        "dibuka peneliti. Gerbang soal, bank soal, dan kredit tetap " +
-                        "berjalan penuh tanpa internet; internet hanya dipakai " +
-                        "untuk mengirim catatan itu.",
+                    "Data penggunaan",
+                    "Aplikasi mengirim data penggunaan — catatan di atas dan nama " +
+                        "yang kamu isi — ke pengembang Soaldulu. Bisa dimatikan di " +
+                        "Settings, Kirim data penggunaan.",
                 )
             } else {
                 Bagian(
@@ -126,14 +114,7 @@ fun LayarSyarat(
             Bagian(
                 "Kamu boleh berhenti",
                 "Kamu boleh berhenti kapan saja tanpa konsekuensi apa pun. Cukup " +
-                    "cabut izin lewat pengaturan HP atau hapus aplikasinya." +
-                    if (StatusKirim.disetel) {
-                        " Pengiriman catatan juga bisa kamu matikan sendiri kapan " +
-                            "saja lewat Settings, dan catatan yang belum terkirim " +
-                            "tidak akan dikirim setelah itu."
-                    } else {
-                        ""
-                    },
+                    "cabut izin lewat pengaturan HP atau hapus aplikasinya.",
             )
             Spacer(Modifier.height(48.dp))
         }

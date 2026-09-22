@@ -158,7 +158,7 @@ fun LayarSettings(
                     KartuBaris {
                         ListItem(
                             leadingContent = { IkonBaris(R.drawable.ic_ms_cloud_upload) },
-                            headlineContent = { Text("Kirim catatan ke peneliti") },
+                            headlineContent = { Text("Kirim data penggunaan") },
                             supportingContent = { Text(statusKirim) },
                             trailingContent = {
                                 Switch(checked = kirimAktif, onCheckedChange = onUbahKirim)
