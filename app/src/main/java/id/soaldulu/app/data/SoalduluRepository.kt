@@ -2,6 +2,8 @@ package id.soaldulu.app.data
 
 import android.content.Context
 import id.soaldulu.app.GateConfig
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /** Satu soal lengkap dengan semua yang dibutuhkan untuk menampilkannya. */
 data class SoalLengkap(
@@ -61,6 +63,32 @@ class SoalduluRepository private constructor(private val dao: SoalduluDao) {
                 )
             }
         }
+
+    /**
+     * Pasang ulang bank soal kalau versi di dalam APK berbeda dari yang terpasang.
+     *
+     * Seeding biasanya hanya terjadi sekali, di layar Paket Soal saat
+     * onboarding. Tanpa ini, HP yang sudah pernah memasang bank — termasuk
+     * bank contoh — tidak akan pernah menerima bank baru dari APK yang
+     * diperbarui. Pergantiannya dicatat sebagai PACKAGE_UPDATED (handoff
+     * Bagian 6.3), supaya jawaban sebelum dan sesudahnya bisa dipisahkan.
+     *
+     * Mengembalikan versi baru, atau null kalau tidak ada yang berubah.
+     */
+    suspend fun perbaruiPaketBawaan(context: Context, kode: String): String? {
+        // Belum pernah memasang bank: itu tugas layar Paket Soal.
+        val terpasang = dao.paketTerpasang() ?: return null
+        val bawaan = withContext(Dispatchers.IO) {
+            BankSoalParser.bacaDariAssets(context, GateConfig.BUNDLED_PACKAGE_ASSET)
+        }
+        // Bank di APK rusak atau tidak ada: biarkan yang terpasang tetap dipakai.
+        if (bawaan !is HasilBacaPaket.Berhasil) return null
+        if (bawaan.paket.version == terpasang.version) return null
+
+        simpanHasil(bawaan)
+        catatPeristiwa(kode, "PACKAGE_UPDATED", "${terpasang.version} -> ${bawaan.paket.version}")
+        return bawaan.paket.version
+    }
 
     suspend fun paketTerpasang(): PaketEntity? = dao.paketTerpasang()
 

@@ -121,6 +121,7 @@ class MainActivity : ComponentActivity() {
     private val isiLog = mutableStateOf("")
 
     private var rutePertamaSudahDitentukan = false
+    private var paketBawaanSudahDicek = false
 
     private val mintaNotifikasi =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { segarkan() }
@@ -394,6 +395,13 @@ class MainActivity : ComponentActivity() {
             nama.value = namaTersimpan
             avatar.intValue = Preferensi.avatar(this@MainActivity)
             temaGelap.value = Preferensi.temaGelap(this@MainActivity)
+
+            // Sekali per pembukaan aplikasi: kalau APK membawa bank soal
+            // versi baru, bank itu menggantikan yang terpasang.
+            if (!paketBawaanSudahDicek) {
+                paketBawaanSudahDicek = true
+                repo.perbaruiPaketBawaan(this@MainActivity, namaTersimpan)
+            }
 
             val paket = repo.paketTerpasang()
             versiPaket.value = paket?.version.orEmpty()

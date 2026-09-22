@@ -185,7 +185,8 @@ fun formatSisaKredit(detik: Int): String {
 
 /**
  * Ubah nilai enum subtes jadi teks yang bisa dibaca.
- * LITERASI_BAHASA_INDONESIA menjadi Literasi Bahasa Indonesia.
+ * LITERASI_BAHASA_INDONESIA menjadi Literasi Bahasa Indonesia, dan
+ * PENGETAHUAN_DAN_PEMAHAMAN_UMUM menjadi Pengetahuan dan Pemahaman Umum.
  *
  * Murni pemformatan tampilan; nilai yang disimpan di log tetap apa adanya
  * dari JSON.
@@ -193,7 +194,14 @@ fun formatSisaKredit(detik: Int): String {
 fun namaSubtes(subtest: String): String =
     subtest.split("_")
         .filter { it.isNotBlank() }
-        .joinToString(" ") { kata -> kata.lowercase().replaceFirstChar { it.uppercase() } }
+        .mapIndexed { i, kata ->
+            val kecil = kata.lowercase()
+            // Kata tugas tetap huruf kecil, kecuali di awal.
+            if (i > 0 && kecil in KATA_TUGAS) kecil else kecil.replaceFirstChar { it.uppercase() }
+        }
+        .joinToString(" ")
+
+private val KATA_TUGAS = setOf("dan", "dalam")
 
 @Preview(name = "Gerbang Soal", heightDp = 860)
 @Composable
