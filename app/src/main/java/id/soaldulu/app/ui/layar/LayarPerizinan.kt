@@ -4,19 +4,23 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,6 +47,8 @@ fun LayarPerizinan(
     onMinta: (Int) -> Unit,
     onLanjut: () -> Unit,
     modifier: Modifier = Modifier,
+    /** null menyembunyikan tombol kembali: tidak ada layar untuk dituju. */
+    onKembali: (() -> Unit)? = null,
 ) {
     val baris = listOf(
         Triple(1, "Akses Penggunaan", status.usageAccess),
@@ -64,11 +70,28 @@ fun LayarPerizinan(
             .padding(horizontal = Ukuran.marginLayar, vertical = Ukuran.antarBagian),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            "Permission",
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-        )
+        Box(Modifier.fillMaxWidth()) {
+            if (onKembali != null) {
+                IconButton(
+                    onClick = onKembali,
+                    // Digeser keluar setengah area sentuhnya supaya ikonnya
+                    // sejajar dengan tepi kiri kartu di bawahnya.
+                    modifier = Modifier.align(Alignment.CenterStart).offset(x = (-12).dp),
+                ) {
+                    Icon(
+                        Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Kembali",
+                        tint = MaterialTheme.colorScheme.onBackground,
+                    )
+                }
+            }
+            Text(
+                "Permission",
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.align(Alignment.Center),
+            )
+        }
 
         Spacer(Modifier.height(Ukuran.antarBagian))
 
@@ -141,6 +164,7 @@ private fun PratinjauPerizinan() {
             ),
             onMinta = {},
             onLanjut = {},
+            onKembali = {},
         )
     }
 }

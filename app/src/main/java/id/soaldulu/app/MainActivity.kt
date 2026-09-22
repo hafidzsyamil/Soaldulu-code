@@ -333,6 +333,9 @@ class MainActivity : ComponentActivity() {
                     if (tumpukan.lastOrNull() == Layar.SETTINGS) kembali()
                     else buka(Layar.NAMA)
                 },
+                // Tanpa tujuan mundur — aplikasi dibuka langsung di sini karena
+                // ada izin yang dicabut — tombol kembali akan menutup aplikasi.
+                onKembali = if (tumpukan.isNotEmpty()) ({ kembali() }) else null,
             )
 
             Layar.NAMA -> LayarNama(
