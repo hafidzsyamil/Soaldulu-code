@@ -9,10 +9,12 @@ package id.soaldulu.app
  */
 object GateConfig {
 
-    // ── KURS KREDIT (nilai sementara, akan dikunci setelah uji coba mandiri) ──
+    // ── KURS KREDIT ──
+    // Diputuskan 22 Sep 2026: satu jawaban benar = 10 menit. Tidak ada kredit
+    // dasar lagi — sebelumnya 10 menit dasar + 3 menit per jawaban benar.
     const val QUESTIONS_PER_GATE = 3
-    const val GATE_REWARD_SECONDS = 600 // 10 menit, dasar
-    const val CORRECT_BONUS_SECONDS = 180 // 3 menit per jawaban benar
+    const val GATE_REWARD_SECONDS = 0 // tanpa kredit dasar
+    const val CORRECT_BONUS_SECONDS = 600 // 10 menit per jawaban benar
     const val MAX_CREDIT_BALANCE_SECONDS = 3600 // 0 = tanpa batas
 
     // ── KURS KREDIT VERSI PENDEK, HANYA UNTUK PENGUJIAN ──
@@ -20,12 +22,16 @@ object GateConfig {
     // perilaku saat kredit habis bisa diuji tanpa menunggu 10 menit.
     // Karena DEV_MODE wajib false di APK responden, nilai pendek ini tidak
     // mungkin terbawa ke uji coba sungguhan.
-    const val DEV_GATE_REWARD_SECONDS = 60 // 1 menit
-    const val DEV_CORRECT_BONUS_SECONDS = 20
+    // Strukturnya sama dengan nilai sungguhan, hanya sepersepuluhnya.
+    const val DEV_GATE_REWARD_SECONDS = 0
+    const val DEV_CORRECT_BONUS_SECONDS = 60 // 1 menit
     const val DEV_CREDIT_WARNING_BEFORE_EXPIRY_SECONDS = 20
 
-    // 3 soal, 0 benar → 600 detik  (10 menit)
-    // 3 soal, 3 benar → 1140 detik (19 menit)
+    // 3 soal, 0 benar → 0 detik    (gerbang muncul lagi setelah cooldown)
+    // 3 soal, 1 benar → 600 detik  (10 menit)
+    // 3 soal, 3 benar → 1800 detik (30 menit)
+    // Jawaban benar yang lebih cepat dari MIN_GENUINE_ANSWER_SECONDS tetap
+    // bernilai 0 — dianggap asal tekan.
 
     // ── PERILAKU GERBANG ──
     const val FOREGROUND_POLL_INTERVAL_SECONDS = 1
