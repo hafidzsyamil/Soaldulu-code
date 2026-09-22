@@ -561,12 +561,17 @@ class GateWatchService : Service() {
     }
 
     private fun buatChannelNotifikasi() {
+        // IMPORTANCE_DEFAULT, bukan LOW: channel LOW masuk kelompok "senyap"
+        // di bagian bawah panel notifikasi. Suara dan getarnya dimatikan di
+        // channel itu sendiri, jadi tetap tidak pernah berbunyi.
         val channel = NotificationChannel(
             CHANNEL_ID,
             "Layanan gerbang",
-            NotificationManager.IMPORTANCE_LOW, // tanpa suara
+            NotificationManager.IMPORTANCE_DEFAULT,
         ).apply {
             description = "Menampilkan sisa kredit dan status layanan Soaldulu."
+            setSound(null, null)
+            enableVibration(false)
             setShowBadge(false)
         }
         val peringatan = NotificationChannel(
@@ -580,6 +585,9 @@ class GateWatchService : Service() {
         }
 
         val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        // Tingkat kepentingan channel tidak bisa dinaikkan setelah dibuat,
+        // jadi channel LOW yang lama dihapus dan diganti channel baru.
+        nm.deleteNotificationChannel(CHANNEL_LAMA)
         nm.createNotificationChannel(channel)
         nm.createNotificationChannel(peringatan)
     }
@@ -601,6 +609,10 @@ class GateWatchService : Service() {
             // jangan tampilkan jam yang ikut berganti setiap pembaruan.
             .setOnlyAlertOnce(true)
             .setShowWhen(false)
+            // Notifikasi foreground service yang diwarnai diletakkan sistem
+            // di atas notifikasi lain. Warnanya biru tua aplikasi (BiruDalam).
+            .setColor(WARNA_NOTIFIKASI)
+            .setColorized(true)
             .build()
     }
 
@@ -616,7 +628,9 @@ class GateWatchService : Service() {
         // (lanjut di bawah)
         const val KEY_JUMLAH_START = "jumlah_start"
 
-        private const val CHANNEL_ID = "gerbang"
+        private const val CHANNEL_ID = "gerbang_utama"
+        private const val CHANNEL_LAMA = "gerbang"
+        private const val WARNA_NOTIFIKASI = 0xFF0F4C75.toInt()
         private const val CHANNEL_PERINGATAN = "peringatan_kredit"
         private const val ID_NOTIFIKASI = 1
         private const val ID_NOTIFIKASI_PERINGATAN = 2
