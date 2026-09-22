@@ -1,160 +1,250 @@
-# Mengirim catatan responden ke GitHub
+# Mengirim catatan responden ke GitHub — panduan rinci
 
-Aplikasi mengirim laporan tiap responden ke satu repo GitHub milik peneliti,
-supaya tidak perlu meminta berkas CSV satu per satu. Dokumen ini langkah
-demi langkah; ikuti berurutan.
+Aplikasi mengirim laporan tiap responden ke satu repo GitHub milikmu, supaya
+kamu tidak perlu meminta berkas CSV satu per satu.
 
-Waktu yang dibutuhkan sekitar 15 menit, sekali saja.
+Dikerjakan sekali, sekitar 15 menit. Ikuti berurutan, jangan melompat.
 
----
-
-## Yang perlu kamu tahu lebih dulu
-
-**Token GitHub ikut terpasang di dalam APK, dan bisa dibaca siapa pun yang
-memegang berkas APK-nya.** Tidak ada cara mengirim ke GitHub tanpa menaruh
-kredensial di aplikasi. Karena itu:
-
-- Pakai repo **khusus data ini saja**. Jangan pakai repo yang sudah berisi
-  hal lain.
-- Repo-nya **private**.
-- Tokennya **fine-grained**, hanya untuk repo itu, hanya izin *Contents*.
-- Beri **tanggal kedaluwarsa** sekitar seminggu setelah uji coba selesai.
-- **Cabut tokennya** setelah uji coba (Langkah 8).
-
-Kalau tokennya bocor, yang bisa disentuh hanya repo data itu: orang bisa
-membaca, menulis, atau menghapus isinya. Tidak bisa menyentuh repo lain
-atau akun GitHub-mu.
+Tampilan GitHub berbahasa Inggris, jadi nama tombol di bawah ditulis apa
+adanya dalam bahasa Inggris.
 
 ---
 
-## Langkah 1 — Buat repo data
+## Sebelum mulai
+
+- Punya akun GitHub dan sudah login di peramban.
+- Proyek Soaldulu ada di `C:\Users\Hafid\Project\Soaldulu`.
+
+**Yang harus kamu tahu:** token GitHub ikut terpasang di dalam APK dan bisa
+dibaca siapa pun yang memegang berkas APK-nya. Tidak ada cara mengirim ke
+GitHub tanpa menaruh kredensial di aplikasi. Panduan ini membatasi
+akibatnya: repo khusus, izin paling sempit, dan tokennya dicabut setelah
+uji coba.
+
+---
+
+# LANGKAH 1 — Buat repo penampung data
 
 1. Buka <https://github.com/new>
-2. **Repository name:** `soaldulu-data`
-3. Pilih **Private**
-4. Centang **Add a README file** — ini penting. Repo yang benar-benar kosong
-   belum punya branch `main`, dan aplikasi akan gagal mengirim.
-5. Klik **Create repository**
+2. **Owner:** biarkan akun pribadimu.
+3. **Repository name:** ketik `soaldulu-data`
+4. **Description:** boleh dikosongkan.
+5. Pilih **Private**. Jangan Public — isinya nama dan catatan responden.
+6. Di bagian *Initialize this repository with*, **centang `Add a README file`**.
 
-Catat nama lengkapnya, bentuknya `namaakunmu/soaldulu-data`.
+   Ini wajib. Repo yang benar-benar kosong belum punya branch `main`, dan
+   pengiriman dari aplikasi akan gagal dengan pesan 404 atau 409.
+7. *Add .gitignore* dan *Choose a license*: biarkan **None**.
+8. Klik tombol hijau **Create repository**.
 
-## Langkah 2 — Buat token
+Setelah jadi, kamu berada di halaman repo. Perhatikan dua hal:
+
+- Alamat di peramban: `https://github.com/NAMAAKUN/soaldulu-data`.
+  **Catat `NAMAAKUN/soaldulu-data`** — nanti dipakai di Langkah 3.
+- Di kiri atas daftar berkas ada tombol bertuliskan **`main`**. Itu nama
+  branch-nya. Kalau tertulis `master`, catat itu, nanti dipakai di Langkah 3.
+
+---
+
+# LANGKAH 2 — Buat token
 
 1. Buka <https://github.com/settings/personal-access-tokens/new>
-   (Settings → Developer settings → Personal access tokens → Fine-grained tokens)
-2. **Token name:** `soaldulu-uji-coba`
-3. **Expiration:** pilih tanggal sekitar seminggu setelah uji coba selesai
-4. **Repository access:** pilih **Only select repositories**, lalu pilih
-   `soaldulu-data`
-5. **Repository permissions** → cari **Contents** → ubah menjadi
-   **Read and write**
 
-   Biarkan izin lainnya *No access*. *Metadata: Read-only* akan tercentang
-   sendiri, itu wajar.
-6. Klik **Generate token**
-7. **Salin tokennya sekarang** — GitHub hanya menampilkannya satu kali.
-   Bentuknya diawali `github_pat_`.
+   Jalur manualnya: klik foto profil kanan atas → **Settings** → gulir ke
+   bawah, menu kiri paling bawah **Developer settings** → **Personal access
+   tokens** → **Fine-grained tokens** → tombol **Generate new token**.
+2. **Token name:** ketik `soaldulu-uji-coba`
+3. **Resource owner:** pilih **akun pribadimu** (bukan organisasi, kalau ada).
+4. **Expiration:** pilih tanggal sekitar seminggu setelah uji coba selesai.
+   Kalau pilihannya terbatas, pilih **Custom** lalu tentukan tanggalnya.
+5. **Description:** boleh dikosongkan.
+6. **Repository access:** pilih **Only select repositories**.
 
-## Langkah 3 — Masukkan ke local.properties
+   Muncul kotak **Select repositories** → klik → cari dan pilih
+   **`soaldulu-data`**. Pastikan hanya repo itu yang terpilih.
+7. **Permissions** → buka bagian **Repository permissions**.
 
-Buka `C:\Users\Hafid\Project\Soaldulu\local.properties`, tambahkan tiga baris
-di bawah isi yang sudah ada:
+   Daftarnya panjang. Cari baris **Contents** (urut abjad, di bagian atas).
+   Klik dropdown di kanannya, pilih **Read and write**.
+
+   Biarkan semua izin lain **No access**. Baris **Metadata** akan berubah
+   sendiri menjadi *Read-only* dan tidak bisa dimatikan — itu wajar dan
+   memang diperlukan.
+8. Gulir ke paling bawah, klik **Generate token**.
+9. Tokennya tampil sekali di layar dengan latar hijau, bentuknya
+   `github_pat_` diikuti huruf acak panjang. Klik ikon salin di sebelahnya.
+
+   **Salin sekarang juga.** Setelah halaman ini ditutup, GitHub tidak akan
+   menampilkannya lagi. Kalau telanjur tertutup, ulangi Langkah 2 dari awal
+   untuk membuat token baru.
+10. Tempel sementara di Notepad kalau perlu, jangan di tempat yang ikut
+    terkirim ke orang lain.
+
+---
+
+# LANGKAH 3 — Masukkan ke local.properties
+
+1. Buka berkas `C:\Users\Hafid\Project\Soaldulu\local.properties`
+   dengan Notepad atau Android Studio.
+2. Isinya sudah ada satu baris `sdk.dir=...`. **Jangan dihapus.**
+3. Tambahkan tiga baris di bawahnya:
 
 ```properties
-soaldulu.github.repo=namaakunmu/soaldulu-data
-soaldulu.github.token=github_pat_xxxxxxxxxxxxxxxxxxxx
+soaldulu.github.repo=NAMAAKUN/soaldulu-data
+soaldulu.github.token=github_pat_xxxxxxxxxxxxxxxxxxxxxxxx
 soaldulu.github.branch=main
 ```
 
-Ganti `namaakunmu` dan tokennya dengan milikmu sendiri.
+4. Ganti `NAMAAKUN` dengan nama akun GitHub-mu, dan tokennya dengan yang
+   tadi disalin.
+5. Kalau nama branch di Langkah 1 ternyata `master`, tulis `master`.
 
-Berkas ini **tidak ikut git** (sudah ada di `.gitignore`), jadi tokenmu tidak
-akan pernah ter-commit. Jangan menaruh token di berkas lain.
+Aturan penulisan, sering jadi penyebab gagal:
 
-## Langkah 4 — Bangun ulang APK
+- **Tanpa tanda kutip** di sekeliling nilainya.
+- **Tanpa spasi** sebelum dan sesudah tanda `=`.
+- Pastikan tidak ada spasi tertinggal di ujung baris.
+- Nama repo ditulis lengkap `akun/repo`, bukan alamat `https://...`.
+
+6. Simpan berkasnya.
+
+Berkas ini sudah terdaftar di `.gitignore`, jadi tokenmu tidak akan pernah
+ikut ter-commit.
+
+---
+
+# LANGKAH 4 — Bangun ulang APK
+
+Token dibaca saat APK dibangun, jadi APK lama tidak akan mengirim apa pun.
+
+Lewat terminal, di folder proyek:
 
 ```
 ./gradlew assembleDebug
 ```
 
-APK-nya ada di `app/build/outputs/apk/debug/app-debug.apk`.
+Atau di Android Studio: menu **Build** → **Rebuild Project**, lalu **Run**.
 
-Kalau ketiga baris tadi kosong atau salah tulis, fitur kirim mati sendiri dan
-aplikasi tetap berjalan normal — barisnya tidak muncul di Settings.
-
-## Langkah 5 — Uji dari HP-mu sendiri
-
-1. Pasang APK, buka aplikasinya
-2. Masuk **Settings**
-3. Pastikan ada baris **Kirim catatan ke peneliti** dan sakelarnya menyala
-4. Tekan **Kirim sekarang**
-5. Tunggu beberapa detik, lalu tarik ke bawah — keterangannya berubah jadi
-   `Terkirim <tanggal jam>`
-6. Buka repo `soaldulu-data` di GitHub. Harus ada berkas
-   `data/<nama>-<8 huruf acak>.json`
-
-Kalau gagal, keterangannya berisi sebabnya. Yang sering:
-
-| Pesan | Sebabnya |
-|---|---|
-| `GitHub menolak (401)` | Token salah tulis, atau sudah kedaluwarsa |
-| `GitHub menolak (404)` | Nama repo salah, atau token tidak diberi akses ke repo itu |
-| `GitHub menolak (403)` | Izin *Contents* belum *Read and write* |
-| `GitHub menolak (409)` atau `(422)` | Branch `main` belum ada — ulangi Langkah 1 nomor 4 |
-| `UnknownHostException` | HP sedang tidak ada internet |
-
-## Langkah 6 — Pasang ke HP responden
-
-APK yang sama dipasang ke lima HP responden. Tiap HP menulis berkasnya
-sendiri, jadi tidak akan saling menimpa walaupun ada dua responden bernama
-sama.
-
-Pengiriman berjalan otomatis: paling sering sekali per jam, dijalankan
-layanan gerbang yang memang sudah hidup terus, dan juga setiap responden
-membuka aplikasi. Responden tidak perlu melakukan apa pun.
-
-## Langkah 7 — (Disarankan) daftar indeks otomatis
-
-Supaya kamu punya satu berkas ringkasan semua responden, pasang GitHub
-Actions di repo data:
-
-1. Di repo `soaldulu-data`, klik **Add file → Create new file**
-2. Nama berkas: `.github/workflows/indeks.yml`
-3. Isi dengan isi berkas [`github-workflow-index.yml`](github-workflow-index.yml)
-   yang ada di folder ini
-4. **Commit**
-
-Setiap kali ada laporan baru masuk, Actions memperbarui `index.json` di akar
-repo. Isinya satu baris per responden: nama, jumlah soal, persen benar,
-menit mengerjakan soal, menit memakai media sosial, jumlah gerbang, berapa
-kali tiap aplikasi dibuka, dan berapa hari aktif.
-
-Kalau langkah ini dilewati, datanya tetap lengkap di `data/*.json`; kamu
-hanya tidak punya ringkasan gabungannya.
-
-## Langkah 8 — Setelah uji coba selesai
-
-1. Cabut tokennya: <https://github.com/settings/personal-access-tokens> →
-   pilih `soaldulu-uji-coba` → **Revoke**
-2. Unduh isi repo (**Code → Download ZIP**) untuk arsip skripsimu
-3. Repo boleh dibiarkan private, atau dihapus setelah datanya diarsipkan
+Hasilnya: `app/build/outputs/apk/debug/app-debug.apk`
 
 ---
 
-## Isi berkas laporan
+# LANGKAH 5 — Uji dari HP-mu sendiri
 
-Satu berkas per responden, di `data/`:
+1. Pasang APK-nya ke HP, lalu buka aplikasinya.
+2. Masuk **Settings**.
+3. Harus muncul baris baru **Kirim catatan ke peneliti** dengan sakelar
+   menyala.
+
+   **Kalau barisnya tidak muncul:** ketiga baris di Langkah 3 belum terbaca.
+   Periksa ejaannya, simpan, lalu ulangi Langkah 4.
+4. Tekan baris **Kirim sekarang**.
+5. Tunggu beberapa detik. Keterangan di baris **Kirim catatan ke peneliti**
+   berubah menjadi `Terkirim <tanggal> <jam>`.
+
+   Kalau gagal, keterangannya berisi sebabnya — lihat tabel di bawah.
+6. Buka repo `soaldulu-data` di GitHub, muat ulang halamannya. Harus ada
+   folder **`data`** berisi berkas seperti
+   `syamil-3f9a2b1c.json`.
+7. Klik berkas itu. Di bagian atas ada `"ringkasan"` berisi angka-angkanya.
+
+## Kalau gagal
+
+| Pesan di HP | Sebabnya | Perbaikannya |
+|---|---|---|
+| Baris Settings tidak muncul | local.properties belum terbaca | Periksa ejaan, bangun ulang APK |
+| `Repo tujuan belum disetel` | Sama seperti di atas | Ulangi Langkah 3 dan 4 |
+| `GitHub menolak (401)` | Token salah salin, atau sudah kedaluwarsa | Buat token baru, Langkah 2 |
+| `GitHub menolak (403)` | Izin **Contents** belum *Read and write* | Perbaiki izin token, Langkah 2 nomor 7 |
+| `GitHub menolak (404)` | Nama repo salah, atau token tidak diberi akses ke repo itu | Periksa Langkah 3 baris `repo`, dan Langkah 2 nomor 6 |
+| `GitHub menolak (409)` / `(422)` | Branch tidak ada — repo dibuat tanpa README | Buat berkas apa pun di repo, atau ulangi Langkah 1 |
+| `UnknownHostException` | HP sedang tanpa internet | Nyalakan data, tekan Kirim sekarang lagi |
+| `SocketTimeoutException` | Jaringan lambat | Coba lagi; pengiriman otomatis juga akan mengulang |
+
+---
+
+# LANGKAH 6 — Pasang daftar indeks otomatis
+
+Supaya ada satu berkas ringkasan semua responden, bukan lima berkas terpisah.
+
+1. Buka repo `soaldulu-data` di GitHub.
+2. Klik tombol **Add file** (kanan atas daftar berkas) → **Create new file**.
+3. Di kotak nama berkas, ketik persis:
+
+   ```
+   .github/workflows/indeks.yml
+   ```
+
+   Saat kamu mengetik tanda `/`, GitHub otomatis membuat foldernya.
+4. Buka berkas `docs/github-workflow-index.yml` di proyek Soaldulu, salin
+   **seluruh isinya**, tempel ke kotak editor di GitHub.
+5. Gulir ke bawah, klik **Commit changes...** → **Commit changes**.
+6. Klik tab **Actions** di atas. Akan ada pekerjaan berjalan bernama
+   *Susun indeks responden*. Tunggu sampai centang hijau.
+7. Kembali ke tab **Code**. Sekarang ada berkas **`index.json`** di akar repo.
+
+Isi `index.json`: satu baris per responden — nama, jumlah soal dikerjakan,
+persen benar, menit mengerjakan soal, menit memakai media sosial, jumlah
+gerbang, berapa kali tiap aplikasi dibuka, hari aktif, dan kapan terakhir
+mengirim. Diperbarui sendiri setiap ada laporan baru masuk.
+
+---
+
+# LANGKAH 7 — Bagikan ke responden
+
+APK yang sama dipasang ke lima HP responden.
+
+- Tiap HP menulis berkasnya sendiri (`nama-idperangkat.json`), jadi dua
+  responden bernama sama tidak akan saling menimpa.
+- Pengiriman berjalan sendiri: paling sering sekali per jam oleh layanan
+  gerbang yang memang hidup terus, dan juga setiap responden membuka
+  aplikasi. Responden tidak perlu melakukan apa pun.
+- Kalau HP responden sedang tanpa internet, pengiriman berikutnya mengejar
+  ketertinggalan — isi laporannya selalu seluruh catatan dari awal, bukan
+  hanya yang baru.
+
+---
+
+# LANGKAH 8 — Memantau selama uji coba
+
+- Buka `index.json` di repo untuk melihat kemajuan kelima responden
+  sekaligus.
+- Kolom `aktivitasTerakhir` dan `dikirimPada` menunjukkan HP mana yang
+  berhenti mengirim.
+- Kalau ada responden yang tidak muncul lebih dari sehari, kemungkinan:
+  layanan gerbangnya mati (minta dia membuka aplikasinya), HP-nya tanpa
+  internet, atau dia mematikan sakelar pengiriman.
+
+---
+
+# LANGKAH 9 — Setelah uji coba selesai
+
+1. **Unduh datanya:** di repo, tombol hijau **Code** → **Download ZIP**.
+   Simpan untuk lampiran KTI.
+2. **Cabut tokennya:** <https://github.com/settings/personal-access-tokens>
+   → klik `soaldulu-uji-coba` → **Revoke** → konfirmasi.
+
+   Setelah dicabut, APK yang beredar tidak bisa menulis apa pun lagi.
+3. Repo boleh dibiarkan private, atau dihapus setelah datanya diarsipkan:
+   **Settings** → gulir paling bawah → **Delete this repository**.
+
+---
+
+# Isi berkas laporan
+
+Satu berkas per responden di folder `data/`:
 
 | Bagian | Isi |
 |---|---|
-| `responden` | Nama yang diisi responden, dan id pemasangan |
+| `responden` | Nama yang diisi responden, id pemasangan |
 | `perangkat` | Merek, model, versi Android |
 | `aplikasi` | Versi aplikasi, versi bank soal, jumlah butir aktif |
-| `ringkasan` | Semua angka yang biasanya kamu butuhkan, lihat di bawah |
+| `ringkasan` | Angka-angka siap pakai, lihat daftar di bawah |
 | `pemakaianAplikasiDetik` | Berapa detik tiap aplikasi benar-benar dipakai |
 | `izinSaatIni` | Empat izin, menyala atau tidak |
+| `aplikasiDipantau` | Daftar aplikasi yang dijaga di HP itu |
 | `jawaban` | Seluruh baris jawaban, satu per soal |
-| `sesiKredit` | Setiap pemberian kredit dan kapan habisnya |
+| `sesiKredit` | Tiap pemberian kredit dan kapan habisnya |
 | `peristiwa` | Aplikasi dibuka, mode darurat, izin dicabut, dan lainnya |
 
 Isi `ringkasan`:
@@ -171,12 +261,15 @@ Isi `ringkasan`:
 - `modeDaruratDipakai`, `aplikasiDitambah`, `aplikasiDihapus`,
   `aplikasiDimatikan`, `serviceRestart`, `soalDilaporkan`, `perambanDibuka`
 
-## Kalau ada responden yang mematikan pengiriman
+---
+
+# Kalau responden mematikan pengiriman
 
 Sakelar di Settings boleh dimatikan responden kapan saja — persetujuan yang
 tidak bisa ditarik bukan persetujuan. Kalau itu terjadi:
 
-- Laporan yang sudah masuk tetap ada
-- Laporan baru berhenti terkirim
-- Peristiwa `SENDING_DISABLED` tercatat di laporan terakhirnya
-- Kamu masih bisa meminta responden itu mengekspor CSV lewat Settings
+- Laporan yang sudah masuk tetap ada.
+- Laporan baru berhenti terkirim.
+- Peristiwa `SENDING_DISABLED` tercatat di laporan terakhirnya, jadi kamu
+  tahu kapan berhentinya.
+- Kamu masih bisa meminta responden itu mengekspor CSV lewat Settings.
