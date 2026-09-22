@@ -61,6 +61,12 @@ fun LayarSettings(
     onAplikasi: () -> Unit,
     onDataPrivasi: () -> Unit,
     onEkspor: () -> Unit,
+    kirimDisetel: Boolean,
+    kirimAktif: Boolean,
+    statusKirim: String,
+    sedangKirim: Boolean,
+    onUbahKirim: (Boolean) -> Unit,
+    onKirimSekarang: () -> Unit,
     onLayarUji: () -> Unit,
     onKembali: () -> Unit,
     modifier: Modifier = Modifier,
@@ -146,6 +152,34 @@ fun LayarSettings(
                     "Tulis seluruh log ke satu berkas CSV lalu kirim ke peneliti",
                     onKlik = onEkspor,
                 )
+
+                // Hanya kalau APK ini dibangun dengan tujuan pengiriman terisi.
+                if (kirimDisetel) {
+                    KartuBaris {
+                        ListItem(
+                            leadingContent = { IkonBaris(R.drawable.ic_ms_cloud_upload) },
+                            headlineContent = { Text("Kirim catatan ke peneliti") },
+                            supportingContent = { Text(statusKirim) },
+                            trailingContent = {
+                                Switch(checked = kirimAktif, onCheckedChange = onUbahKirim)
+                            },
+                            colors = warnaListItem(),
+                        )
+                    }
+
+                    if (kirimAktif) {
+                        BarisPengaturan(
+                            R.drawable.ic_ms_sync,
+                            "Kirim sekarang",
+                            if (sedangKirim) {
+                                "Sedang mengirim…"
+                            } else {
+                                "Tanpa menunggu jadwal otomatis"
+                            },
+                            onKlik = if (sedangKirim) null else onKirimSekarang,
+                        )
+                    }
+                }
 
                 BarisPengaturan(
                     R.drawable.ic_ms_info,
@@ -298,6 +332,12 @@ private fun PratinjauSettings() {
             onAplikasi = {},
             onDataPrivasi = {},
             onEkspor = {},
+            kirimDisetel = true,
+            kirimAktif = true,
+            statusKirim = "Terakhir terkirim 22 Sep 10:14",
+            sedangKirim = false,
+            onUbahKirim = {},
+            onKirimSekarang = {},
             onLayarUji = {},
             onKembali = {},
         )

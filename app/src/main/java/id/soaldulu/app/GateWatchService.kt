@@ -31,6 +31,8 @@ import androidx.compose.ui.Modifier
 import id.soaldulu.app.data.Preferensi
 import id.soaldulu.app.data.SoalLengkap
 import id.soaldulu.app.data.SoalduluRepository
+import id.soaldulu.app.kirim.PengirimGitHub
+import id.soaldulu.app.kirim.StatusKirim
 import id.soaldulu.app.ui.layar.AlurGerbang
 import id.soaldulu.app.ui.layar.JawabanGerbang
 import id.soaldulu.app.ui.layar.formatSisaKredit
@@ -284,7 +286,15 @@ class GateWatchService : Service() {
         // muncul karena aplikasi baru dibuka dari gerbang yang muncul karena
         // kredit habis saat responden sudah berada di dalam aplikasi.
         val dipicuBukaanBaru = eventBaru
-        if (eventBaru) eventTerakhirDitangani = depan.waktuEvent
+        if (eventBaru) {
+            eventTerakhirDitangani = depan.waktuEvent
+            // Berapa kali aplikasi dibuka adalah data penelitian tersendiri:
+            // membuka dengan kredit tersisa tidak memunculkan gerbang, jadi
+            // tanpa catatan ini pembukaan itu tidak terlihat di mana pun.
+            lingkup.launch {
+                repo.catatPeristiwa(namaResponden, "APP_OPENED", depan.paket)
+            }
+        }
 
         if (SaldoKredit.sisaMs(this) > 0) {
             // Masih punya kredit: biarkan, dan potong kredit sebanyak waktu
@@ -295,6 +305,7 @@ class GateWatchService : Service() {
             // boleh habis sementara responden mengerjakan soal kedua.
             if (!gerbangSedangTampil && power.isInteractive && !keyguard.isKeyguardLocked) {
                 SaldoKredit.pakai(this, selang)
+                Pemakaian.tambah(this, depan.paket, selang)
             }
             return
         }
@@ -482,6 +493,28 @@ class GateWatchService : Service() {
         )
     }
 
+    /**
+     * Kirim laporan ke repo peneliti, paling sering sekali per
+     * KIRIM_INTERVAL_SECONDS. Dijalankan dari service supaya responden yang
+     * jarang membuka aplikasi tetap terkirim datanya.
+     */
+    private fun kirimLaporanBilaWaktunya() {
+        if (!StatusKirim.disetel || !StatusKirim.aktif(this)) return
+        val jeda = System.currentTimeMillis() - StatusKirim.terakhirCoba(this)
+        if (jeda < GateConfig.KIRIM_INTERVAL_SECONDS * 1000L) return
+        if (namaResponden.isBlank()) return
+        lingkup.launch {
+            PengirimGitHub.kirim(this@GateWatchService, repo, namaResponden, versiAplikasi())
+        }
+    }
+
+    private fun versiAplikasi(): String = try {
+        val info = packageManager.getPackageInfo(packageName, 0)
+        "${info.versionName} (${info.longVersionCode})"
+    } catch (e: PackageManager.NameNotFoundException) {
+        "tidak diketahui"
+    }
+
     /** Nama aplikasi untuk tombol "Buka ...". */
     private fun labelAplikasi(paket: String): String = try {
         @Suppress("DEPRECATION")
@@ -557,6 +590,7 @@ class GateWatchService : Service() {
         val sekarang = SystemClock.elapsedRealtime()
         if (sekarang - heartbeatTerakhir < JEDA_HEARTBEAT_MS) return
         heartbeatTerakhir = sekarang
+        kirimLaporanBilaWaktunya()
         SpikeLog.tulis(
             this,
             "HEARTBEAT uptime=${formatDurasi(sekarang - mulaiElapsed)} " +

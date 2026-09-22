@@ -42,6 +42,8 @@ import id.soaldulu.app.data.HasilSeed
 import id.soaldulu.app.data.Preferensi
 import id.soaldulu.app.data.SoalLengkap
 import id.soaldulu.app.data.SoalduluRepository
+import id.soaldulu.app.kirim.PengirimGitHub
+import id.soaldulu.app.kirim.StatusKirim
 import id.soaldulu.app.ui.layar.AlurGerbang
 import id.soaldulu.app.ui.layar.AplikasiDipantau
 import id.soaldulu.app.ui.layar.KandidatAplikasi
@@ -63,6 +65,9 @@ import id.soaldulu.app.ui.theme.SoalduluTheme
 import id.soaldulu.app.ui.theme.TAHAN_PEMBUKA_MS
 import id.soaldulu.app.ui.theme.tolakSentuhan
 import id.soaldulu.app.ui.theme.transisiLayar
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -138,6 +143,9 @@ class MainActivity : ComponentActivity() {
     private val jumlahButirAktif = mutableIntStateOf(0)
     private val soalManual = mutableStateOf<List<SoalLengkap>?>(null)
     private val menyegarkan = mutableStateOf(false)
+    private val kirimAktif = mutableStateOf(true)
+    private val sedangKirim = mutableStateOf(false)
+    private val statusKirim = mutableStateOf("")
     private val daftarAplikasi = mutableStateOf<List<AplikasiDipantau>>(emptyList())
     private val pemilihAplikasiTerbuka = mutableStateOf(false)
     private val kandidatAplikasi = mutableStateOf<List<KandidatAplikasi>?>(null)
@@ -410,6 +418,12 @@ class MainActivity : ComponentActivity() {
                 },
                 onDataPrivasi = { buka(Layar.SYARAT) },
                 onEkspor = { eksporLog() },
+                kirimDisetel = StatusKirim.disetel,
+                kirimAktif = kirimAktif.value,
+                statusKirim = statusKirim.value,
+                sedangKirim = sedangKirim.value,
+                onUbahKirim = { aktif -> setKirimAktif(aktif) },
+                onKirimSekarang = { kirimSekarang() },
                 onLayarUji = { buka(Layar.SPIKE) },
                 onKembali = { kembali() },
             )
@@ -592,11 +606,17 @@ class MainActivity : ComponentActivity() {
             startForegroundService(Intent(this@MainActivity, GateWatchService::class.java))
         }
 
+        kirimAktif.value = StatusKirim.aktif(this@MainActivity)
+        statusKirim.value = ringkasanKirim()
+
         if (!rutePertamaSudahDitentukan) {
             rutePertamaSudahDitentukan = true
             tampilkanRuteAwal(ruteAwal(namaTersimpan, paket != null))
         }
         jalankanPermintaanKerjakanSoal()
+
+        // Setelah layar tampil, supaya pengiriman tidak menahan pembukaan.
+        kirimLaporanBilaWaktunya(namaTersimpan)
     }
 
     /**
@@ -871,6 +891,64 @@ class MainActivity : ComponentActivity() {
             segarkan()
         }
     }
+
+    // ── Laporan ke peneliti ─────────────────────────────────────────────────
+
+    /**
+     * Kirim laporan kalau jadwalnya sudah lewat. Service juga melakukannya;
+     * yang di sini menangkap keadaan saat service sempat mati.
+     */
+    private suspend fun kirimLaporanBilaWaktunya(namaTersimpan: String) {
+        if (!StatusKirim.disetel || !StatusKirim.aktif(this) || namaTersimpan.isBlank()) return
+        val jeda = System.currentTimeMillis() - StatusKirim.terakhirCoba(this)
+        if (jeda < GateConfig.KIRIM_INTERVAL_SECONDS * 1000L) return
+        PengirimGitHub.kirim(this, repo, namaTersimpan, versiAplikasi())
+        statusKirim.value = ringkasanKirim()
+    }
+
+    private fun kirimSekarang() {
+        if (sedangKirim.value) return
+        sedangKirim.value = true
+        statusKirim.value = "Mengirim…"
+        lifecycleScope.launch {
+            PengirimGitHub.kirim(this@MainActivity, repo, nama.value, versiAplikasi())
+            sedangKirim.value = false
+            statusKirim.value = ringkasanKirim()
+        }
+    }
+
+    private fun setKirimAktif(aktif: Boolean) {
+        StatusKirim.setAktif(this, aktif)
+        kirimAktif.value = aktif
+        statusKirim.value = ringkasanKirim()
+        // Responden yang mematikan pengiriman adalah temuan penelitian juga.
+        lifecycleScope.launch {
+            repo.catatPeristiwa(
+                nama.value,
+                if (aktif) "SENDING_ENABLED" else "SENDING_DISABLED",
+                "",
+            )
+        }
+    }
+
+    private fun ringkasanKirim(): String {
+        if (!StatusKirim.disetel) return "Tujuan pengiriman belum disetel di APK ini"
+        if (!StatusKirim.aktif(this)) return "Dimatikan — catatan tidak dikirim"
+        val berhasil = StatusKirim.terakhirBerhasil(this)
+        val coba = StatusKirim.terakhirCoba(this)
+        val pesan = StatusKirim.pesanTerakhir(this)
+        val gagalTerakhir = coba > berhasil && pesan.isNotBlank()
+        return when {
+            berhasil == 0L && !gagalTerakhir -> "Belum pernah terkirim"
+            berhasil == 0L -> "Belum terkirim · $pesan"
+            gagalTerakhir -> "Terkirim ${waktuSingkat(berhasil)} · percobaan terakhir gagal: $pesan"
+            else -> "Terkirim ${waktuSingkat(berhasil)}"
+        }
+    }
+
+    private fun waktuSingkat(epochMs: Long): String =
+        DateTimeFormatter.ofPattern("d MMM HH:mm")
+            .format(Instant.ofEpochMilli(epochMs).atZone(ZoneId.systemDefault()))
 
     private fun eksporLog() {
         statusEkspor.value = "Menulis berkas…"

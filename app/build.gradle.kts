@@ -1,3 +1,16 @@
+import java.util.Properties
+
+// Alamat repo dan token GitHub dibaca dari local.properties, yang tidak ikut
+// masuk git. Kalau kosong, fitur kirim laporan mati dan aplikasi tetap jalan
+// seperti biasa.
+val rahasia = Properties().apply {
+    val berkas = rootProject.file("local.properties")
+    if (berkas.exists()) berkas.inputStream().use { load(it) }
+}
+
+fun rahasiaKutip(kunci: String, bawaan: String = ""): String =
+    "\"" + (rahasia.getProperty(kunci) ?: bawaan).trim() + "\""
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -21,6 +34,10 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+        buildConfigField("String", "GITHUB_REPO", rahasiaKutip("soaldulu.github.repo"))
+        buildConfigField("String", "GITHUB_TOKEN", rahasiaKutip("soaldulu.github.token"))
+        buildConfigField("String", "GITHUB_BRANCH", rahasiaKutip("soaldulu.github.branch", "main"))
     }
 
     buildTypes {
@@ -38,6 +55,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 

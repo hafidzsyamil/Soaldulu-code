@@ -1,0 +1,72 @@
+# Salin isi berkas ini ke repo data (soaldulu-data) sebagai
+# .github/workflows/indeks.yml
+#
+# Setiap kali ada laporan responden masuk ke data/, index.json di akar repo
+# diperbarui: satu baris ringkasan per responden.
+
+name: Susun indeks responden
+
+on:
+  push:
+    paths:
+      - "data/**.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  indeks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Susun index.json
+        run: |
+          python3 - <<'PY'
+          import glob, json
+          from datetime import datetime, timezone
+
+          responden = []
+          for berkas in sorted(glob.glob("data/*.json")):
+              with open(berkas, encoding="utf-8") as f:
+                  d = json.load(f)
+              r = d.get("ringkasan", {})
+              orang = d.get("responden", {})
+              responden.append({
+                  "berkas": berkas,
+                  "nama": orang.get("nama", ""),
+                  "idPerangkat": orang.get("idPerangkat", ""),
+                  "dikirimPada": d.get("dikirimPada"),
+                  "perangkat": d.get("perangkat", {}).get("model", ""),
+                  "versiPaketSoal": d.get("aplikasi", {}).get("versiPaketSoal", ""),
+                  "soalDikerjakan": r.get("soalDikerjakan", 0),
+                  "jawabanBenar": r.get("jawabanBenar", 0),
+                  "persenBenar": r.get("persenBenar", 0),
+                  "totalMenitMengerjakanSoal": r.get("totalMenitMengerjakanSoal", 0),
+                  "totalMenitPakaiAplikasi": r.get("totalMenitPakaiAplikasi", 0),
+                  "jumlahGerbang": r.get("jumlahGerbang", 0),
+                  "gerbangDipicuMedsos": r.get("gerbangDipicuMedsos", 0),
+                  "aplikasiDibukaBerapaKali": r.get("aplikasiDibukaBerapaKali", {}),
+                  "hariAktif": r.get("hariAktif", 0),
+                  "aktivitasTerakhir": r.get("aktivitasTerakhir"),
+              })
+
+          indeks = {
+              "diperbaruiPada": datetime.now(timezone.utc).isoformat(),
+              "jumlahResponden": len(responden),
+              "totalSoalDikerjakan": sum(x["soalDikerjakan"] for x in responden),
+              "responden": responden,
+          }
+          with open("index.json", "w", encoding="utf-8") as f:
+              json.dump(indeks, f, ensure_ascii=False, indent=2)
+              f.write("\n")
+          PY
+
+      - name: Commit index.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.json
+          git diff --staged --quiet || git commit -m "Perbarui index.json"
+          git push

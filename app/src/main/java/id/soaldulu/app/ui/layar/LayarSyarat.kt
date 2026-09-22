@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import id.soaldulu.app.kirim.StatusKirim
 import id.soaldulu.app.ui.theme.SoalduluTheme
 import id.soaldulu.app.ui.theme.Ukuran
 
@@ -91,17 +92,48 @@ fun LayarSyarat(
                     "Tidak ada email atau nomor telepon yang diminta. Tidak ada foto " +
                     "yang diunggah — avatar hanya lingkaran berwarna.",
             )
-            Bagian(
-                "Di mana data disimpan",
-                "Seluruh catatan tersimpan di HP-mu sendiri dan tidak dikirim ke mana " +
-                    "pun secara otomatis. Aplikasi berjalan penuh tanpa internet. " +
-                    "Catatan baru berpindah ke peneliti kalau kamu sendiri yang " +
-                    "mengekspor dan mengirimkannya.",
-            )
+            // Teksnya mengikuti APK yang benar-benar dipegang responden: kalau
+            // tujuan pengiriman tidak disetel saat APK dibangun, aplikasi ini
+            // memang tidak mengirim apa pun, dan janji sebaliknya akan bohong.
+            if (StatusKirim.disetel) {
+                Bagian(
+                    "Catatan dikirim ke peneliti",
+                    "Dengan menyetujui syarat ini, kamu setuju catatan di atas " +
+                        "dikirim ke peneliti lewat internet, otomatis dan berkala, " +
+                        "tanpa perlu kamu kirim sendiri. Yang terkirim adalah nama " +
+                        "yang kamu isi, ringkasan pemakaian, dan seluruh catatan " +
+                        "jawaban — sama persis dengan yang bisa kamu lihat sendiri " +
+                        "lewat tombol ekspor di Settings. Isi chat, foto, kontak, " +
+                        "dan lokasi tidak pernah ikut.",
+                )
+                Bagian(
+                    "Di mana data disimpan",
+                    "Catatan tersimpan di HP-mu sendiri, dan salinannya disimpan " +
+                        "di penyimpanan tertutup milik peneliti yang hanya bisa " +
+                        "dibuka peneliti. Gerbang soal, bank soal, dan kredit tetap " +
+                        "berjalan penuh tanpa internet; internet hanya dipakai " +
+                        "untuk mengirim catatan itu.",
+                )
+            } else {
+                Bagian(
+                    "Di mana data disimpan",
+                    "Seluruh catatan tersimpan di HP-mu sendiri dan tidak dikirim " +
+                        "ke mana pun secara otomatis. Aplikasi berjalan penuh tanpa " +
+                        "internet. Catatan baru berpindah ke peneliti kalau kamu " +
+                        "sendiri yang mengekspor dan mengirimkannya.",
+                )
+            }
             Bagian(
                 "Kamu boleh berhenti",
                 "Kamu boleh berhenti kapan saja tanpa konsekuensi apa pun. Cukup " +
-                    "cabut izin lewat pengaturan HP atau hapus aplikasinya.",
+                    "cabut izin lewat pengaturan HP atau hapus aplikasinya." +
+                    if (StatusKirim.disetel) {
+                        " Pengiriman catatan juga bisa kamu matikan sendiri kapan " +
+                            "saja lewat Settings, dan catatan yang belum terkirim " +
+                            "tidak akan dikirim setelah itu."
+                    } else {
+                        ""
+                    },
             )
             Spacer(Modifier.height(48.dp))
         }

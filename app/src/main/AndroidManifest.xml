@@ -18,6 +18,11 @@
     <!-- Izin 4 — Abaikan optimasi baterai. -->
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
+    <!-- Mengirim laporan penelitian ke repo GitHub peneliti. Gerbang, bank
+         soal, dan kredit tetap berjalan penuh tanpa internet. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <!-- Foreground service. Sejak Android 14 (targetSdk 34) tipe service wajib
          dideklarasikan beserta permission yang cocok. -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />

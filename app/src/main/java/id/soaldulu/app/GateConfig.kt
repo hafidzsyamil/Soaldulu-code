@@ -99,6 +99,11 @@ object GateConfig {
     const val UPDATE_TIMEOUT_SECONDS = 15
     const val ACCEPT_PATCH_UPDATES_ONLY = true
 
+    // ── KIRIM LAPORAN KE PENELITI ──
+    // Tujuan dan tokennya disetel lewat local.properties saat APK dibangun.
+    const val KIRIM_INTERVAL_SECONDS = 3600 // paling sering sekali per jam
+    const val KIRIM_TIMEOUT_SECONDS = 20
+
     // ── PENELITIAN ──
     const val EXPORT_FILENAME_TEMPLATE = "soaldulu_log_%s.csv"
 
