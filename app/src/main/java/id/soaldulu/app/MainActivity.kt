@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.PredictiveBackHandler
@@ -59,6 +60,7 @@ import id.soaldulu.app.ui.layar.StatistikHome
 import id.soaldulu.app.ui.layar.StatusPaket
 import id.soaldulu.app.ui.theme.Arah
 import id.soaldulu.app.ui.theme.SoalduluTheme
+import id.soaldulu.app.ui.theme.TAHAN_PEMBUKA_MS
 import id.soaldulu.app.ui.theme.tolakSentuhan
 import id.soaldulu.app.ui.theme.transisiLayar
 import kotlin.coroutines.cancellation.CancellationException
@@ -75,6 +77,13 @@ import kotlinx.coroutines.withContext
  * layar nama berarti menyetujui syarat, yang bisa dibaca di LayarSyarat.
  */
 enum class Layar {
+    /**
+     * Logo saat aplikasi baru dibuka, selama rute awal belum diketahui.
+     * Tampilannya sama dengan Welcome tapi tidak bisa disentuh — sebelumnya
+     * Welcome sungguhan yang tampil di sini, dan ketukan cepat melempar
+     * responden lama ke layar Permission.
+     */
+    PEMBUKA,
     WELCOME,
     PERMISSION,
     NAMA,
@@ -96,7 +105,10 @@ enum class Layar {
  */
 class MainActivity : ComponentActivity() {
 
-    private val layar = mutableStateOf(Layar.WELCOME)
+    private val layar = mutableStateOf(Layar.PEMBUKA)
+
+    /** Kapan Activity ini dibuat, untuk menahan logo di layar pembuka. */
+    private val dibukaPada = SystemClock.elapsedRealtime()
 
     /**
      * Riwayat layar untuk tombol Back.
@@ -323,6 +335,8 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun LayarUntuk(tujuan: Layar) {
         when (tujuan) {
+            Layar.PEMBUKA -> LayarWelcome(onLanjut = null)
+
             Layar.WELCOME -> LayarWelcome(
                 onLanjut = { buka(Layar.PERMISSION) },
             )
@@ -570,17 +584,38 @@ class MainActivity : ComponentActivity() {
             status.value.semuaAktif &&
             paket != null
 
-        if (!rutePertamaSudahDitentukan) {
-            rutePertamaSudahDitentukan = true
-            gantiAkar(ruteAwal(namaTersimpan, paket != null), Arah.TANPA)
-        }
-        jalankanPermintaanKerjakanSoal()
-
         // Jaring pengaman: kalau service pernah mati — dibunuh sistem, HP
         // di-restart, atau aplikasi dipasang ulang — membuka aplikasi
         // menghidupkannya lagi. startForegroundService aman dipanggil berulang.
+        // Sebelum rute awal, supaya tidak ikut tertahan animasi pembuka.
         if (onboardingSelesai) {
             startForegroundService(Intent(this@MainActivity, GateWatchService::class.java))
+        }
+
+        if (!rutePertamaSudahDitentukan) {
+            rutePertamaSudahDitentukan = true
+            tampilkanRuteAwal(ruteAwal(namaTersimpan, paket != null))
+        }
+        jalankanPermintaanKerjakanSoal()
+    }
+
+    /**
+     * Pindah dari layar pembuka ke layar pertama yang sebenarnya.
+     *
+     * Ke Welcome cukup pudar silang: tampilannya sama, hanya petunjuknya yang
+     * muncul. Ke layar lain logo ditahan dulu sampai TAHAN_PEMBUKA_MS lalu
+     * dianimasikan — kecuali dibuka dari tombol notifikasi, yang harus
+     * langsung sampai di layar soal.
+     */
+    private suspend fun tampilkanRuteAwal(rute: Layar) {
+        when {
+            rute == Layar.WELCOME -> gantiAkar(rute, Arah.PUDAR)
+            mintaKerjakanSoal -> gantiAkar(rute, Arah.TANPA)
+            else -> {
+                val sisa = TAHAN_PEMBUKA_MS - (SystemClock.elapsedRealtime() - dibukaPada)
+                if (sisa > 0) delay(sisa)
+                gantiAkar(rute, Arah.PEMBUKA)
+            }
         }
     }
 

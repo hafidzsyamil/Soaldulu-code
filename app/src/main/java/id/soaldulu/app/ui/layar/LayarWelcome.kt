@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,17 +34,24 @@ import id.soaldulu.app.ui.theme.Ukuran
  */
 @Composable
 fun LayarWelcome(
-    onLanjut: () -> Unit,
+    /** null: layar pembuka saat aplikasi dibuka — tidak bisa disentuh, tanpa petunjuk. */
+    onLanjut: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = onLanjut,
+            .then(
+                if (onLanjut != null) {
+                    Modifier.clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = onLanjut,
+                    )
+                } else {
+                    Modifier
+                },
             )
             .padding(horizontal = Ukuran.marginLayar, vertical = Ukuran.antarBagian),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -77,6 +85,9 @@ fun LayarWelcome(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
+            // Disembunyikan, bukan dihapus: tata letaknya tetap sama persis,
+            // jadi pembuka → Welcome hanya terlihat sebagai petunjuk yang muncul.
+            modifier = Modifier.alpha(if (onLanjut != null) 1f else 0f),
         )
     }
 }

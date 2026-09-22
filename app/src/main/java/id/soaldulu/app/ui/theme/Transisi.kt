@@ -26,9 +26,23 @@ enum class Arah {
     /** Pindah ke layar yang tidak bersaudara, misalnya onboarding selesai. */
     GANTI,
 
-    /** Tanpa gerak: layar pertama saat aplikasi dibuka. */
+    /** Layar pembuka ke tujuan pertama: logo membesar dan memudar, tujuan muncul. */
+    PEMBUKA,
+
+    /** Pudar silang biasa, untuk dua layar yang hampir sama. */
+    PUDAR,
+
+    /** Tanpa gerak. */
     TANPA,
 }
+
+/**
+ * Berapa lama logo di layar pembuka paling tidak tampil sebelum berpindah ke
+ * Dashboard. Tanpa ini data selesai dimuat dalam sepersekian detik dan
+ * perpindahannya terlihat sebagai kedipan, bukan animasi. 600 ms adalah
+ * token durasi DurationLong4 Material 3.
+ */
+const val TAHAN_PEMBUKA_MS = 600L
 
 /**
  * Pegas gerak standar Material 3.
@@ -42,6 +56,8 @@ private object GerakM3 {
     fun <T> spasial(): FiniteAnimationSpec<T> = spring(dampingRatio = 0.9f, stiffness = 700f)
     fun <T> efek(): FiniteAnimationSpec<T> = spring(dampingRatio = 1f, stiffness = 1600f)
     fun <T> efekCepat(): FiniteAnimationSpec<T> = spring(dampingRatio = 1f, stiffness = 3800f)
+    fun <T> spasialLambat(): FiniteAnimationSpec<T> = spring(dampingRatio = 0.9f, stiffness = 300f)
+    fun <T> efekLambat(): FiniteAnimationSpec<T> = spring(dampingRatio = 1f, stiffness = 800f)
 }
 
 /** Transisi antarlayar dengan pola gerak Material 3. */
@@ -73,6 +89,22 @@ fun transisiLayar(arah: Arah): ContentTransform = when (arah) {
         targetContentEnter = fadeIn(GerakM3.efek()) +
             scaleIn(GerakM3.spasial(), initialScale = 0.92f),
         initialContentExit = fadeOut(GerakM3.efekCepat()),
+        sizeTransform = null,
+    )
+
+    // Sekali per pembukaan aplikasi, jadi memakai pegas lambat: logo sedikit
+    // membesar sambil memudar, seolah-olah kita masuk ke dalamnya.
+    Arah.PEMBUKA -> ContentTransform(
+        targetContentEnter = fadeIn(GerakM3.efekLambat()) +
+            scaleIn(GerakM3.spasialLambat(), initialScale = 0.92f),
+        initialContentExit = fadeOut(GerakM3.efekLambat()) +
+            scaleOut(GerakM3.spasialLambat(), targetScale = 1.08f),
+        sizeTransform = null,
+    )
+
+    Arah.PUDAR -> ContentTransform(
+        targetContentEnter = fadeIn(GerakM3.efekLambat()),
+        initialContentExit = fadeOut(GerakM3.efekLambat()),
         sizeTransform = null,
     )
 
