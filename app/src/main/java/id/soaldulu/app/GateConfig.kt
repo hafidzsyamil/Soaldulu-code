@@ -17,15 +17,8 @@ object GateConfig {
     const val CORRECT_BONUS_SECONDS = 600 // 10 menit per jawaban benar
     const val MAX_CREDIT_BALANCE_SECONDS = 3600 // 0 = tanpa batas
 
-    // ── KURS KREDIT VERSI PENDEK, HANYA UNTUK PENGUJIAN ──
-    // Dipakai menggantikan dua nilai di atas selama DEV_MODE true, supaya
-    // perilaku saat kredit habis bisa diuji tanpa menunggu 10 menit.
-    // Karena DEV_MODE wajib false di APK responden, nilai pendek ini tidak
-    // mungkin terbawa ke uji coba sungguhan.
-    // Strukturnya sama dengan nilai sungguhan, hanya sepersepuluhnya.
-    const val DEV_GATE_REWARD_SECONDS = 0
-    const val DEV_CORRECT_BONUS_SECONDS = 60 // 1 menit
-    const val DEV_CREDIT_WARNING_BEFORE_EXPIRY_SECONDS = 20
+    // Kurs versi pendek untuk DEV_MODE sudah dihapus (22 Sep 2026): yang diuji
+    // di HP pengembang harus sama persis dengan yang diterima responden.
 
     // 3 soal, 0 benar → 0 detik    (gerbang muncul lagi setelah cooldown)
     // 3 soal, 1 benar → 600 detik  (10 menit)
@@ -46,12 +39,19 @@ object GateConfig {
     const val MIN_GENUINE_ANSWER_SECONDS = 2 // lebih cepat = tak dapat bonus
     const val GATE_COOLDOWN_SECONDS = 5
 
+    // Seberapa sering angka sisa kredit di Dashboard diperbarui.
+    const val DASHBOARD_REFRESH_SECONDS = 1
+
     // ── APLIKASI DIPANTAU ──
     // BELUM DIVERIFIKASI di HP responden (handoff Bagian 10). Daftar ini
     // disalin apa adanya dari handoff; nama package harus dicek ulang
     // sebelum APK dibagikan.
     val MONITORED_PACKAGES = setOf(
-        "com.zhiliaoapp.musically", // TikTok
+        "com.zhiliaoapp.musically", // TikTok (versi global)
+        // TikTok versi Asia Tenggara. Diverifikasi 22 Sep 2026 di HP uji
+        // (Samsung, Android 16): inilah paket TikTok yang terpasang, bukan
+        // com.zhiliaoapp.musically — sebabnya TikTok tidak pernah memicu gerbang.
+        "com.ss.android.ugc.trill",
         "com.instagram.android",
         "com.twitter.android",
         "com.google.android.youtube",
@@ -98,29 +98,17 @@ object GateConfig {
  */
 object Kredit {
 
-    /** Kredit dasar yang sedang berlaku. Pendek saat DEV_MODE. */
+    /** Kredit dasar per gerbang. */
     val dasarDetik: Int
-        get() = if (GateConfig.DEV_MODE) {
-            GateConfig.DEV_GATE_REWARD_SECONDS
-        } else {
-            GateConfig.GATE_REWARD_SECONDS
-        }
+        get() = GateConfig.GATE_REWARD_SECONDS
 
-    /** Bonus per jawaban benar yang sedang berlaku. Pendek saat DEV_MODE. */
+    /** Bonus per jawaban benar. */
     val bonusDetik: Int
-        get() = if (GateConfig.DEV_MODE) {
-            GateConfig.DEV_CORRECT_BONUS_SECONDS
-        } else {
-            GateConfig.CORRECT_BONUS_SECONDS
-        }
+        get() = GateConfig.CORRECT_BONUS_SECONDS
 
     /** Berapa detik sebelum kredit habis peringatan ditampilkan. */
     val peringatanDetik: Int
-        get() = if (GateConfig.DEV_MODE) {
-            GateConfig.DEV_CREDIT_WARNING_BEFORE_EXPIRY_SECONDS
-        } else {
-            GateConfig.CREDIT_WARNING_BEFORE_EXPIRY_SECONDS
-        }
+        get() = GateConfig.CREDIT_WARNING_BEFORE_EXPIRY_SECONDS
 
     /**
      * Jawaban benar hanya berbuah bonus kalau tidak dijawab terlalu cepat.

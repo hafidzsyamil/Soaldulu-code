@@ -25,6 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -61,6 +62,8 @@ data class StatistikHome(
 fun LayarHome(
     statistik: StatistikHome,
     onPengaturan: () -> Unit,
+    menyegarkan: Boolean = false,
+    onSegarkan: () -> Unit = {},
     onKerjakanSoal: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -83,92 +86,99 @@ fun LayarHome(
         },
         containerColor = MaterialTheme.colorScheme.background,
     ) { padding ->
-        Column(
-            Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = Ukuran.marginLayar),
+        // Tarik ke bawah untuk memuat ulang statistik. Isinya harus bisa
+        // digulir supaya gesture tariknya sampai ke PullToRefreshBox.
+        PullToRefreshBox(
+            isRefreshing = menyegarkan,
+            onRefresh = onSegarkan,
+            modifier = Modifier.fillMaxSize().padding(padding),
         ) {
-            Row(
-                Modifier.fillMaxWidth().height(IntrinsicSize.Min),
-                horizontalArrangement = Arrangement.spacedBy(Ukuran.jarakKartu),
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = Ukuran.marginLayar),
             ) {
-                KartuStatistik("Total Soal", Modifier.weight(1f)) {
-                    Text(
-                        "${statistik.soalDikerjakan}",
-                        style = MaterialTheme.typography.headlineMedium,
-                    )
-                    Text("soal dikerjakan", style = MaterialTheme.typography.bodySmall)
-                }
-                KartuStatistik("Credit Left", Modifier.weight(1f)) {
-                    Text(
-                        formatKreditPanjang(statistik.sisaKreditDetik),
-                        style = MaterialTheme.typography.headlineSmall,
-                    )
-                    Text(
-                        if (statistik.sisaKreditDetik > 0) "media sosial terbuka" else "gerbang menutup",
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                }
-            }
-
-            Spacer(Modifier.height(Ukuran.jarakKartu))
-
-            Row(
-                Modifier.fillMaxWidth().height(IntrinsicSize.Min),
-                horizontalArrangement = Arrangement.spacedBy(Ukuran.jarakKartu),
-            ) {
-                KartuStatistik("False True", Modifier.weight(1f)) {
-                    Text(
-                        "True ${statistik.jumlahBenar}",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = WarnaTambah.positif,
-                    )
-                    Text(
-                        "False ${statistik.jumlahSalah}",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = WarnaTambah.negatif,
-                    )
-                }
-                KartuStatistik("Need Attention", Modifier.weight(1f)) {
-                    if (statistik.paketPalingSering.isBlank()) {
-                        Text("belum ada", style = MaterialTheme.typography.titleMedium)
-                        Text("belum ada gerbang", style = MaterialTheme.typography.bodySmall)
-                    } else {
+                Row(
+                    Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+                    horizontalArrangement = Arrangement.spacedBy(Ukuran.jarakKartu),
+                ) {
+                    KartuStatistik("Total Soal", Modifier.weight(1f)) {
                         Text(
-                            namaAplikasi(statistik.paketPalingSering),
-                            style = MaterialTheme.typography.titleMedium,
+                            "${statistik.soalDikerjakan}",
+                            style = MaterialTheme.typography.headlineMedium,
+                        )
+                        Text("soal dikerjakan", style = MaterialTheme.typography.bodySmall)
+                    }
+                    KartuStatistik("Credit Left", Modifier.weight(1f)) {
+                        Text(
+                            formatKreditPanjang(statistik.sisaKreditDetik),
+                            style = MaterialTheme.typography.headlineSmall,
                         )
                         Text(
-                            "${statistik.jumlahPemicu} gerbang",
+                            if (statistik.sisaKreditDetik > 0) "media sosial terbuka" else "gerbang menutup",
                             style = MaterialTheme.typography.bodySmall,
                         )
                     }
                 }
+
+                Spacer(Modifier.height(Ukuran.jarakKartu))
+
+                Row(
+                    Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+                    horizontalArrangement = Arrangement.spacedBy(Ukuran.jarakKartu),
+                ) {
+                    KartuStatistik("False True", Modifier.weight(1f)) {
+                        Text(
+                            "True ${statistik.jumlahBenar}",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = WarnaTambah.positif,
+                        )
+                        Text(
+                            "False ${statistik.jumlahSalah}",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = WarnaTambah.negatif,
+                        )
+                    }
+                    KartuStatistik("Need Attention", Modifier.weight(1f)) {
+                        if (statistik.paketPalingSering.isBlank()) {
+                            Text("belum ada", style = MaterialTheme.typography.titleMedium)
+                            Text("belum ada gerbang", style = MaterialTheme.typography.bodySmall)
+                        } else {
+                            Text(
+                                namaAplikasi(statistik.paketPalingSering),
+                                style = MaterialTheme.typography.titleMedium,
+                            )
+                            Text(
+                                "${statistik.jumlahPemicu} gerbang",
+                                style = MaterialTheme.typography.bodySmall,
+                            )
+                        }
+                    }
+                }
+
+                Spacer(Modifier.height(Ukuran.antarBagian))
+
+                Button(
+                    onClick = onKerjakanSoal,
+                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                ) {
+                    Text("Kerjakan Soal", style = MaterialTheme.typography.titleMedium)
+                }
+
+                Spacer(Modifier.height(12.dp))
+
+                Text(
+                    "Mengerjakan soal di sini menambah kredit tanpa menunggu media " +
+                        "sosial dibuka.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+
+                Spacer(Modifier.height(48.dp))
             }
-
-            Spacer(Modifier.height(Ukuran.antarBagian))
-
-            Button(
-                onClick = onKerjakanSoal,
-                modifier = Modifier.fillMaxWidth().height(56.dp),
-            ) {
-                Text("Kerjakan Soal", style = MaterialTheme.typography.titleMedium)
-            }
-
-            Spacer(Modifier.height(12.dp))
-
-            Text(
-                "Mengerjakan soal di sini menambah kredit tanpa menunggu media " +
-                    "sosial dibuka.",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            Spacer(Modifier.height(48.dp))
         }
     }
 }

@@ -55,6 +55,7 @@ import id.soaldulu.app.ui.theme.SoalduluTheme
 import id.soaldulu.app.ui.theme.tolakSentuhan
 import id.soaldulu.app.ui.theme.transisiLayar
 import kotlin.coroutines.cancellation.CancellationException
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
@@ -114,6 +115,7 @@ class MainActivity : ComponentActivity() {
     private val versiPaket = mutableStateOf("")
     private val jumlahButirAktif = mutableIntStateOf(0)
     private val soalManual = mutableStateOf<List<SoalLengkap>?>(null)
+    private val menyegarkan = mutableStateOf(false)
 
     // Hanya dipakai layar uji Fase 0.
     private val jumlahStart = mutableIntStateOf(0)
@@ -319,11 +321,24 @@ class MainActivity : ComponentActivity() {
                 },
             )
 
-            Layar.DASHBOARD -> LayarHome(
-                statistik = statistik.value,
-                onPengaturan = { buka(Layar.SETTINGS) },
-                onKerjakanSoal = { mulaiGerbangManual() },
-            )
+            Layar.DASHBOARD -> {
+                // Sisa kredit dibaca ulang dari sumbernya setiap detik selama
+                // Dashboard tampil, jadi angkanya berjalan tanpa perlu disegarkan.
+                var sisaKredit by remember { mutableIntStateOf(sisaKreditDetik()) }
+                LaunchedEffect(Unit) {
+                    while (true) {
+                        sisaKredit = sisaKreditDetik()
+                        delay(GateConfig.DASHBOARD_REFRESH_SECONDS * 1000L)
+                    }
+                }
+                LayarHome(
+                    statistik = statistik.value.copy(sisaKreditDetik = sisaKredit),
+                    menyegarkan = menyegarkan.value,
+                    onSegarkan = { tarikSegarkan() },
+                    onPengaturan = { buka(Layar.SETTINGS) },
+                    onKerjakanSoal = { mulaiGerbangManual() },
+                )
+            }
 
             Layar.SETTINGS -> LayarSettings(
                 nama = nama.value,
@@ -390,59 +405,76 @@ class MainActivity : ComponentActivity() {
         jumlahStart.intValue = getSharedPreferences(GateWatchService.PREFS, MODE_PRIVATE)
             .getInt(GateWatchService.KEY_JUMLAH_START, 0)
 
+        lifecycleScope.launch { muatUlang() }
+    }
+
+    /** Tarik ke bawah di Dashboard: muat ulang semuanya, indikator tampil sampai selesai. */
+    private fun tarikSegarkan() {
+        if (menyegarkan.value) return
+        menyegarkan.value = true
+        status.value = bacaStatusIzin(this)
         lifecycleScope.launch {
-            val namaTersimpan = Preferensi.nama(this@MainActivity)
-            nama.value = namaTersimpan
-            avatar.intValue = Preferensi.avatar(this@MainActivity)
-            temaGelap.value = Preferensi.temaGelap(this@MainActivity)
-
-            // Sekali per pembukaan aplikasi: kalau APK membawa bank soal
-            // versi baru, bank itu menggantikan yang terpasang.
-            if (!paketBawaanSudahDicek) {
-                paketBawaanSudahDicek = true
-                repo.perbaruiPaketBawaan(this@MainActivity, namaTersimpan)
+            try {
+                muatUlang()
+            } finally {
+                menyegarkan.value = false
             }
+        }
+    }
 
-            val paket = repo.paketTerpasang()
-            versiPaket.value = paket?.version.orEmpty()
-            jumlahButirAktif.intValue = repo.jumlahButirAktif()
-            if (paket != null && statusPaket.value !is StatusPaket.Gagal) {
-                statusPaket.value = StatusPaket.Terpasang(
-                    versi = paket.version,
-                    jumlahButir = paket.itemCount,
-                    jumlahAktif = paket.activeItemCount,
-                )
-            }
+    /** Baca ulang semua yang ditampilkan dari DataStore dan Room. */
+    private suspend fun muatUlang() {
+        val namaTersimpan = Preferensi.nama(this@MainActivity)
+        nama.value = namaTersimpan
+        avatar.intValue = Preferensi.avatar(this@MainActivity)
+        temaGelap.value = Preferensi.temaGelap(this@MainActivity)
 
-            val dijawab = repo.jumlahDijawab(namaTersimpan)
-            val benar = repo.jumlahBenar(namaTersimpan)
-            val (paketSering, jumlahPemicu) = repo.pemicuTerbanyak(namaTersimpan)
-            statistik.value = StatistikHome(
-                nama = namaTersimpan,
-                avatar = avatar.intValue,
-                sisaKreditDetik = sisaKreditDetik(),
-                soalDikerjakan = dijawab,
-                jumlahBenar = benar,
-                jumlahSalah = dijawab - benar,
-                paketPalingSering = paketSering,
-                jumlahPemicu = jumlahPemicu,
+        // Sekali per pembukaan aplikasi: kalau APK membawa bank soal
+        // versi baru, bank itu menggantikan yang terpasang.
+        if (!paketBawaanSudahDicek) {
+            paketBawaanSudahDicek = true
+            repo.perbaruiPaketBawaan(this@MainActivity, namaTersimpan)
+        }
+
+        val paket = repo.paketTerpasang()
+        versiPaket.value = paket?.version.orEmpty()
+        jumlahButirAktif.intValue = repo.jumlahButirAktif()
+        if (paket != null && statusPaket.value !is StatusPaket.Gagal) {
+            statusPaket.value = StatusPaket.Terpasang(
+                versi = paket.version,
+                jumlahButir = paket.itemCount,
+                jumlahAktif = paket.activeItemCount,
             )
+        }
 
-            val onboardingSelesai = namaTersimpan.isNotBlank() &&
-                status.value.semuaAktif &&
-                paket != null
+        val dijawab = repo.jumlahDijawab(namaTersimpan)
+        val benar = repo.jumlahBenar(namaTersimpan)
+        val (paketSering, jumlahPemicu) = repo.pemicuTerbanyak(namaTersimpan)
+        statistik.value = StatistikHome(
+            nama = namaTersimpan,
+            avatar = avatar.intValue,
+            sisaKreditDetik = sisaKreditDetik(),
+            soalDikerjakan = dijawab,
+            jumlahBenar = benar,
+            jumlahSalah = dijawab - benar,
+            paketPalingSering = paketSering,
+            jumlahPemicu = jumlahPemicu,
+        )
 
-            if (!rutePertamaSudahDitentukan) {
-                rutePertamaSudahDitentukan = true
-                gantiAkar(ruteAwal(namaTersimpan, paket != null), Arah.TANPA)
-            }
+        val onboardingSelesai = namaTersimpan.isNotBlank() &&
+            status.value.semuaAktif &&
+            paket != null
 
-            // Jaring pengaman: kalau service pernah mati — dibunuh sistem, HP
-            // di-restart, atau aplikasi dipasang ulang — membuka aplikasi
-            // menghidupkannya lagi. startForegroundService aman dipanggil berulang.
-            if (onboardingSelesai) {
-                startForegroundService(Intent(this@MainActivity, GateWatchService::class.java))
-            }
+        if (!rutePertamaSudahDitentukan) {
+            rutePertamaSudahDitentukan = true
+            gantiAkar(ruteAwal(namaTersimpan, paket != null), Arah.TANPA)
+        }
+
+        // Jaring pengaman: kalau service pernah mati — dibunuh sistem, HP
+        // di-restart, atau aplikasi dipasang ulang — membuka aplikasi
+        // menghidupkannya lagi. startForegroundService aman dipanggil berulang.
+        if (onboardingSelesai) {
+            startForegroundService(Intent(this@MainActivity, GateWatchService::class.java))
         }
     }
 
