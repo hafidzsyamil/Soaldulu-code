@@ -1,6 +1,7 @@
 package id.soaldulu.app.ui.layar
 
 import android.os.SystemClock
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,7 +14,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -26,7 +26,9 @@ import androidx.compose.ui.unit.dp
 import id.soaldulu.app.Kredit
 import id.soaldulu.app.data.OpsiEntity
 import id.soaldulu.app.data.SoalLengkap
+import id.soaldulu.app.ui.theme.Arah
 import id.soaldulu.app.ui.theme.Ukuran
+import id.soaldulu.app.ui.theme.transisiLayar
 
 /** Satu jawaban yang sudah diberikan dalam gerbang ini. */
 data class JawabanGerbang(
@@ -36,6 +38,9 @@ data class JawabanGerbang(
     val durasiDetik: Int,
     val bonusDetik: Int,
 )
+
+/** Posisi di dalam gerbang: soal ke-berapa, dan apakah umpan baliknya yang tampil. */
+private data class Langkah(val indeks: Int, val umpanBalik: Boolean)
 
 /**
  * Menggerakkan satu gerbang: soal → umpan balik → soal berikutnya, sampai
@@ -61,63 +66,81 @@ fun AlurGerbang(
         return
     }
 
-    var indeks by remember { mutableIntStateOf(0) }
-    var menampilkanUmpanBalik by remember { mutableStateOf(false) }
+    var langkah by remember { mutableStateOf(Langkah(indeks = 0, umpanBalik = false)) }
     // Dipakai menghitung durationSeconds tiap jawaban — kolom log yang
     // membedakan responden yang berpikir dari yang asal tekan.
     var mulaiSoalPada by remember { mutableLongStateOf(SystemClock.elapsedRealtime()) }
     val jawaban = remember { mutableStateListOf<JawabanGerbang>() }
+    var sudahSelesai by remember { mutableStateOf(false) }
 
-    val soalSekarang = soal[indeks]
-    val soalTerakhir = indeks == soal.lastIndex
+    AnimatedContent(
+        targetState = langkah,
+        transitionSpec = { transisiLayar(Arah.MAJU) },
+        modifier = modifier,
+        label = "gerbang",
+    ) { ini ->
+        // Selama transisi, langkah yang sedang pergi masih tergambar dan
+        // tombolnya masih bisa disentuh. Karena itu setiap aksi di bawah
+        // memeriksa `ini == langkah` pada saat ditekan: ketukan ganda yang
+        // cepat tidak boleh mencatat satu soal dua kali atau melompati soal
+        // — keduanya merusak data penelitian.
+        val soalIni = soal[ini.indeks]
+        val soalTerakhir = ini.indeks == soal.lastIndex
 
-    if (!menampilkanUmpanBalik) {
-        LayarGerbang(
-            soal = soalSekarang,
-            nomorSoal = indeks + 1,
-            totalSoal = soal.size,
-            sisaKreditDetik = sisaKreditDetik,
-            onJawab = { optionId ->
-                val durasi =
-                    ((SystemClock.elapsedRealtime() - mulaiSoalPada) / 1000L).toInt()
-                val benar = optionId == soalSekarang.butir.correctOptionId
-                jawaban += JawabanGerbang(
-                    soal = soalSekarang,
-                    opsiDipilih = soalSekarang.opsi.first { it.optionId == optionId },
-                    benar = benar,
-                    durasiDetik = durasi,
-                    bonusDetik = Kredit.bonusSatuJawaban(benar, durasi),
-                )
-                menampilkanUmpanBalik = true
-            },
-            onLapor = { onLapor(soalSekarang.butir.id) },
-            modifier = modifier,
-        )
-    } else {
-        val terakhir = jawaban.last()
-        LayarUmpanBalik(
-            benar = terakhir.benar,
-            opsiDipilih = terakhir.opsiDipilih,
-            opsiBenar = soalSekarang.opsi.first {
-                it.optionId == soalSekarang.butir.correctOptionId
-            },
-            pembahasan = soalSekarang.butir.explanation,
-            kreditDidapatDetik = terakhir.bonusDetik,
-            // Kredit yang akan diterima kalau gerbang ini diselesaikan:
-            // dasar + seluruh bonus yang sudah terkumpul.
-            totalKreditGerbangDetik = Kredit.totalGerbang(jawaban.sumOf { it.bonusDetik }),
-            soalTerakhir = soalTerakhir,
-            onLanjut = {
-                if (soalTerakhir) {
-                    onSelesai(jawaban.toList())
-                } else {
-                    indeks += 1
-                    menampilkanUmpanBalik = false
-                    mulaiSoalPada = SystemClock.elapsedRealtime()
-                }
-            },
-            modifier = modifier,
-        )
+        if (!ini.umpanBalik) {
+            LayarGerbang(
+                soal = soalIni,
+                nomorSoal = ini.indeks + 1,
+                totalSoal = soal.size,
+                sisaKreditDetik = sisaKreditDetik,
+                onJawab = { optionId ->
+                    if (ini == langkah) {
+                        val durasi =
+                            ((SystemClock.elapsedRealtime() - mulaiSoalPada) / 1000L).toInt()
+                        val benar = optionId == soalIni.butir.correctOptionId
+                        jawaban += JawabanGerbang(
+                            soal = soalIni,
+                            opsiDipilih = soalIni.opsi.first { it.optionId == optionId },
+                            benar = benar,
+                            durasiDetik = durasi,
+                            bonusDetik = Kredit.bonusSatuJawaban(benar, durasi),
+                        )
+                        langkah = ini.copy(umpanBalik = true)
+                    }
+                },
+                onLapor = { onLapor(soalIni.butir.id) },
+            )
+        } else {
+            // Diambil menurut nomor soal, bukan jawaban terakhir: selama
+            // transisi, umpan balik soal sebelumnya masih tergambar.
+            val jawabanIni = jawaban[ini.indeks]
+            LayarUmpanBalik(
+                benar = jawabanIni.benar,
+                opsiDipilih = jawabanIni.opsiDipilih,
+                opsiBenar = soalIni.opsi.first {
+                    it.optionId == soalIni.butir.correctOptionId
+                },
+                pembahasan = soalIni.butir.explanation,
+                kreditDidapatDetik = jawabanIni.bonusDetik,
+                // Kredit yang akan diterima kalau gerbang ini diselesaikan:
+                // dasar + seluruh bonus yang sudah terkumpul sampai soal ini.
+                totalKreditGerbangDetik = Kredit.totalGerbang(
+                    jawaban.take(ini.indeks + 1).sumOf { it.bonusDetik },
+                ),
+                soalTerakhir = soalTerakhir,
+                onLanjut = {
+                    if (ini == langkah && !sudahSelesai) {
+                        if (soalTerakhir) {
+                            sudahSelesai = true
+                            onSelesai(jawaban.toList())
+                        } else {
+                            langkah = Langkah(indeks = ini.indeks + 1, umpanBalik = false)
+                            mulaiSoalPada = SystemClock.elapsedRealtime()
+                        }
+                    }
+                },
+            )
+        }
     }
 }
 

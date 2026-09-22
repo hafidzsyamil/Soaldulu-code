@@ -5,10 +5,16 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.BackHandler
+import androidx.activity.SystemBarStyle
+import androidx.activity.compose.PredictiveBackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.SeekableTransitionState
+import androidx.compose.animation.core.animate
+import androidx.compose.animation.core.rememberTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -16,9 +22,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import id.soaldulu.app.data.EksporCsv
@@ -39,7 +50,11 @@ import id.soaldulu.app.ui.layar.LayarWelcome
 import id.soaldulu.app.ui.layar.PemilihAvatar
 import id.soaldulu.app.ui.layar.StatistikHome
 import id.soaldulu.app.ui.layar.StatusPaket
+import id.soaldulu.app.ui.theme.Arah
 import id.soaldulu.app.ui.theme.SoalduluTheme
+import id.soaldulu.app.ui.theme.tolakSentuhan
+import id.soaldulu.app.ui.theme.transisiLayar
+import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.launch
 
 /**
@@ -80,6 +95,14 @@ class MainActivity : ComponentActivity() {
      * memulangkan ke tempat yang salah pada salah satunya.
      */
     private val tumpukan = mutableStateListOf<Layar>()
+
+    /**
+     * Arah perpindahan terakhir, menentukan animasinya.
+     *
+     * Variabel biasa, bukan state: nilainya hanya dibaca saat layar tujuan
+     * berubah, dan selalu diisi tepat sebelum perubahan itu.
+     */
+    private var arah = Arah.TANPA
     private val status = mutableStateOf(StatusIzin())
     private val nama = mutableStateOf("")
     private val avatar = mutableIntStateOf(0)
@@ -108,6 +131,22 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            // enableEdgeToEdge() di atas memilih warna ikon status bar dari
+            // tema SISTEM. Begitu responden memaksa tema lewat Settings —
+            // misalnya HP gelap tapi aplikasi terang — ikon jam, baterai, dan
+            // sinyal tetap putih di atas latar terang dan tak terlihat. Jadi
+            // gayanya dipasang ulang mengikuti tema yang benar-benar tampil.
+            val gelap = temaGelap.value ?: isSystemInDarkTheme()
+            LaunchedEffect(gelap) {
+                val transparan = android.graphics.Color.TRANSPARENT
+                val gaya = if (gelap) {
+                    SystemBarStyle.dark(transparan)
+                } else {
+                    SystemBarStyle.light(transparan, transparan)
+                }
+                enableEdgeToEdge(statusBarStyle = gaya, navigationBarStyle = gaya)
+            }
+
             SoalduluTheme(paksaGelap = temaGelap.value) {
                 // enableEdgeToEdge membuat konten menggambar di bawah status bar
                 // dan navigation bar. Latar memenuhi layar, isinya digeser masuk.
@@ -123,9 +162,10 @@ class MainActivity : ComponentActivity() {
                 if (pilihAvatarTerbuka.value) {
                     PemilihAvatar(
                         terpilih = avatar.intValue,
+                        // Lembarnya menutup sendiri lewat animasinya, lalu
+                        // memanggil onTutup — di sini cukup menyimpan pilihan.
                         onPilih = { i ->
                             avatar.intValue = i
-                            pilihAvatarTerbuka.value = false
                             lifecycleScope.launch {
                                 Preferensi.simpanAvatar(this@MainActivity, i)
                             }
@@ -139,6 +179,10 @@ class MainActivity : ComponentActivity() {
 
     /** Maju satu layar, menyimpan yang sekarang untuk tombol Back. */
     private fun buka(tujuan: Layar) {
+        // Ketukan ganda saat animasi berjalan tidak boleh menumpuk layar
+        // yang sama dua kali — Back akan terasa tidak bekerja.
+        if (tujuan == layar.value) return
+        arah = Arah.MAJU
         tumpukan.add(layar.value)
         layar.value = tujuan
     }
@@ -146,6 +190,7 @@ class MainActivity : ComponentActivity() {
     /** Mundur satu layar. false berarti tidak ada tujuan mundur. */
     private fun kembali(): Boolean {
         val sebelumnya = tumpukan.removeLastOrNull() ?: return false
+        arah = Arah.MUNDUR
         layar.value = sebelumnya
         return true
     }
@@ -156,26 +201,91 @@ class MainActivity : ComponentActivity() {
      * Dipakai saat onboarding selesai: Back dari Dashboard harus keluar dari
      * aplikasi, bukan kembali ke layar pengisian nama.
      */
-    private fun gantiAkar(tujuan: Layar) {
+    private fun gantiAkar(tujuan: Layar, arahBaru: Arah = Arah.GANTI) {
+        arah = arahBaru
         tumpukan.clear()
         layar.value = tujuan
     }
 
+    /**
+     * Wadah seluruh layar, dengan animasi perpindahan dan predictive back.
+     *
+     * Polanya sama dengan NavHost milik Navigation Compose: selama gesture
+     * Back ditarik, transisi digeser mengikuti jari; kalau dilepas, animasinya
+     * dituntaskan; kalau dibatalkan, diputar mundur ke posisi awal.
+     */
     @Composable
     private fun IsiLayar() {
-        BackHandler(
+        val keadaan = remember { SeekableTransitionState(layar.value) }
+        val transisi = rememberTransition(keadaan, label = "layar")
+        var sedangGestureBack by remember { mutableStateOf(false) }
+        var progresBack by remember { mutableFloatStateOf(0f) }
+
+        PredictiveBackHandler(
             // Dimatikan selama lembar avatar terbuka supaya Back menutup
             // lembarnya lebih dulu, bukan melompati satu layar. Tumpukan
-            // kosong berarti Back memang seharusnya menutup aplikasi.
+            // kosong berarti Back memang seharusnya menutup aplikasi — itu
+            // ditangani sistem, lengkap dengan animasi kembali ke home.
             enabled = tumpukan.isNotEmpty() && !pilihAvatarTerbuka.value,
-        ) {
-            // Meninggalkan gerbang yang dibuka sendiri: jawaban dibuang dan
-            // tidak ada kredit, karena gerbang yang tidak selesai bukan data.
-            if (layar.value == Layar.KERJAKAN_SOAL) soalManual.value = null
-            kembali()
+        ) { progres ->
+            arah = Arah.MUNDUR
+            progresBack = 0f
+            try {
+                progres.collect {
+                    sedangGestureBack = true
+                    progresBack = it.progress
+                }
+                sedangGestureBack = false
+                // Meninggalkan gerbang yang dibuka sendiri membuang jawabannya:
+                // gerbang yang tidak selesai bukan data, jadi tidak dicatat.
+                kembali()
+            } catch (_: CancellationException) {
+                sedangGestureBack = false
+            }
         }
 
-        when (layar.value) {
+        if (sedangGestureBack) {
+            LaunchedEffect(progresBack) {
+                val tujuan = tumpukan.lastOrNull() ?: return@LaunchedEffect
+                keadaan.seekTo(progresBack, targetState = tujuan)
+            }
+        } else {
+            LaunchedEffect(layar.value) {
+                when {
+                    arah == Arah.TANPA -> keadaan.snapTo(layar.value)
+                    keadaan.currentState != layar.value -> keadaan.animateTo(layar.value)
+                    else -> {
+                        // Gesture Back dibatalkan: layar masih di tempatnya,
+                        // tapi transisinya sudah tergeser. Putar mundur dari
+                        // posisi terakhir, lalu kunci di layar semula.
+                        val totalMs = transisi.totalDurationNanos / 1_000_000
+                        animate(
+                            initialValue = keadaan.fraction,
+                            targetValue = 0f,
+                            animationSpec = tween((keadaan.fraction * totalMs).toInt()),
+                        ) { nilai, _ ->
+                            launch {
+                                if (nilai > 0f) keadaan.seekTo(nilai)
+                                if (nilai == 0f) keadaan.snapTo(layar.value)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        transisi.AnimatedContent(
+            transitionSpec = { transisiLayar(arah) },
+        ) { tujuan ->
+            Box(Modifier.fillMaxSize().tolakSentuhan(tujuan != layar.value)) {
+                LayarUntuk(tujuan)
+            }
+        }
+    }
+
+    @Composable
+    private fun LayarUntuk(tujuan: Layar) {
+        when (tujuan) {
             Layar.WELCOME -> LayarWelcome(
                 onLanjut = { buka(Layar.PERMISSION) },
             )
@@ -237,8 +347,11 @@ class MainActivity : ComponentActivity() {
                 onKembali = { kembali() },
             )
 
-            Layar.KERJAKAN_SOAL -> AlurGerbang(
-                soal = soalManual.value.orEmpty(),
+            // Selama soal dimuat, layar dibiarkan kosong. Daftar kosong
+            // berarti "bank soal belum siap", jadi tidak boleh dipakai
+            // sebagai tanda sedang memuat — pesan itu akan berkedip.
+            Layar.KERJAKAN_SOAL -> soalManual.value?.let { soal -> AlurGerbang(
+                soal = soal,
                 sisaKreditDetik = sisaKreditDetik(),
                 onSelesai = { jawaban -> selesaikanGerbangManual(jawaban) },
                 onLapor = { itemId ->
@@ -246,7 +359,7 @@ class MainActivity : ComponentActivity() {
                         repo.catatPeristiwa(nama.value, "ITEM_REPORTED", itemId)
                     }
                 },
-            )
+            ) }
 
             Layar.SPIKE -> LayarSpike(
                 status = status.value,
@@ -313,7 +426,7 @@ class MainActivity : ComponentActivity() {
 
             if (!rutePertamaSudahDitentukan) {
                 rutePertamaSudahDitentukan = true
-                gantiAkar(ruteAwal(namaTersimpan, paket != null))
+                gantiAkar(ruteAwal(namaTersimpan, paket != null), Arah.TANPA)
             }
 
             // Jaring pengaman: kalau service pernah mati — dibunuh sistem, HP
@@ -392,8 +505,11 @@ class MainActivity : ComponentActivity() {
      * yang sangat berbeda.
      */
     private fun selesaikanGerbangManual(jawaban: List<JawabanGerbang>) {
+        // Hanya sekali per gerbang. Layar gerbang masih tergambar selama
+        // animasi keluar; ketukan kedua pada tombolnya tidak boleh
+        // mencatat jawaban dan memberi kredit untuk kedua kalinya.
+        if (layar.value != Layar.KERJAKAN_SOAL) return
         gantiAkar(Layar.DASHBOARD)
-        soalManual.value = null
         if (jawaban.isEmpty()) return
 
         val idSesi = System.currentTimeMillis()

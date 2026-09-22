@@ -32,8 +32,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Soaldulu">
+        <!-- enableOnBackInvokedCallback: predictive back. Menyalakan animasi
+             bawaan sistem saat Back menutup aplikasi (kembali ke home), dan
+             membuat gesture Back di dalam aplikasi mengikuti jari.
+             Sengaja dipasang di activity ini saja, bukan di <application>:
+             overlay gerbang adalah jendela milik service, dan perilaku Back
+             di sana — yang wajib tidak bisa menutup gerbang — tidak boleh
+             ikut berubah. Atribut per-activity berlaku sejak Android 14;
+             di Android 13 ke bawah aplikasi berjalan seperti sebelumnya. -->
         <activity
             android:name=".MainActivity"
+            android:enableOnBackInvokedCallback="true"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Soaldulu">

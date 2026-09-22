@@ -23,12 +23,14 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import id.soaldulu.app.ui.theme.Ukuran
+import kotlinx.coroutines.launch
 
 /**
  * Delapan warna avatar.
@@ -93,7 +95,14 @@ fun Avatar(
     }
 }
 
-/** Pemilih avatar Material 3. */
+/**
+ * Pemilih avatar Material 3.
+ *
+ * Memilih avatar langsung menyimpannya lewat `onPilih`, lalu lembarnya
+ * turun dengan animasinya sendiri sebelum `onTutup` dipanggil. Kalau
+ * lembar dilepas dari komposisi begitu saja, ia hilang seketika tanpa
+ * animasi.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PemilihAvatar(
@@ -101,9 +110,12 @@ fun PemilihAvatar(
     onPilih: (Int) -> Unit,
     onTutup: () -> Unit,
 ) {
+    val keadaanLembar = rememberModalBottomSheetState()
+    val lingkup = rememberCoroutineScope()
+
     ModalBottomSheet(
         onDismissRequest = onTutup,
-        sheetState = rememberModalBottomSheetState(),
+        sheetState = keadaanLembar,
     ) {
         Column(
             Modifier
@@ -143,7 +155,12 @@ fun PemilihAvatar(
                                     Modifier
                                 }
                             )
-                            .clickable { onPilih(i) },
+                            .clickable {
+                                onPilih(i)
+                                lingkup.launch { keadaanLembar.hide() }.invokeOnCompletion {
+                                    if (!keadaanLembar.isVisible) onTutup()
+                                }
+                            },
                         contentAlignment = Alignment.Center,
                     ) {
                         Avatar(indeks = i, ukuran = Ukuran.avatarKecil)
