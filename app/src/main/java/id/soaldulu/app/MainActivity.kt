@@ -139,6 +139,9 @@ class MainActivity : ComponentActivity() {
     /** triggeredByPackage untuk gerbang yang sedang dibuka lewat Kerjakan Soal. */
     private var pemicuGerbangManual = PEMICU_MANUAL
 
+    /** gateSessionId gerbang Kerjakan Soal yang sedang berjalan. */
+    private var idSesiManual = 0L
+
     /**
      * Tombol Kerjakan Soal di notifikasi ditekan. Dijalankan begitu rute awal
      * sudah ditentukan — saat aplikasi baru dibuka, itu belum tentu sudah.
@@ -270,8 +273,8 @@ class MainActivity : ComponentActivity() {
                     progresBack = it.progress
                 }
                 sedangGestureBack = false
-                // Meninggalkan gerbang yang dibuka sendiri membuang jawabannya:
-                // gerbang yang tidak selesai bukan data, jadi tidak dicatat.
+                // Meninggalkan gerbang di tengah jalan: jawaban yang sudah
+                // diberikan sudah tercatat beserta kreditnya, sisanya dibuang.
                 kembali()
             } catch (_: CancellationException) {
                 sedangGestureBack = false
@@ -437,13 +440,16 @@ class MainActivity : ComponentActivity() {
             // sebagai tanda sedang memuat — pesan itu akan berkedip.
             Layar.KERJAKAN_SOAL -> soalManual.value?.let { soal -> AlurGerbang(
                 soal = soal,
-                sisaKreditDetik = sisaKreditDetik(),
-                onSelesai = { jawaban -> selesaikanGerbangManual(jawaban) },
+                sisaKreditDetik = { sisaKreditDetik() },
+                onJawab = { jawaban, urutan -> catatJawabanManual(jawaban, urutan) },
+                onSelesai = { dijawab -> selesaikanGerbangManual(dijawab) },
                 onLapor = { itemId ->
                     lifecycleScope.launch {
                         repo.catatPeristiwa(nama.value, "ITEM_REPORTED", itemId)
                     }
                 },
+                // Menghapus aplikasi mensyaratkan semua soal dikerjakan.
+                labelKeluarAwal = if (hapusSetelahGerbang == null) "Selesai" else null,
             ) }
 
             Layar.SPIKE -> LayarSpike(
@@ -625,6 +631,7 @@ class MainActivity : ComponentActivity() {
     ) {
         hapusSetelahGerbang = untukHapus
         pemicuGerbangManual = if (untukHapus != null) PEMICU_HAPUS_APLIKASI else pemicu
+        idSesiManual = System.currentTimeMillis()
         soalManual.value = null
         buka(Layar.KERJAKAN_SOAL, arahMasuk)
         lifecycleScope.launch {
@@ -641,42 +648,53 @@ class MainActivity : ComponentActivity() {
      * "NOTIFICATION". Gerbang yang menjadi syarat menghapus aplikasi dicatat
      * sebagai "REMOVE_APP"; kreditnya tetap diberikan seperti biasa.
      */
-    private fun selesaikanGerbangManual(jawaban: List<JawabanGerbang>) {
+    /** Satu jawaban di Kerjakan Soal: dicatat dan kreditnya diberikan saat itu juga. */
+    private fun catatJawabanManual(j: JawabanGerbang, urutan: Int) {
+        val masuk = if (j.bonusDetik > 0) SaldoKredit.tambah(this, j.bonusDetik) else 0
+        val idSesi = idSesiManual
+        val pemicu = pemicuGerbangManual
+        lifecycleScope.launch {
+            repo.catatJawaban(
+                kode = nama.value,
+                versiPaket = versiPaket.value,
+                gateSessionId = idSesi,
+                urutanDalamGerbang = urutan,
+                butir = j.soal.butir,
+                opsiDipilih = j.opsiDipilih.optionId,
+                durasiDetik = j.durasiDetik,
+                kreditDidapat = j.bonusDetik,
+                paketPemicu = pemicu,
+            )
+            if (masuk > 0) repo.mulaiSesiKredit(nama.value, idSesi, masuk)
+            segarkan()
+        }
+    }
+
+    private fun selesaikanGerbangManual(dijawab: Int) {
         // Hanya sekali per gerbang. Layar gerbang masih tergambar selama
         // animasi keluar; ketukan kedua pada tombolnya tidak boleh
-        // mencatat jawaban dan memberi kredit untuk kedua kalinya.
+        // menutup gerbang dan memberi kredit dasar untuk kedua kalinya.
         if (layar.value != Layar.KERJAKAN_SOAL) return
         val paketDihapus = hapusSetelahGerbang
-        val pemicu = pemicuGerbangManual
         hapusSetelahGerbang = null
         // Dari daftar aplikasi, kembali ke daftar itu; dari Dashboard, ke Dashboard.
         if (paketDihapus != null) kembali() else gantiAkar(Layar.DASHBOARD)
         // Tanpa jawaban (bank kosong) tidak ada kredit, dan aplikasi tidak dihapus.
-        if (jawaban.isEmpty()) return
+        if (dijawab == 0) return
 
-        val idSesi = System.currentTimeMillis()
-        val kreditDetik = Kredit.totalGerbang(jawaban.sumOf { it.bonusDetik })
-        SaldoKredit.tambah(this, kreditDetik)
+        // Jawaban dan kreditnya sudah dicatat satu per satu. Yang tersisa hanya
+        // kredit dasar per gerbang, kalau GateConfig memberinya (saat ini 0).
+        val dasar = if (Kredit.dasarDetik > 0) SaldoKredit.tambah(this, Kredit.dasarDetik) else 0
+        // Gerbang hapus-aplikasi tidak punya tombol keluar lebih awal, jadi
+        // sampai di sini berarti semua soalnya sudah dikerjakan.
         if (paketDihapus != null) {
             DaftarAplikasi.hapus(this, paketDihapus)
             muatDaftarAplikasi()
         }
 
+        val idSesi = idSesiManual
         lifecycleScope.launch {
-            jawaban.forEachIndexed { i, j ->
-                repo.catatJawaban(
-                    kode = nama.value,
-                    versiPaket = versiPaket.value,
-                    gateSessionId = idSesi,
-                    urutanDalamGerbang = i + 1,
-                    butir = j.soal.butir,
-                    opsiDipilih = j.opsiDipilih.optionId,
-                    durasiDetik = j.durasiDetik,
-                    kreditDidapat = j.bonusDetik,
-                    paketPemicu = pemicu,
-                )
-            }
-            if (kreditDetik > 0) repo.mulaiSesiKredit(nama.value, idSesi, kreditDetik)
+            if (dasar > 0) repo.mulaiSesiKredit(nama.value, idSesi, dasar)
             if (paketDihapus != null) {
                 repo.catatPeristiwa(nama.value, "APP_REMOVED", "$paketDihapus cara=SOAL")
             }

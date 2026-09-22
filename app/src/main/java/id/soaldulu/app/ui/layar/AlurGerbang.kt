@@ -46,15 +46,27 @@ private data class Langkah(val indeks: Int, val umpanBalik: Boolean)
  * Menggerakkan satu gerbang: soal → umpan balik → soal berikutnya, sampai
  * QUESTIONS_PER_GATE terpenuhi.
  *
+ * Setiap jawaban langsung diteruskan lewat `onJawab`, dan pemanggil
+ * mencatatnya serta memberi kreditnya saat itu juga. Jadi responden yang
+ * meninggalkan gerbang di tengah jalan tetap menyimpan jawaban dan kredit
+ * yang sudah didapat.
+ *
+ * `labelKeluarAwal` terisi: begitu gerbang ini sudah memberi kredit, layar
+ * umpan balik menampilkan tombol untuk keluar sebelum soal habis. null
+ * berarti semua soal wajib dikerjakan.
+ *
  * Composable ini yang berjalan di dalam overlay, jadi ia tidak punya
  * Activity dan tidak boleh bergantung pada apa pun milik Activity.
  */
 @Composable
 fun AlurGerbang(
     soal: List<SoalLengkap>,
-    sisaKreditDetik: Int,
-    onSelesai: (List<JawabanGerbang>) -> Unit,
+    /** Dibaca setiap soal tampil, supaya kredit dari soal sebelumnya ikut terlihat. */
+    sisaKreditDetik: () -> Int,
+    onJawab: (jawaban: JawabanGerbang, urutan: Int) -> Unit,
+    onSelesai: (jumlahDijawab: Int) -> Unit,
     onLapor: (itemId: String) -> Unit,
+    labelKeluarAwal: String?,
     modifier: Modifier = Modifier,
 ) {
     // Katup pengaman. Overlay gerbang tidak punya tombol keluar, jadi kalau
@@ -62,7 +74,7 @@ fun AlurGerbang(
     // responden akan terkunci di layar kosong. Ini tambahan di luar
     // spesifikasi dan sengaja ada.
     if (soal.isEmpty()) {
-        GerbangTanpaSoal(onTutup = { onSelesai(emptyList()) }, modifier = modifier)
+        GerbangTanpaSoal(onTutup = { onSelesai(0) }, modifier = modifier)
         return
     }
 
@@ -92,19 +104,21 @@ fun AlurGerbang(
                 soal = soalIni,
                 nomorSoal = ini.indeks + 1,
                 totalSoal = soal.size,
-                sisaKreditDetik = sisaKreditDetik,
+                sisaKreditDetik = sisaKreditDetik(),
                 onJawab = { optionId ->
                     if (ini == langkah) {
                         val durasi =
                             ((SystemClock.elapsedRealtime() - mulaiSoalPada) / 1000L).toInt()
                         val benar = optionId == soalIni.butir.correctOptionId
-                        jawaban += JawabanGerbang(
+                        val baru = JawabanGerbang(
                             soal = soalIni,
                             opsiDipilih = soalIni.opsi.first { it.optionId == optionId },
                             benar = benar,
                             durasiDetik = durasi,
                             bonusDetik = Kredit.bonusSatuJawaban(benar, durasi),
                         )
+                        jawaban += baru
+                        onJawab(baru, ini.indeks + 1)
                         langkah = ini.copy(umpanBalik = true)
                     }
                 },
@@ -114,6 +128,7 @@ fun AlurGerbang(
             // Diambil menurut nomor soal, bukan jawaban terakhir: selama
             // transisi, umpan balik soal sebelumnya masih tergambar.
             val jawabanIni = jawaban[ini.indeks]
+            val kreditGerbangIni = jawaban.take(ini.indeks + 1).sumOf { it.bonusDetik }
             LayarUmpanBalik(
                 benar = jawabanIni.benar,
                 opsiDipilih = jawabanIni.opsiDipilih,
@@ -124,15 +139,21 @@ fun AlurGerbang(
                 kreditDidapatDetik = jawabanIni.bonusDetik,
                 // Kredit yang akan diterima kalau gerbang ini diselesaikan:
                 // dasar + seluruh bonus yang sudah terkumpul sampai soal ini.
-                totalKreditGerbangDetik = Kredit.totalGerbang(
-                    jawaban.take(ini.indeks + 1).sumOf { it.bonusDetik },
-                ),
+                totalKreditGerbangDetik = Kredit.totalGerbang(kreditGerbangIni),
                 soalTerakhir = soalTerakhir,
+                // Di soal terakhir tombol utamanya sudah "Selesai".
+                labelKeluar = labelKeluarAwal?.takeIf { !soalTerakhir && kreditGerbangIni > 0 },
+                onKeluar = {
+                    if (ini == langkah && !sudahSelesai) {
+                        sudahSelesai = true
+                        onSelesai(jawaban.size)
+                    }
+                },
                 onLanjut = {
                     if (ini == langkah && !sudahSelesai) {
                         if (soalTerakhir) {
                             sudahSelesai = true
-                            onSelesai(jawaban.toList())
+                            onSelesai(jawaban.size)
                         } else {
                             langkah = Langkah(indeks = ini.indeks + 1, umpanBalik = false)
                             mulaiSoalPada = SystemClock.elapsedRealtime()

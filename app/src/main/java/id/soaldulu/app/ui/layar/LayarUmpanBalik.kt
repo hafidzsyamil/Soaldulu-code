@@ -22,6 +22,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -53,6 +54,9 @@ fun LayarUmpanBalik(
     soalTerakhir: Boolean,
     onLanjut: () -> Unit,
     modifier: Modifier = Modifier,
+    /** Teks tombol keluar sebelum soal habis, misalnya "Buka TikTok". null = tidak ada. */
+    labelKeluar: String? = null,
+    onKeluar: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -182,6 +186,17 @@ fun LayarUmpanBalik(
                 },
                 style = MaterialTheme.typography.titleMedium,
             )
+        }
+
+        if (labelKeluar != null) {
+            Spacer(Modifier.height(12.dp))
+            // Sekunder: mengerjakan soal berikutnya tetap jalur utama.
+            OutlinedButton(
+                onClick = onKeluar,
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+            ) {
+                Text(labelKeluar, style = MaterialTheme.typography.titleMedium)
+            }
         }
 
         Spacer(Modifier.height(32.dp))

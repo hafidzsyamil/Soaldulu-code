@@ -29,14 +29,19 @@ object SaldoKredit {
 
     fun sisaMs(context: Context): Long = synchronized(kunci) { baca(prefs(context)) }
 
-    /** Tambah kredit hasil gerbang, dibatasi MAX_CREDIT_BALANCE_SECONDS. */
-    fun tambah(context: Context, detik: Int) {
-        synchronized(kunci) {
-            val p = prefs(context)
-            val batas = GateConfig.MAX_CREDIT_BALANCE_SECONDS * 1000L
-            val baru = baca(p) + detik * 1000L
-            p.edit().putLong(KEY_SALDO_MS, if (batas > 0) minOf(baru, batas) else baru).apply()
-        }
+    /**
+     * Tambah kredit hasil gerbang, dibatasi MAX_CREDIT_BALANCE_SECONDS.
+     * Mengembalikan detik yang benar-benar masuk — bisa lebih kecil dari
+     * `detik` kalau saldo menyentuh batas.
+     */
+    fun tambah(context: Context, detik: Int): Int = synchronized(kunci) {
+        val p = prefs(context)
+        val lama = baca(p)
+        val batas = GateConfig.MAX_CREDIT_BALANCE_SECONDS * 1000L
+        val mentah = lama + detik * 1000L
+        val baru = if (batas > 0) maxOf(lama, minOf(mentah, batas)) else mentah
+        p.edit().putLong(KEY_SALDO_MS, baru).apply()
+        ((baru - lama) / 1000L).toInt()
     }
 
     /** Kurangi karena pemakaian aplikasi yang dijaga. Tidak pernah di bawah nol. */

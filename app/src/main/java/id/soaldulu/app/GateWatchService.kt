@@ -8,6 +8,7 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.drawable.Icon
 import android.os.Handler
 import android.os.HandlerThread
@@ -33,6 +34,7 @@ import id.soaldulu.app.data.SoalduluRepository
 import id.soaldulu.app.ui.layar.AlurGerbang
 import id.soaldulu.app.ui.layar.JawabanGerbang
 import id.soaldulu.app.ui.layar.formatSisaKredit
+import id.soaldulu.app.ui.layar.namaAplikasi
 import id.soaldulu.app.ui.theme.SoalduluTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -288,8 +290,10 @@ class GateWatchService : Service() {
             // Masih punya kredit: biarkan, dan potong kredit sebanyak waktu
             // yang benar-benar dipakai. Detektor hanya tahu aplikasi terakhir
             // yang dibuka, jadi saat layar mati atau terkunci ia tetap
-            // melaporkan aplikasi ini — waktu itu tidak dihitung.
-            if (power.isInteractive && !keyguard.isKeyguardLocked) {
+            // melaporkan aplikasi ini — waktu itu tidak dihitung. Begitu pula
+            // selama gerbang masih tampil: kredit dari soal pertama tidak
+            // boleh habis sementara responden mengerjakan soal kedua.
+            if (!gerbangSedangTampil && power.isInteractive && !keyguard.isKeyguardLocked) {
                 SaldoKredit.pakai(this, selang)
             }
             return
@@ -325,6 +329,7 @@ class GateWatchService : Service() {
         paketGerbangSekarang = paketPemicu
         jumlahGerbang++
         val idSesiGerbang = System.currentTimeMillis()
+        val namaPemicu = labelAplikasi(paketPemicu)
         soalGerbang.value = null
 
         handlerUtama.post {
@@ -343,15 +348,19 @@ class GateWatchService : Service() {
                         null -> GerbangMemuat()
                         else -> AlurGerbang(
                             soal = soal,
-                            sisaKreditDetik = 0,
-                            onSelesai = { jawaban ->
-                                selesaikanGerbang(idSesiGerbang, paketPemicu, jawaban)
+                            sisaKreditDetik = { sisaKreditDetik() },
+                            onJawab = { jawaban, urutan ->
+                                catatJawabanGerbang(idSesiGerbang, paketPemicu, jawaban, urutan)
+                            },
+                            onSelesai = { dijawab ->
+                                selesaikanGerbang(idSesiGerbang, paketPemicu, dijawab)
                             },
                             onLapor = { itemId ->
                                 lingkup.launch {
                                     repo.catatPeristiwa(namaResponden, "ITEM_REPORTED", itemId)
                                 }
                             },
+                            labelKeluarAwal = "Buka $namaPemicu",
                         )
                         }
                     }
@@ -411,10 +420,44 @@ class GateWatchService : Service() {
         }
     }
 
+    /**
+     * Satu jawaban di gerbang: dicatat dan kreditnya diberikan saat itu juga,
+     * bukan menunggu gerbang selesai.
+     */
+    private fun catatJawabanGerbang(
+        idSesiGerbang: Long,
+        paketPemicu: String,
+        j: JawabanGerbang,
+        urutan: Int,
+    ) {
+        val masuk = if (j.bonusDetik > 0) SaldoKredit.tambah(this, j.bonusDetik) else 0
+        if (masuk > 0) perbaruiNotifikasi()
+        lingkup.launch {
+            repo.catatJawaban(
+                kode = namaResponden,
+                versiPaket = versiPaket,
+                gateSessionId = idSesiGerbang,
+                urutanDalamGerbang = urutan,
+                butir = j.soal.butir,
+                opsiDipilih = j.opsiDipilih.optionId,
+                durasiDetik = j.durasiDetik,
+                kreditDidapat = j.bonusDetik,
+                paketPemicu = paketPemicu,
+            )
+            // Satu sesi kredit per jawaban yang memberi kredit; totalnya per
+            // gerbang bisa dijumlahkan lewat gateSessionId.
+            if (masuk > 0) repo.mulaiSesiKredit(namaResponden, idSesiGerbang, masuk)
+        }
+    }
+
+    /**
+     * Gerbang ditutup: semua soal selesai, atau responden menekan tombol
+     * "Buka ..." setelah mendapat kredit.
+     */
     private fun selesaikanGerbang(
         idSesiGerbang: Long,
         paketPemicu: String,
-        jawaban: List<JawabanGerbang>,
+        dijawab: Int,
     ) {
         gerbangSedangTampil = false
         gerbangDitutupPada[paketPemicu] = SystemClock.elapsedRealtime()
@@ -423,40 +466,28 @@ class GateWatchService : Service() {
         overlay = null
 
         // Katup pengaman gerbang tanpa soal: tidak ada jawaban, tidak ada kredit.
-        if (jawaban.isEmpty()) return
+        if (dijawab == 0) return
 
-        val kreditDetik = Kredit.totalGerbang(jawaban.sumOf { it.bonusDetik })
-        SaldoKredit.tambah(this, kreditDetik)
-        peringatanSudahDikirim = false
+        // Jawaban dan kreditnya sudah dicatat satu per satu. Yang tersisa hanya
+        // kredit dasar per gerbang, kalau GateConfig memberinya (saat ini 0).
+        val dasar = if (Kredit.dasarDetik > 0) SaldoKredit.tambah(this, Kredit.dasarDetik) else 0
         perbaruiNotifikasi()
 
         lingkup.launch {
-            jawaban.forEachIndexed { i, j ->
-                repo.catatJawaban(
-                    kode = namaResponden,
-                    versiPaket = versiPaket,
-                    gateSessionId = idSesiGerbang,
-                    urutanDalamGerbang = i + 1,
-                    butir = j.soal.butir,
-                    opsiDipilih = j.opsiDipilih.optionId,
-                    durasiDetik = j.durasiDetik,
-                    // Kredit dasar gerbang tidak dibagi ke tiap baris jawaban;
-                    // yang tercatat di sini hanya bonus jawaban itu sendiri.
-                    // Totalnya ada di log_kredit.creditGrantedSeconds.
-                    kreditDidapat = j.bonusDetik,
-                    paketPemicu = paketPemicu,
-                )
-            }
-            // Gerbang tanpa jawaban benar tidak memberi kredit, jadi tidak
-            // ada sesi kredit yang dibuka.
-            if (kreditDetik > 0) repo.mulaiSesiKredit(namaResponden, idSesiGerbang, kreditDetik)
-
-            SpikeLog.tulis(
-                this@GateWatchService,
-                "GERBANG_SELESAI benar=${jawaban.count { it.benar }}/${jawaban.size} " +
-                    "kredit=${kreditDetik}s pemicu=$paketPemicu",
-            )
+            if (dasar > 0) repo.mulaiSesiKredit(namaResponden, idSesiGerbang, dasar)
         }
+        SpikeLog.tulis(
+            this,
+            "GERBANG_SELESAI dijawab=$dijawab saldo=${sisaKreditDetik()}s pemicu=$paketPemicu",
+        )
+    }
+
+    /** Nama aplikasi untuk tombol "Buka ...". */
+    private fun labelAplikasi(paket: String): String = try {
+        @Suppress("DEPRECATION")
+        packageManager.getApplicationLabel(packageManager.getApplicationInfo(paket, 0)).toString()
+    } catch (e: PackageManager.NameNotFoundException) {
+        namaAplikasi(paket)
     }
 
     // ── Kredit ──────────────────────────────────────────────────────────────
