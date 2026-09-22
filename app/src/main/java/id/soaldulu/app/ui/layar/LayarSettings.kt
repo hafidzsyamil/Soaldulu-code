@@ -14,6 +14,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.annotation.DrawableRes
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
@@ -27,10 +28,12 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import id.soaldulu.app.GateConfig
+import id.soaldulu.app.R
 import id.soaldulu.app.ui.theme.SoalduluTheme
 import id.soaldulu.app.ui.theme.Ukuran
 
@@ -110,29 +113,42 @@ fun LayarSettings(
                 Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(Ukuran.jarakKartu),
             ) {
-                BarisPengaturan("Preference", "Paket $versiPaket · $jumlahButirAktif butir aktif")
-
-                BarisPengaturan("Permission", "Periksa dan perbaiki izin", onKlik = onPerizinan)
+                BarisPengaturan(
+                    R.drawable.ic_ms_quiz,
+                    "Preference",
+                    "Paket $versiPaket · $jumlahButirAktif butir aktif",
+                )
 
                 BarisPengaturan(
+                    R.drawable.ic_ms_verified_user,
+                    "Permission",
+                    "Periksa dan perbaiki izin",
+                    onKlik = onPerizinan,
+                )
+
+                BarisPengaturan(
+                    R.drawable.ic_ms_apps,
                     "Aplikasi dipantau",
                     "Tambah aplikasi, matikan gerbang, atau pakai mode darurat",
                     onKlik = onAplikasi,
                 )
 
                 BarisPengaturan(
+                    R.drawable.ic_ms_privacy_tip,
                     "Data and Privacy",
                     "Baca syarat penggunaan dan apa saja yang dicatat",
                     onKlik = onDataPrivasi,
                 )
 
                 BarisPengaturan(
+                    R.drawable.ic_ms_ios_share,
                     "Ekspor catatan",
                     "Tulis seluruh log ke satu berkas CSV lalu kirim ke peneliti",
                     onKlik = onEkspor,
                 )
 
                 BarisPengaturan(
+                    R.drawable.ic_ms_info,
                     "Version",
                     versiAplikasi,
                     // UPDATE_MANIFEST_URL kosong = fitur pembaruan mati
@@ -146,6 +162,12 @@ fun LayarSettings(
 
                 KartuBaris {
                     ListItem(
+                        // Ikonnya mengikuti tema yang sedang tampil.
+                        leadingContent = {
+                            IkonBaris(
+                                if (gelapEfektif) R.drawable.ic_ms_dark_mode else R.drawable.ic_ms_light_mode,
+                            )
+                        },
                         headlineContent = { Text("Light/Dark") },
                         supportingContent = {
                             Text(
@@ -170,6 +192,7 @@ fun LayarSettings(
 
                 if (!ikutSistem) {
                     BarisPengaturan(
+                        R.drawable.ic_ms_brightness_auto,
                         "Kembali ikut tema sistem",
                         "Buang setelan tema manual",
                         onKlik = onIkutSistem,
@@ -190,6 +213,7 @@ fun LayarSettings(
                 Spacer(Modifier.height(Ukuran.antarBagian))
                 Column(Modifier.fillMaxWidth()) {
                     BarisPengaturan(
+                        R.drawable.ic_ms_bug_report,
                         "Layar uji Fase 0",
                         "Hilang saat GateConfig.DEV_MODE dikembalikan ke false",
                         onKlik = onLayarUji,
@@ -204,6 +228,7 @@ fun LayarSettings(
 
 @Composable
 private fun BarisPengaturan(
+    @DrawableRes ikon: Int,
     judul: String,
     penjelasan: String,
     jejak: String? = null,
@@ -211,6 +236,7 @@ private fun BarisPengaturan(
 ) {
     KartuBaris(onKlik = onKlik) {
         ListItem(
+            leadingContent = { IkonBaris(ikon) },
             headlineContent = { Text(judul) },
             supportingContent = { Text(penjelasan) },
             trailingContent = jejak?.let {
@@ -237,10 +263,17 @@ private fun KartuBaris(
     }
 }
 
+/** Ikon Material Symbols di awal baris pengaturan. */
+@Composable
+private fun IkonBaris(@DrawableRes ikon: Int) {
+    Icon(painterResource(ikon), contentDescription = null)
+}
+
 @Composable
 private fun warnaListItem() = ListItemDefaults.colors(
     containerColor = MaterialTheme.colorScheme.primaryContainer,
     headlineColor = MaterialTheme.colorScheme.onPrimaryContainer,
+    leadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
     supportingColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f),
     trailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
 )
