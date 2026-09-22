@@ -55,6 +55,7 @@ fun LayarSettings(
     onUbahTema: (Boolean) -> Unit,
     onIkutSistem: () -> Unit,
     onPerizinan: () -> Unit,
+    onAplikasi: () -> Unit,
     onDataPrivasi: () -> Unit,
     onEkspor: () -> Unit,
     onLayarUji: () -> Unit,
@@ -112,6 +113,12 @@ fun LayarSettings(
                 BarisPengaturan("Preference", "Paket $versiPaket · $jumlahButirAktif butir aktif")
 
                 BarisPengaturan("Permission", "Periksa dan perbaiki izin", onKlik = onPerizinan)
+
+                BarisPengaturan(
+                    "Aplikasi dipantau",
+                    "Tambah aplikasi, matikan gerbang, atau pakai mode darurat",
+                    onKlik = onAplikasi,
+                )
 
                 BarisPengaturan(
                     "Data and Privacy",
@@ -255,6 +262,7 @@ private fun PratinjauSettings() {
             onUbahTema = {},
             onIkutSistem = {},
             onPerizinan = {},
+            onAplikasi = {},
             onDataPrivasi = {},
             onEkspor = {},
             onLayarUji = {},

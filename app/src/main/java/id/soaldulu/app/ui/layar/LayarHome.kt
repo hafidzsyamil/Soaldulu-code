@@ -217,7 +217,7 @@ fun formatKreditPanjang(detik: Int): String {
  * dikembalikan apa adanya, bukan ditebak.
  */
 fun namaAplikasi(paket: String): String = when (paket) {
-    "com.zhiliaoapp.musically" -> "TikTok"
+    "com.zhiliaoapp.musically", "com.ss.android.ugc.trill" -> "TikTok"
     "com.instagram.android" -> "Instagram"
     "com.twitter.android" -> "X"
     "com.google.android.youtube" -> "YouTube"

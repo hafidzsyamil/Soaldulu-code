@@ -50,7 +50,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-    // Enam ikon saja: Person, Edit, Check, Close, Settings, ArrowBack.
+    // Ikon yang dipakai: Person, Edit, Check, Close, Settings, ArrowBack, Add, Delete.
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)

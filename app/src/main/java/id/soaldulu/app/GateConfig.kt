@@ -58,6 +58,25 @@ object GateConfig {
         "com.facebook.katana",
     )
 
+    // ── MODE DARURAT DAN DAFTAR APLIKASI (diputuskan 22 Sep 2026) ──
+    // TikTok dan Instagram hanya bisa dimatikan lewat mode darurat. Aplikasi
+    // lain di daftar bebas dimatikan. Jatah darurat dipakai bersama.
+    const val EMERGENCY_PAUSE_SECONDS = 600 // 10 menit
+    const val EMERGENCY_COOLDOWN_SECONDS = 21_600 // 6 jam, sejak mode darurat berakhir
+
+    // Harga menghapus aplikasi tambahan dari daftar, kalau tidak mengerjakan soal.
+    const val REMOVE_APP_CREDIT_COST_SECONDS = 3600 // 1 jam
+
+    val EMERGENCY_LIMITED_PACKAGES = setOf(
+        "com.zhiliaoapp.musically",
+        "com.ss.android.ugc.trill",
+        "com.instagram.android",
+    )
+
+    // Aplikasi tambahan yang namanya memuat kata ini ikut dibatasi, supaya
+    // varian TikTok dengan nama paket lain tidak lolos dari aturan darurat.
+    val EMERGENCY_LIMITED_NAME_KEYWORDS = setOf("tiktok", "instagram")
+
     // Dicatat, TIDAK diblokir (handoff Bagian 3.6)
     val BROWSER_PACKAGES_FOR_LOGGING_ONLY = setOf(
         "com.android.chrome",

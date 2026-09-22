@@ -2,6 +2,7 @@ package id.soaldulu.app
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -26,11 +27,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.lifecycleScope
 import id.soaldulu.app.data.EksporCsv
 import id.soaldulu.app.data.HasilSeed
@@ -38,6 +42,9 @@ import id.soaldulu.app.data.Preferensi
 import id.soaldulu.app.data.SoalLengkap
 import id.soaldulu.app.data.SoalduluRepository
 import id.soaldulu.app.ui.layar.AlurGerbang
+import id.soaldulu.app.ui.layar.AplikasiDipantau
+import id.soaldulu.app.ui.layar.KandidatAplikasi
+import id.soaldulu.app.ui.layar.LayarAplikasi
 import id.soaldulu.app.ui.layar.JawabanGerbang
 import id.soaldulu.app.ui.layar.LayarHome
 import id.soaldulu.app.ui.layar.LayarNama
@@ -55,8 +62,10 @@ import id.soaldulu.app.ui.theme.SoalduluTheme
 import id.soaldulu.app.ui.theme.tolakSentuhan
 import id.soaldulu.app.ui.theme.transisiLayar
 import kotlin.coroutines.cancellation.CancellationException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Layar-layar aplikasi.
@@ -72,6 +81,7 @@ enum class Layar {
     PAKET_SOAL,
     DASHBOARD,
     SETTINGS,
+    APLIKASI,
     SYARAT,
     KERJAKAN_SOAL,
     SPIKE,
@@ -116,6 +126,15 @@ class MainActivity : ComponentActivity() {
     private val jumlahButirAktif = mutableIntStateOf(0)
     private val soalManual = mutableStateOf<List<SoalLengkap>?>(null)
     private val menyegarkan = mutableStateOf(false)
+    private val daftarAplikasi = mutableStateOf<List<AplikasiDipantau>>(emptyList())
+    private val pemilihAplikasiTerbuka = mutableStateOf(false)
+    private val kandidatAplikasi = mutableStateOf<List<KandidatAplikasi>?>(null)
+
+    /**
+     * Aplikasi yang dihapus dari daftar begitu gerbang Kerjakan Soal selesai.
+     * null berarti gerbang itu dibuka biasa dari Dashboard.
+     */
+    private var hapusSetelahGerbang: String? = null
 
     // Hanya dipakai layar uji Fase 0.
     private val jumlahStart = mutableIntStateOf(0)
@@ -353,11 +372,46 @@ class MainActivity : ComponentActivity() {
                 onUbahTema = { gelap -> setTema(gelap) },
                 onIkutSistem = { setTema(null) },
                 onPerizinan = { buka(Layar.PERMISSION) },
+                onAplikasi = {
+                    muatDaftarAplikasi()
+                    buka(Layar.APLIKASI)
+                },
                 onDataPrivasi = { buka(Layar.SYARAT) },
                 onEkspor = { eksporLog() },
                 onLayarUji = { buka(Layar.SPIKE) },
                 onKembali = { kembali() },
             )
+
+            Layar.APLIKASI -> {
+                // Jam untuk hitung mundur mode darurat dan cooldown. Status
+                // "dijaga" dihitung ulang tiap detik supaya sakelar menyala
+                // sendiri begitu 10 menit darurat habis.
+                var sekarang by remember { mutableLongStateOf(System.currentTimeMillis()) }
+                LaunchedEffect(Unit) {
+                    while (true) {
+                        sekarang = System.currentTimeMillis()
+                        delay(GateConfig.DASHBOARD_REFRESH_SECONDS * 1000L)
+                    }
+                }
+                LayarAplikasi(
+                    daftar = daftarAplikasi.value.map {
+                        it.copy(dijaga = DaftarAplikasi.dijaga(this, it.paket, sekarang))
+                    },
+                    darurat = DaftarAplikasi.darurat(this, sekarang),
+                    saldoKreditDetik = sisaKreditDetik(),
+                    pemilihTerbuka = pemilihAplikasiTerbuka.value,
+                    kandidat = kandidatAplikasi.value,
+                    onUbahAktif = { paket, aktif -> ubahAktifAplikasi(paket, aktif) },
+                    onMulaiDarurat = { paket -> mulaiDarurat(paket) },
+                    onAkhiriDarurat = { akhiriDarurat() },
+                    onBukaPemilih = { bukaPemilihAplikasi() },
+                    onTutupPemilih = { pemilihAplikasiTerbuka.value = false },
+                    onTambah = { tambahAplikasi(it) },
+                    onHapusDenganSoal = { paket -> mulaiGerbangManual(untukHapus = paket) },
+                    onHapusDenganKredit = { paket -> hapusDenganKredit(paket) },
+                    onKembali = { kembali() },
+                )
+            }
 
             Layar.SYARAT -> LayarSyarat(
                 onKembali = { kembali() },
@@ -513,23 +567,13 @@ class MainActivity : ComponentActivity() {
     }
 
     /** Sisa kredit dibaca dari tempat yang sama dengan yang ditulis service. */
-    private fun sisaKreditDetik(): Int {
-        val berakhir = getSharedPreferences(GateWatchService.PREFS, MODE_PRIVATE)
-            .getLong(GateWatchService.KEY_KREDIT_BERAKHIR, 0L)
-        if (berakhir == 0L) return 0
-        return ((berakhir - System.currentTimeMillis()) / 1000L).coerceAtLeast(0L).toInt()
-    }
-
-    private fun setKreditBerakhirPada(waktu: Long) {
-        getSharedPreferences(GateWatchService.PREFS, MODE_PRIVATE)
-            .edit()
-            .putLong(GateWatchService.KEY_KREDIT_BERAKHIR, waktu)
-            .apply()
-    }
+    private fun sisaKreditDetik(): Int = SaldoKredit.sisaDetik(this)
 
     // ── Gerbang atas kemauan sendiri ────────────────────────────────────────
 
-    private fun mulaiGerbangManual() {
+    /** `untukHapus` terisi: gerbang ini syarat menghapus aplikasi tambahan. */
+    private fun mulaiGerbangManual(untukHapus: String? = null) {
+        hapusSetelahGerbang = untukHapus
         soalManual.value = null
         buka(Layar.KERJAKAN_SOAL)
         lifecycleScope.launch {
@@ -542,20 +586,28 @@ class MainActivity : ComponentActivity() {
      *
      * Dicatat dengan triggeredByPackage "MANUAL" supaya saat analisis bisa
      * dipisahkan dari gerbang yang dipicu media sosial — keduanya perilaku
-     * yang sangat berbeda.
+     * yang sangat berbeda. Gerbang yang menjadi syarat menghapus aplikasi
+     * dicatat sebagai "REMOVE_APP"; kreditnya tetap diberikan seperti biasa.
      */
     private fun selesaikanGerbangManual(jawaban: List<JawabanGerbang>) {
         // Hanya sekali per gerbang. Layar gerbang masih tergambar selama
         // animasi keluar; ketukan kedua pada tombolnya tidak boleh
         // mencatat jawaban dan memberi kredit untuk kedua kalinya.
         if (layar.value != Layar.KERJAKAN_SOAL) return
-        gantiAkar(Layar.DASHBOARD)
+        val paketDihapus = hapusSetelahGerbang
+        hapusSetelahGerbang = null
+        // Dari daftar aplikasi, kembali ke daftar itu; dari Dashboard, ke Dashboard.
+        if (paketDihapus != null) kembali() else gantiAkar(Layar.DASHBOARD)
+        // Tanpa jawaban (bank kosong) tidak ada kredit, dan aplikasi tidak dihapus.
         if (jawaban.isEmpty()) return
 
         val idSesi = System.currentTimeMillis()
         val kreditDetik = Kredit.totalGerbang(jawaban.sumOf { it.bonusDetik })
-        val sisaLama = sisaKreditDetik()
-        setKreditBerakhirPada(System.currentTimeMillis() + (sisaLama + kreditDetik) * 1000L)
+        SaldoKredit.tambah(this, kreditDetik)
+        if (paketDihapus != null) {
+            DaftarAplikasi.hapus(this, paketDihapus)
+            muatDaftarAplikasi()
+        }
 
         lifecycleScope.launch {
             jawaban.forEachIndexed { i, j ->
@@ -568,11 +620,119 @@ class MainActivity : ComponentActivity() {
                     opsiDipilih = j.opsiDipilih.optionId,
                     durasiDetik = j.durasiDetik,
                     kreditDidapat = j.bonusDetik,
-                    paketPemicu = "MANUAL",
+                    paketPemicu = if (paketDihapus != null) "REMOVE_APP" else "MANUAL",
                 )
             }
-            repo.mulaiSesiKredit(nama.value, idSesi, kreditDetik)
+            if (kreditDetik > 0) repo.mulaiSesiKredit(nama.value, idSesi, kreditDetik)
+            if (paketDihapus != null) {
+                repo.catatPeristiwa(nama.value, "APP_REMOVED", "$paketDihapus cara=SOAL")
+            }
             segarkan()
+        }
+    }
+
+    // ── Aplikasi dipantau ───────────────────────────────────────────────────
+    // Setiap perubahan dicatat di log_peristiwa: responden yang mematikan atau
+    // menghapus aplikasi adalah temuan penelitian, bukan kesalahan.
+
+    private fun muatDaftarAplikasi() {
+        lifecycleScope.launch {
+            daftarAplikasi.value = withContext(Dispatchers.Default) {
+                DaftarAplikasi.semua(this@MainActivity)
+                    .mapNotNull { paket ->
+                        // Aplikasi bawaan yang tidak terpasang di HP ini tidak ditampilkan.
+                        val (namaApp, ikon) = infoAplikasi(paket) ?: return@mapNotNull null
+                        AplikasiDipantau(
+                            paket = paket,
+                            nama = namaApp,
+                            ikon = ikon,
+                            bawaan = DaftarAplikasi.bawaan(paket),
+                            terbatas = DaftarAplikasi.terbatas(this@MainActivity, paket),
+                            dijaga = DaftarAplikasi.dijaga(this@MainActivity, paket),
+                        )
+                    }
+                    .sortedWith(compareBy({ !it.terbatas }, { it.nama.lowercase() }))
+            }
+        }
+    }
+
+    private fun bukaPemilihAplikasi() {
+        pemilihAplikasiTerbuka.value = true
+        kandidatAplikasi.value = null
+        lifecycleScope.launch {
+            kandidatAplikasi.value = withContext(Dispatchers.Default) {
+                val sudahAda = DaftarAplikasi.semua(this@MainActivity)
+                val peluncur = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+                @Suppress("DEPRECATION")
+                packageManager.queryIntentActivities(peluncur, 0)
+                    .map { it.activityInfo.packageName }
+                    .distinct()
+                    .filter { it != packageName && it !in sudahAda }
+                    .mapNotNull { paket ->
+                        val (namaApp, ikon) = infoAplikasi(paket) ?: return@mapNotNull null
+                        KandidatAplikasi(paket, namaApp, ikon)
+                    }
+                    .sortedBy { it.nama.lowercase() }
+            }
+        }
+    }
+
+    /** Nama dan ikon aplikasi, atau null kalau tidak terpasang. */
+    private fun infoAplikasi(paket: String): Pair<String, androidx.compose.ui.graphics.ImageBitmap>? =
+        try {
+            @Suppress("DEPRECATION")
+            val info = packageManager.getApplicationInfo(paket, 0)
+            val ikon = packageManager.getApplicationIcon(info).toBitmap(UKURAN_IKON_PX, UKURAN_IKON_PX)
+            packageManager.getApplicationLabel(info).toString() to ikon.asImageBitmap()
+        } catch (e: PackageManager.NameNotFoundException) {
+            null
+        }
+
+    private fun tambahAplikasi(k: KandidatAplikasi) {
+        pemilihAplikasiTerbuka.value = false
+        val terbatas = DaftarAplikasi.tambah(this, k.paket, k.nama)
+        muatDaftarAplikasi()
+        lifecycleScope.launch {
+            repo.catatPeristiwa(
+                nama.value,
+                "APP_ADDED",
+                "${k.paket} (${k.nama})" + if (terbatas) " terbatas" else "",
+            )
+        }
+    }
+
+    private fun ubahAktifAplikasi(paket: String, aktif: Boolean) {
+        DaftarAplikasi.setAktif(this, paket, aktif)
+        muatDaftarAplikasi()
+        lifecycleScope.launch {
+            repo.catatPeristiwa(nama.value, if (aktif) "APP_ENABLED" else "APP_DISABLED", paket)
+        }
+    }
+
+    private fun mulaiDarurat(paket: String) {
+        if (!DaftarAplikasi.mulaiDarurat(this, paket)) return
+        lifecycleScope.launch {
+            repo.catatPeristiwa(
+                nama.value,
+                "EMERGENCY_STARTED",
+                "$paket ${GateConfig.EMERGENCY_PAUSE_SECONDS}s",
+            )
+        }
+    }
+
+    private fun akhiriDarurat() {
+        val paket = DaftarAplikasi.akhiriDarurat(this) ?: return
+        lifecycleScope.launch { repo.catatPeristiwa(nama.value, "EMERGENCY_ENDED_EARLY", paket) }
+    }
+
+    private fun hapusDenganKredit(paket: String) {
+        val biaya = GateConfig.REMOVE_APP_CREDIT_COST_SECONDS
+        if (!SaldoKredit.bayar(this, biaya)) return
+        DaftarAplikasi.hapus(this, paket)
+        muatDaftarAplikasi()
+        lifecycleScope.launch {
+            repo.catatPeristiwa(nama.value, "CREDIT_SPENT", "REMOVE_APP $paket ${biaya}s")
+            repo.catatPeristiwa(nama.value, "APP_REMOVED", "$paket cara=KREDIT")
         }
     }
 
@@ -617,6 +777,10 @@ class MainActivity : ComponentActivity() {
                 statusEkspor.value = "Gagal mengekspor: ${e.message}"
             }
         }
+    }
+
+    private companion object {
+        const val UKURAN_IKON_PX = 96
     }
 
     private fun versiAplikasi(): String = try {

@@ -1,5 +1,6 @@
 package id.soaldulu.app
 
+import android.app.KeyguardManager
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -11,6 +12,7 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.os.IBinder
 import android.os.Looper
+import android.os.PowerManager
 import android.os.SystemClock
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -87,7 +89,14 @@ class GateWatchService : Service() {
     /** Aplikasi yang memicu gerbang yang sedang tampil. */
     private var paketGerbangSekarang: String? = null
 
-    private var idSesiKreditBerjalan: Long? = null
+    /** Saldo pada polling sebelumnya masih ada; dipakai mendeteksi saat saldo habis. */
+    private var adaKredit = false
+
+    /** elapsedRealtime polling sebelumnya, untuk menghitung kredit yang terpakai. */
+    private var pollingTerakhir = 0L
+
+    private val power by lazy { getSystemService(Context.POWER_SERVICE) as PowerManager }
+    private val keyguard by lazy { getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager }
 
     /** Supaya peringatan kredit hampir habis hanya dikirim sekali per sesi. */
     private var peringatanSudahDikirim = false
@@ -117,6 +126,8 @@ class GateWatchService : Service() {
 
         mulaiElapsed = SystemClock.elapsedRealtime()
         heartbeatTerakhir = mulaiElapsed
+        pollingTerakhir = mulaiElapsed
+        adaKredit = SaldoKredit.sisaMs(this) > 0
 
         buatChannelNotifikasi()
         startForeground(ID_NOTIFIKASI, bangunNotifikasi())
@@ -127,8 +138,19 @@ class GateWatchService : Service() {
             namaResponden = Preferensi.nama(this@GateWatchService)
             versiPaket = repo.paketTerpasang()?.version.orEmpty()
 
-            // Sesi kredit yang masih terbuka berarti service sempat mati saat
-            // kredit sedang berjalan. Itu temuan penelitian, bukan kesalahan.
+            // Dengan model saldo, kredit tidak hangus saat service mati:
+            // saldonya tetap tersimpan dan sesinya masih berjalan. Yang
+            // ditandai SERVICE_KILLED hanya sesi yang tertinggal terbuka
+            // padahal saldonya sudah nol.
+            val saldo = SaldoKredit.sisaDetik(this@GateWatchService)
+            if (saldo > 0) {
+                repo.catatPeristiwa(
+                    namaResponden,
+                    "SERVICE_RESTARTED",
+                    "saldo kredit ${saldo}s tetap tersimpan",
+                )
+                return@launch
+            }
             val tergantung = repo.tandaiKreditTergantung()
             if (tergantung > 0) {
                 SpikeLog.tulis(
@@ -188,6 +210,12 @@ class GateWatchService : Service() {
     }
 
     private fun periksaSekali() {
+        val sekarang = SystemClock.elapsedRealtime()
+        // Dibatasi supaya jeda panjang — thread yang sempat tertahan sistem —
+        // tidak tiba-tiba memotong kredit banyak sekaligus.
+        val selang = (sekarang - pollingTerakhir).coerceIn(0L, BATAS_SELANG_MS)
+        pollingTerakhir = sekarang
+
         peringatkanBilaHampirHabis()
         tutupKreditBilaHabis()
 
@@ -206,8 +234,9 @@ class GateWatchService : Service() {
             return
         }
 
-        if (depan.paket !in GateConfig.MONITORED_PACKAGES) {
-            // Responden keluar dari aplikasi terpantau; gerbang ikut dilepas.
+        if (!DaftarAplikasi.dijaga(this, depan.paket)) {
+            // Responden keluar dari aplikasi terpantau, atau aplikasinya
+            // sedang dimatikan dari Settings; gerbang ikut dilepas.
             if (gerbangSedangTampil) tutupGerbang()
             return
         }
@@ -218,7 +247,16 @@ class GateWatchService : Service() {
         val dipicuBukaanBaru = eventBaru
         if (eventBaru) eventTerakhirDitangani = depan.waktuEvent
 
-        if (sisaKreditDetik() > 0) return // masih punya kredit, biarkan
+        if (SaldoKredit.sisaMs(this) > 0) {
+            // Masih punya kredit: biarkan, dan potong kredit sebanyak waktu
+            // yang benar-benar dipakai. Detektor hanya tahu aplikasi terakhir
+            // yang dibuka, jadi saat layar mati atau terkunci ia tetap
+            // melaporkan aplikasi ini — waktu itu tidak dihitung.
+            if (power.isInteractive && !keyguard.isKeyguardLocked) {
+                SaldoKredit.pakai(this, selang)
+            }
+            return
+        }
         if (gerbangSedangTampil) return
 
         val ditutupPada = gerbangDitutupPada[depan.paket] ?: 0L
@@ -351,7 +389,7 @@ class GateWatchService : Service() {
         if (jawaban.isEmpty()) return
 
         val kreditDetik = Kredit.totalGerbang(jawaban.sumOf { it.bonusDetik })
-        setKreditBerakhirPada(System.currentTimeMillis() + kreditDetik * 1000L)
+        SaldoKredit.tambah(this, kreditDetik)
         peringatanSudahDikirim = false
         perbaruiNotifikasi()
 
@@ -372,8 +410,9 @@ class GateWatchService : Service() {
                     paketPemicu = paketPemicu,
                 )
             }
-            idSesiKreditBerjalan =
-                repo.mulaiSesiKredit(namaResponden, idSesiGerbang, kreditDetik)
+            // Gerbang tanpa jawaban benar tidak memberi kredit, jadi tidak
+            // ada sesi kredit yang dibuka.
+            if (kreditDetik > 0) repo.mulaiSesiKredit(namaResponden, idSesiGerbang, kreditDetik)
 
             SpikeLog.tulis(
                 this@GateWatchService,
@@ -388,24 +427,12 @@ class GateWatchService : Service() {
     private fun prefs() = getSharedPreferences(PREFS, Context.MODE_PRIVATE)
 
     /**
-     * Kapan kredit berakhir, dalam epoch ms. 0 = tidak punya kredit.
-     *
-     * Disimpan di SharedPreferences, bukan DataStore: nilai ini dibaca setiap
-     * detik di dalam loop polling, dan DataStore yang berbasis Flow tidak
-     * cocok untuk pembacaan sinkron sesering itu.
+     * Sisa saldo kredit. Disimpan SaldoKredit di SharedPreferences, bukan
+     * DataStore: nilai ini dibaca setiap detik di dalam loop polling, dan
+     * DataStore yang berbasis Flow tidak cocok untuk pembacaan sinkron
+     * sesering itu.
      */
-    private fun kreditBerakhirPada(): Long = prefs().getLong(KEY_KREDIT_BERAKHIR, 0L)
-
-    private fun setKreditBerakhirPada(waktu: Long) {
-        prefs().edit().putLong(KEY_KREDIT_BERAKHIR, waktu).apply()
-    }
-
-    private fun sisaKreditDetik(): Int {
-        val berakhir = kreditBerakhirPada()
-        if (berakhir == 0L) return 0
-        val sisa = (berakhir - System.currentTimeMillis()) / 1000L
-        return sisa.coerceAtLeast(0L).toInt()
-    }
+    private fun sisaKreditDetik(): Int = SaldoKredit.sisaDetik(this)
 
     /**
      * Peringatan sebelum kredit habis (GateConfig.CREDIT_WARNING_BEFORE_EXPIRY_SECONDS).
@@ -417,8 +444,13 @@ class GateWatchService : Service() {
      */
     private fun peringatkanBilaHampirHabis() {
         val sisa = sisaKreditDetik()
-        if (sisa <= 0 || sisa > Kredit.peringatanDetik) return
-        if (peringatanSudahDikirim) return
+        if (sisa > Kredit.peringatanDetik) {
+            // Saldo terisi lagi di atas batas peringatan, termasuk dari tombol
+            // Kerjakan Soal: peringatan boleh dikirim lagi nanti.
+            peringatanSudahDikirim = false
+            return
+        }
+        if (sisa <= 0 || peringatanSudahDikirim) return
         peringatanSudahDikirim = true
 
         handlerUtama.post {
@@ -437,14 +469,17 @@ class GateWatchService : Service() {
     }
 
     private fun tutupKreditBilaHabis() {
-        if (kreditBerakhirPada() == 0L) return
-        if (sisaKreditDetik() > 0) return
+        if (SaldoKredit.sisaMs(this) > 0) {
+            adaKredit = true
+            return
+        }
+        if (!adaKredit) return
+        adaKredit = false
 
-        setKreditBerakhirPada(0L)
-        val id = idSesiKreditBerjalan ?: return
-        idSesiKreditBerjalan = null
-        lingkup.launch { repo.tutupSesiKredit(id, "EXPIRED") }
-        SpikeLog.tulis(this, "KREDIT_HABIS sesi=$id")
+        lingkup.launch {
+            val jumlah = repo.tutupSemuaKreditTerbuka("EXPIRED")
+            SpikeLog.tulis(this@GateWatchService, "KREDIT_HABIS sesi_ditutup=$jumlah")
+        }
         perbaruiNotifikasi()
     }
 
@@ -526,15 +561,13 @@ class GateWatchService : Service() {
         const val PREFS = "spike"
         // (lanjut di bawah)
         const val KEY_JUMLAH_START = "jumlah_start"
-        // Dibaca juga oleh MainActivity: Dashboard menampilkan sisa kredit dan
-        // tombol Kerjakan Soal menambahnya.
-        const val KEY_KREDIT_BERAKHIR = "kredit_berakhir_pada"
 
         private const val CHANNEL_ID = "gerbang"
         private const val CHANNEL_PERINGATAN = "peringatan_kredit"
         private const val ID_NOTIFIKASI = 1
         private const val ID_NOTIFIKASI_PERINGATAN = 2
         private const val JEDA_HEARTBEAT_MS = 60_000L
+        private const val BATAS_SELANG_MS = GateConfig.FOREGROUND_POLL_INTERVAL_SECONDS * 2_000L
     }
 }
 

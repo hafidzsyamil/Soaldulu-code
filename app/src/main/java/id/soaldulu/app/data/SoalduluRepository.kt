@@ -171,6 +171,18 @@ class SoalduluRepository private constructor(private val dao: SoalduluDao) {
         return tergantung.size
     }
 
+    /**
+     * Tutup semua sesi kredit yang masih terbuka. Dipanggil saat saldo habis:
+     * dengan model saldo, kredit dari beberapa gerbang menumpuk, jadi habisnya
+     * saldo mengakhiri semua sesi sekaligus.
+     */
+    suspend fun tutupSemuaKreditTerbuka(alasan: String): Int {
+        val terbuka = dao.kreditBelumDitutup()
+        val sekarang = System.currentTimeMillis()
+        terbuka.forEach { dao.tutupKredit(it.id, sekarang, alasan) }
+        return terbuka.size
+    }
+
     suspend fun catatPeristiwa(kode: String, jenis: String, detail: String) {
         dao.catatPeristiwa(
             LogPeristiwaEntity(
