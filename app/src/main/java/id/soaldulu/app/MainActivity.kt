@@ -325,11 +325,17 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    /** Onboarding bisa dilanjutkan dari tempat terakhir. */
+    /**
+     * Onboarding bisa dilanjutkan dari tempat terakhir.
+     *
+     * Nama kosong berarti responden belum pernah menyelesaikan onboarding,
+     * jadi dia SELALU mulai dari Welcome — apa pun keadaan izinnya. Aturan
+     * sebelumnya memeriksa izin lebih dulu, sehingga HP yang izinnya sudah
+     * aktif melompati Welcome dan langsung mendarat di pengisian nama.
+     */
     private fun ruteAwal(namaTersimpan: String, paketAda: Boolean): Layar = when {
-        !bacaStatusIzin(this).semuaAktif && namaTersimpan.isBlank() -> Layar.WELCOME
+        namaTersimpan.isBlank() -> Layar.WELCOME
         !bacaStatusIzin(this).semuaAktif -> Layar.PERMISSION
-        namaTersimpan.isBlank() -> Layar.NAMA
         !paketAda -> Layar.PAKET_SOAL
         else -> Layar.DASHBOARD
     }
