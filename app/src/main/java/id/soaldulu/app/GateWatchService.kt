@@ -98,6 +98,9 @@ class GateWatchService : Service() {
     private val power by lazy { getSystemService(Context.POWER_SERVICE) as PowerManager }
     private val keyguard by lazy { getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager }
 
+    /** Teks notifikasi layanan yang terakhir dikirim. Hanya disentuh di thread utama. */
+    private var teksNotifikasiTerakhir: String? = null
+
     /** Supaya peringatan kredit hampir habis hanya dikirim sekali per sesi. */
     private var peringatanSudahDikirim = false
     private var namaResponden = ""
@@ -130,7 +133,8 @@ class GateWatchService : Service() {
         adaKredit = SaldoKredit.sisaMs(this) > 0
 
         buatChannelNotifikasi()
-        startForeground(ID_NOTIFIKASI, bangunNotifikasi())
+        teksNotifikasiTerakhir = teksNotifikasi()
+        startForeground(ID_NOTIFIKASI, bangunNotifikasi(teksNotifikasiTerakhir.orEmpty()))
 
         SpikeLog.tulis(this, "SERVICE_START ke-$jumlahStart")
 
@@ -205,6 +209,9 @@ class GateWatchService : Service() {
                 )
             }
             heartbeatBilaWaktunya()
+            // Sisa kredit di notifikasi ikut berjalan setiap detik saat
+            // kredit sedang terpakai.
+            perbaruiNotifikasi()
             handlerPantau.postDelayed(this, GateConfig.FOREGROUND_POLL_INTERVAL_SECONDS * 1000L)
         }
     }
@@ -497,10 +504,29 @@ class GateWatchService : Service() {
         perbaruiNotifikasi()
     }
 
+    /**
+     * Dipanggil setiap polling, tapi notifikasi hanya dikirim ulang kalau
+     * teksnya berubah. Saldo hanya bergerak saat media sosial terbuka, jadi
+     * pembaruan per detik hanya terjadi saat itu — di luar itu tidak ada
+     * yang dikirim. Sistem membatasi beberapa pembaruan per detik per
+     * aplikasi; satu per detik masih jauh di bawahnya.
+     */
     private fun perbaruiNotifikasi() {
         handlerUtama.post {
+            val teks = teksNotifikasi()
+            if (teks == teksNotifikasiTerakhir) return@post
+            teksNotifikasiTerakhir = teks
             val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            nm.notify(ID_NOTIFIKASI, bangunNotifikasi())
+            nm.notify(ID_NOTIFIKASI, bangunNotifikasi(teks))
+        }
+    }
+
+    private fun teksNotifikasi(): String {
+        val sisa = sisaKreditDetik()
+        return if (sisa > 0) {
+            "Sisa kredit ${formatSisaKredit(sisa)}"
+        } else {
+            "Gerbang aktif — media sosial terkunci"
         }
     }
 
@@ -528,25 +554,23 @@ class GateWatchService : Service() {
         nm.createNotificationChannel(peringatan)
     }
 
-    private fun bangunNotifikasi(): Notification {
-        val sisa = sisaKreditDetik()
+    private fun bangunNotifikasi(isi: String): Notification {
         val buka = PendingIntent.getActivity(
             this,
             0,
             Intent(this, MainActivity::class.java),
             PendingIntent.FLAG_IMMUTABLE,
         )
-        val isi = if (sisa > 0) {
-            "Sisa kredit ${formatSisaKredit(sisa)}"
-        } else {
-            "Gerbang aktif — media sosial terkunci"
-        }
         return Notification.Builder(this, CHANNEL_ID)
             .setContentTitle("Soaldulu")
             .setContentText(isi)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentIntent(buka)
             .setOngoing(true)
+            // Diperbarui tiap detik: jangan berbunyi atau bergetar ulang, dan
+            // jangan tampilkan jam yang ikut berganti setiap pembaruan.
+            .setOnlyAlertOnce(true)
+            .setShowWhen(false)
             .build()
     }
 
